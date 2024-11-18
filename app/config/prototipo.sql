@@ -1,0 +1,185 @@
+-- phpMyAdmin SQL Dump
+-- version 5.2.1
+-- https://www.phpmyadmin.net/
+--
+-- Servidor: 127.0.0.1
+-- Tiempo de generación: 14-09-2024 a las 02:49:33
+-- Versión del servidor: 10.4.28-MariaDB
+-- Versión de PHP: 8.2.4
+
+SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
+START TRANSACTION;
+SET time_zone = "+00:00";
+
+
+/*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
+/*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;
+/*!40101 SET @OLD_COLLATION_CONNECTION=@@COLLATION_CONNECTION */;
+/*!40101 SET NAMES utf8mb4 */;
+
+--
+-- Base de datos: `prototipo`
+--
+
+DELIMITER $$
+--
+-- Procedimientos
+--
+CREATE DEFINER=`root`@`localhost` PROCEDURE `validar_usuario` (IN `p_correo` VARCHAR(50), IN `p_contrasena` VARCHAR(255), OUT `p_mensaje` VARCHAR(255))   BEGIN
+    DECLARE v_count INT;
+
+    SELECT COUNT(*)
+    INTO v_count
+    FROM funcionario
+    WHERE correo = p_correo
+      AND contrasena = p_contrasena;
+
+    IF v_count = 1 THEN
+        SET p_mensaje = 'Usuario válido';
+    ELSE
+        SET p_mensaje = 'Usuario no válido';
+    END IF;
+END$$
+
+DELIMITER ;
+
+-- --------------------------------------------------------
+
+--
+-- Estructura de tabla para la tabla `dependencia`
+--
+
+CREATE TABLE `dependencia` (
+  `id_dependencia` varchar(10) NOT NULL,
+  `nombre_dependencia` varchar(45) DEFAULT NULL,
+  `telefono` varchar(50) DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Volcado de datos para la tabla `dependencia`
+--
+
+INSERT INTO `dependencia` (`id_dependencia`, `nombre_dependencia`, `telefono`) VALUES
+('Admin', 'Administrador', '8876387'),
+('CAA987', 'Coordinación Académica', '+4445556666'),
+('CBQC654', 'Coordinación de Bienestar y Calidad', '+7778889999'),
+('CNT789', 'Contabilidad y Administración', '+1112223333'),
+('DIR456', 'Dirección', '+9876543210'),
+('MDK123', 'Mercadeo', '+1234567890');
+
+-- --------------------------------------------------------
+
+--
+-- Estructura de tabla para la tabla `funcionario`
+--
+
+CREATE TABLE `funcionario` (
+  `id_funcionario` int(11) NOT NULL,
+  `tipo_documento` varchar(10) NOT NULL,
+  `cedula` varchar(45) NOT NULL,
+  `nombre_funcionario` varchar(45) NOT NULL,
+  `correo` varchar(100) NOT NULL,
+  `contrasena` varchar(50) NOT NULL,
+  `telefono` varchar(35) NOT NULL,
+  `direccion` varchar(80) NOT NULL,
+  `id_dependencia` varchar(10) DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Volcado de datos para la tabla `funcionario`
+--
+
+INSERT INTO `funcionario` (`id_funcionario`, `tipo_documento`, `cedula`, `nombre_funcionario`, `correo`, `contrasena`, `telefono`, `direccion`, `id_dependencia`) VALUES
+(1, 'cc', '1121323', 'Juan Pérez', 'juan.perez@example.com', 'contraseña123', '555-1234', 'Calle 123, Ciudad', 'CBQC654'),
+(2, 'cc', '2234234', 'Flor Ruiz', 'flor@gmail.com', '987', '555-5678', 'Avenida Principal, Pueblo', 'MDK123'),
+(3, 'cc', '3234234', 'María González', 'maria.gonzalez@example.com', 'clave456', '555-5678', 'Avenida Principal, Pueblo', 'DIR456'),
+(5, 'cc', '5545345', 'Martha González', 'martha.gonzalez@example.com', 'clave123', '555-5678', 'Avenida 34, Pablo', 'CNT789'),
+(6, 'CC', '1060650654', 'Weimar Tamayo ', 'weimart24@gmail.com', 'Admin', '3147587078', 'Vereda la Guayana', 'CAA987'),
+(7, 'CC', '123456789', 'Admin', 'admin@admin.com', 'Admin12345', '123456', 'Cra 23 # 21 - 81', 'Admin');
+
+-- --------------------------------------------------------
+
+--
+-- Estructura de tabla para la tabla `radicacion`
+--
+
+CREATE TABLE `radicacion` (
+  `id_radicado` int(11) NOT NULL,
+  `radicado` varchar(20) NOT NULL,
+  `nombre_remitente` varchar(45) NOT NULL,
+  `tipo_documento` varchar(10) NOT NULL,
+  `cedula_remitente` varchar(45) DEFAULT NULL,
+  `telefono` varchar(35) NOT NULL,
+  `direccion` varchar(80) NOT NULL,
+  `correo` varchar(100) NOT NULL,
+  `fecha_radicado` date NOT NULL,
+  `medio_recepcion` varchar(45) NOT NULL,
+  `asunto` varchar(45) NOT NULL,
+  `dependencia` varchar(50) DEFAULT NULL,
+  `pais` varchar(45) NOT NULL,
+  `departamento` varchar(45) NOT NULL,
+  `municipio` varchar(45) NOT NULL,
+  `documento` varchar(100) DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Volcado de datos para la tabla `radicacion`
+--
+
+INSERT INTO `radicacion` (`id_radicado`, `radicado`, `nombre_remitente`, `tipo_documento`, `cedula_remitente`, `telefono`, `direccion`, `correo`, `fecha_radicado`, `medio_recepcion`, `asunto`, `dependencia`, `pais`, `departamento`, `municipio`, `documento`) VALUES
+(2, '2024-09-07 - 2', 'Weimar', 'CC', '1060650654', '3147587078', 'vereda la guayana', 'weimar@weimar', '2024-09-07', 'Físico', 'hello', 'CBQC654 - Coordinación de Bienestar y Calidad', 'Colombia', 'Caldas', 'Manizales', 'app/document/03_Instrumento avance del proyecto.doc'),
+(3, '2024-09-07 - 3', 'Juanito Pérez', 'CC', '1060654', '32147965165', 'Cra 4a # 21 81', 'juanito@juanito.com', '2024-09-07', 'Electrónico', 'Este radicado es muy extenso', 'MDK123', 'Colombia', 'Caldas', 'Manizales', 'app/document/DIAGRAMAS-SOFTDOC.docx.pdf');
+
+--
+-- Índices para tablas volcadas
+--
+
+--
+-- Indices de la tabla `dependencia`
+--
+ALTER TABLE `dependencia`
+  ADD PRIMARY KEY (`id_dependencia`);
+
+--
+-- Indices de la tabla `funcionario`
+--
+ALTER TABLE `funcionario`
+  ADD PRIMARY KEY (`id_funcionario`),
+  ADD KEY `id_dependencia` (`id_dependencia`);
+
+--
+-- Indices de la tabla `radicacion`
+--
+ALTER TABLE `radicacion`
+  ADD PRIMARY KEY (`id_radicado`);
+
+--
+-- AUTO_INCREMENT de las tablas volcadas
+--
+
+--
+-- AUTO_INCREMENT de la tabla `funcionario`
+--
+ALTER TABLE `funcionario`
+  MODIFY `id_funcionario` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
+
+--
+-- AUTO_INCREMENT de la tabla `radicacion`
+--
+ALTER TABLE `radicacion`
+  MODIFY `id_radicado` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
+
+--
+-- Restricciones para tablas volcadas
+--
+
+--
+-- Filtros para la tabla `funcionario`
+--
+ALTER TABLE `funcionario`
+  ADD CONSTRAINT `funcionario_ibfk_1` FOREIGN KEY (`id_dependencia`) REFERENCES `dependencia` (`id_dependencia`);
+COMMIT;
+
+/*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
+/*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
+/*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
