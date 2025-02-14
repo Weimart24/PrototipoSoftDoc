@@ -25,7 +25,7 @@
                         <div class="col-lg-6 text-center text-lg-start">
                             <h1 class="text-white mb-4 animated zoomIn">Conectando Tu Empresa con la Eficiencia Digital</h1>
                             <p class="text-white pb-4 animated zoomIn">SoftDoc surge como una solución tecnológica de Ventanilla Única Digital como una plataforma web integral que optimiza los procesos de recepción, radicación, distribución y conservación de la correspondencia</p>
-                            <a href="" class="btn btn-outline-light rounded-pill border-2 py-3 px-5 animated slideInRight">Aprender más</a>
+                            <!-- <a href="" class="btn btn-outline-light rounded-pill border-2 py-3 px-5 animated slideInRight">Aprender más</a> -->
                         </div>
                         <div class="col-lg-6 text-center text-lg-start">
                             <img class="img-fluid animated zoomIn" src="img/hero.png" alt="">

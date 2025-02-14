@@ -7,6 +7,7 @@
     <title>SoftDoc</title>
     <link rel="shortcut icon" type="image/png" href="../assets/images/logos/favicon.png" />
     <link rel="stylesheet" href="app/assets/css/styles.min.css" />
+    <script src="https://www.google.com/recaptcha/api.js" async defer></script>
 </head>
 
 <body>
@@ -31,6 +32,7 @@
                                         <label for="exampleInputPassword1" class="form-label">Contraseña</label>
                                         <input type="password" name="contrasena" class="form-control" id="exampleInputPassword1">
                                     </div>
+                                    <div class="g-recaptcha" data-sitekey="6LcnbIYqAAAAAFTOmQMYkbz9GUTyaFaDDBD31ZQY"></div>
                                     <div class="d-flex align-items-center justify-content-between mb-4">
                                         
                                         <a class="text-primary fw-bold" href="./index.html">¿Olvidaste la contraseña?</a>

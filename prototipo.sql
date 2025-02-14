@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Servidor: 127.0.0.1
--- Tiempo de generación: 07-09-2024 a las 04:42:09
+-- Tiempo de generación: 14-09-2024 a las 02:49:33
 -- Versión del servidor: 10.4.28-MariaDB
 -- Versión de PHP: 8.2.4
 
@@ -21,20 +21,27 @@ SET time_zone = "+00:00";
 -- Base de datos: `prototipo`
 --
 
--- --------------------------------------------------------
-
+DELIMITER $$
 --
--- Estructura de tabla para la tabla `country`
+-- Procedimientos
 --
+CREATE DEFINER=`root`@`localhost` PROCEDURE `validar_usuario` (IN `p_correo` VARCHAR(50), IN `p_contrasena` VARCHAR(255), OUT `p_mensaje` VARCHAR(255))   BEGIN
+    DECLARE v_count INT;
 
-CREATE TABLE `country` (
-  `Name` varchar(32) NOT NULL,
-  `Code` varchar(4) NOT NULL DEFAULT '',
-  `Capital` varchar(35) DEFAULT NULL,
-  `Province` varchar(32) DEFAULT NULL,
-  `Area` int(11) DEFAULT NULL,
-  `Population` int(11) DEFAULT NULL
-) ENGINE=MyISAM DEFAULT CHARSET=latin1 COLLATE=latin1_general_ci;
+    SELECT COUNT(*)
+    INTO v_count
+    FROM funcionario
+    WHERE correo = p_correo
+      AND contrasena = p_contrasena;
+
+    IF v_count = 1 THEN
+        SET p_mensaje = 'Usuario válido';
+    ELSE
+        SET p_mensaje = 'Usuario no válido';
+    END IF;
+END$$
+
+DELIMITER ;
 
 -- --------------------------------------------------------
 
@@ -87,7 +94,8 @@ INSERT INTO `funcionario` (`id_funcionario`, `tipo_documento`, `cedula`, `nombre
 (2, 'cc', '2234234', 'Flor Ruiz', 'flor@gmail.com', '987', '555-5678', 'Avenida Principal, Pueblo', 'MDK123'),
 (3, 'cc', '3234234', 'María González', 'maria.gonzalez@example.com', 'clave456', '555-5678', 'Avenida Principal, Pueblo', 'DIR456'),
 (5, 'cc', '5545345', 'Martha González', 'martha.gonzalez@example.com', 'clave123', '555-5678', 'Avenida 34, Pablo', 'CNT789'),
-(6, 'CC', '1060650654', 'Weimar Tamayo ', 'weimart24@gmail.com', 'Admin', '3147587078', 'Vereda la Guayana', 'CAA987');
+(6, 'CC', '1060650654', 'Weimar Tamayo ', 'weimart24@gmail.com', 'Admin', '3147587078', 'Vereda la Guayana', 'CAA987'),
+(7, 'CC', '123456789', 'Admin', 'admin@admin.com', 'Admin12345', '123456', 'Cra 23 # 21 - 81', 'Admin');
 
 -- --------------------------------------------------------
 
@@ -119,7 +127,8 @@ CREATE TABLE `radicacion` (
 --
 
 INSERT INTO `radicacion` (`id_radicado`, `radicado`, `nombre_remitente`, `tipo_documento`, `cedula_remitente`, `telefono`, `direccion`, `correo`, `fecha_radicado`, `medio_recepcion`, `asunto`, `dependencia`, `pais`, `departamento`, `municipio`, `documento`) VALUES
-(2, '2024-09-07 - 2', 'Weimar', 'CC', '1060650654', '3147587078', 'vereda la guayana', 'weimar@weimar', '2024-09-07', 'Físico', 'hello', 'CBQC654 - Coordinación de Bienestar y Calidad', 'Colombia', 'Caldas', 'Manizales', 'app/document/03_Instrumento avance del proyecto.doc');
+(2, '2024-09-07 - 2', 'Weimar', 'CC', '1060650654', '3147587078', 'vereda la guayana', 'weimar@weimar', '2024-09-07', 'Físico', 'hello', 'CBQC654 - Coordinación de Bienestar y Calidad', 'Colombia', 'Caldas', 'Manizales', 'app/document/03_Instrumento avance del proyecto.doc'),
+(3, '2024-09-07 - 3', 'Juanito Pérez', 'CC', '1060654', '32147965165', 'Cra 4a # 21 81', 'juanito@juanito.com', '2024-09-07', 'Electrónico', 'Este radicado es muy extenso', 'MDK123', 'Colombia', 'Caldas', 'Manizales', 'app/document/DIAGRAMAS-SOFTDOC.docx.pdf');
 
 --
 -- Índices para tablas volcadas
@@ -152,13 +161,13 @@ ALTER TABLE `radicacion`
 -- AUTO_INCREMENT de la tabla `funcionario`
 --
 ALTER TABLE `funcionario`
-  MODIFY `id_funcionario` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
+  MODIFY `id_funcionario` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
 
 --
 -- AUTO_INCREMENT de la tabla `radicacion`
 --
 ALTER TABLE `radicacion`
-  MODIFY `id_radicado` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+  MODIFY `id_radicado` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
 
 --
 -- Restricciones para tablas volcadas

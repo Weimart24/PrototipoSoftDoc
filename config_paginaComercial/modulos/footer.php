@@ -3,9 +3,9 @@
         <div class="row g-5">
             <div class="col-md-6 col-lg-3">
                 <h5 class="text-white mb-4">Dirección</h5>
-                <p><i class="fa fa-map-marker-alt me-3"></i>Manizales Caldas Carrera 24</p>
-                <p><i class="fa fa-phone-alt me-3"></i>3124543355</p>
-                <p><i class="fa fa-envelope me-3"></i>ventanillaunicadigital@gmail.com</p>
+                <p><i class="fa fa-map-marker-alt me-3"></i>Manizales Caldas</p>
+                <p><i class="fa fa-phone-alt me-3"></i>3147587078 / 3206973868</p>
+                <p><i class="fa fa-envelope me-3"></i>ventanilaunicadigital@gmail.com</p>
                 <div class="d-flex pt-2">
                     <a class="btn btn-outline-light btn-social" href=""><i class="fab fa-twitter"></i></a>
                     <a class="btn btn-outline-light btn-social" href=""><i class="fab fa-facebook-f"></i></a>

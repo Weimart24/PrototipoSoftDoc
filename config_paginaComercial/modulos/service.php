@@ -17,7 +17,7 @@
                     </div>
                     <div class="p-5">
                         <h5 class="mb-3">Levantamiento de información</h5>
-                        <span>Erat ipsum justo amet duo et elitr dolor, est duo duo eos lorem sed diam stet diam sed stet lorem.</span>
+                        <span>Recopilamos y analizamos datos esenciales para comprender las necesidades y requerimientos de su negocio.</span>
                     </div>
                 </div>
             </div>
@@ -33,7 +33,7 @@
                     </div>
                     <div class="p-5">
                         <h5 class="mb-3">Análisis de requerimientos</h5>
-                        <span>Erat ipsum justo amet duo et elitr dolor, est duo duo eos lorem sed diam stet diam sed stet lorem.</span>
+                        <span>Evaluamos y documentamos los requisitos necesarios para el desarrollo de soluciones efectivas y personalizadas.</span>
                     </div>
                 </div>
             </div>
@@ -48,8 +48,8 @@
                         </a>
                     </div>
                     <div class="p-5">
-                        <h5 class="mb-3">Actualización o levantamiento de TRD(Tablas de retención documental)</h5>
-                        <span>Erat ipsum justo amet duo et elitr dolor, est duo duo eos lorem sed diam stet diam sed stet lorem.</span>
+                        <h5 class="mb-3">Actualización o levantamiento de TRD (Tablas de retención documental)</h5>
+                        <span>Actualizamos y creamos tablas de retención documental para asegurar la correcta gestión y conservación de documentos.</span>
                     </div>
                 </div>
             </div>
@@ -65,7 +65,7 @@
                     </div>
                     <div class="p-5">
                         <h5 class="mb-3">Validación de prototipos de software de ventanilla única digital</h5>
-                        <span>Erat ipsum justo amet duo et elitr dolor, est duo duo eos lorem sed diam stet diam sed stet lorem.</span>
+                        <span>Probamos y validamos prototipos de software para asegurar su funcionalidad y eficiencia en la gestión documental.</span>
                     </div>
                 </div>
             </div>
@@ -80,8 +80,8 @@
                         </a>
                     </div>
                     <div class="p-5">
-                        <h5 class="mb-3">Asesoramiento en el marco jurídico del AGN(Archivo general de la nación)</h5>
-                        <span>Erat ipsum justo amet duo et elitr dolor, est duo duo eos lorem sed diam stet diam sed stet lorem.</span>
+                        <h5 class="mb-3">Asesoramiento en el marco jurídico del AGN (Archivo general de la nación)</h5>
+                        <span>Ofrecemos asesoramiento especializado en normativas y regulaciones del Archivo General de la Nación para asegurar el cumplimiento legal.</span>
                     </div>
                 </div>
             </div>
@@ -97,7 +97,7 @@
                     </div>
                     <div class="p-5">
                         <h5 class="mb-3">Programas de gestión documental con la integración de la Ventanilla Única Digital</h5>
-                        <span>Erat ipsum justo amet duo et elitr dolor, est duo duo eos lorem sed diam stet diam sed stet lorem.</span>
+                        <span>Desarrollamos programas de gestión documental que integran la Ventanilla Única Digital para optimizar procesos y mejorar la eficiencia.</span>
                     </div>
                 </div>
             </div>
