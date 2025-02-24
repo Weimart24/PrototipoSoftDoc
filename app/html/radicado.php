@@ -61,7 +61,11 @@ include_once '../config/listar_dependencia.php';
                   if ($resultado->num_rows > 0) {
                     while ($fila = $resultado->fetch_assoc()) {
                       echo "<tr>";
-                      echo '<td><a href="../../' . $fila["documento"] . '" target="_blank">Ver Documento</a></td>';
+                        if (!empty($fila["documento"])) {
+                        echo '<td><a href="../../' . $fila["documento"] . '" target="_blank">Ver Documento</a></td>';
+                        } else {
+                        echo '<td>No hay documento</td>';
+                        }
                       echo "<td>" . $fila["radicado"] . "</td>";
                       echo "<td>" . $fila["cedula_remitente"] . "</td>";
                       echo "<td>" . $fila["nombre_remitente"] . "</td>";

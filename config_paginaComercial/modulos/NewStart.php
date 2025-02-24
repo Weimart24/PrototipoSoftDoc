@@ -4,7 +4,7 @@
             <div class="col-12 col-md-6">
                 <h3 class="text-white">¿Listo para integrar nuestro software?</h3>
                 <small class="text-white">Envíanos tu información y te contactaremos.</small>
-                <form action="config_paginaComercial/modulos/send_email.php" method="POST">
+                <form action="config_paginaComercial/modulos/send_email_contact.php" method="POST">
                     <div class="position-relative w-100 mt-3">
                         <input class="form-control border-0 rounded-pill w-100 ps-4 pe-5" 
                                type="email" name="email" placeholder="Ingrese tu correo electrónico" 
