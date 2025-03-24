@@ -4,7 +4,7 @@ if (!isset($_SESSION['name']) && !isset($_SESSION['id'])) {
   header('Location: ../../index.php');
 }
 include '../config/conexion.php';
-$query = "SELECT * FROM radicacion WHERE NOT id_radicado=1";
+$query = "SELECT * FROM radicacion WHERE NOT id_radicado=1 ORDER BY id_radicado DESC";
 $resultado = $conexion->query($query);
 include_once '../config/listar_dependencia.php';
 ?>
@@ -40,33 +40,35 @@ include_once '../config/listar_dependencia.php';
               <h3 class="text-left">REGISTRO DE CORRESPONDENCIA RECIBIDA</h3>
               <table class="table align-items-center table-flush" id="dataTable">
                 <thead>
-                  <td>Documento</td>
-                  <td>Radicado</td>
-                  <td>Cédula</td>
-                  <td>Nombre remitente</td>
-                  <td>Teléfono</td>
-                  <td>Correo</td>
-                  <td>Fecha Radicado</td>
-                  <td>Medio Recepción</td>
-                  <td>Asunto</td>
-                  <td>Dependencia</td>
-                  <td>Pais</td>
-                  <td>Departamento</td>
-                  <td>Municipio</td>
-                  <td>Actualizar</td>
-                  <td>Eliminar</td>
+                  <tr>
+                    <td>Documento</td>
+                    <td>Radicado</td>
+                    <td>Cédula</td>
+                    <td>Nombre remitente</td>
+                    <td>Teléfono</td>
+                    <td>Correo</td>
+                    <td>Fecha Radicado</td>
+                    <td>Medio Recepción</td>
+                    <td>Asunto</td>
+                    <td>Dependencia</td>
+                    <td>Pais</td>
+                    <td>Departamento</td>
+                    <td>Municipio</td>
+                    <td>Actualizar</td>
+                    <td>Eliminar</td>
+                  </tr>
                 </thead>
                 <tbody>
                   <?php
                   if ($resultado->num_rows > 0) {
                     while ($fila = $resultado->fetch_assoc()) {
                       echo "<tr>";
-                        if (!empty($fila["documento"])) {
+                      if (!empty($fila["documento"])) {
                         echo '<td><a href="../../' . $fila["documento"] . '" target="_blank">Ver Documento</a></td>';
-                        } else {
+                      } else {
                         echo '<td>No hay documento</td>';
-                        }
-                      echo "<td>" . $fila["radicado"] . "</td>";
+                      }
+                      echo "<td>" . $fila["id_radicado"] . "</td>";
                       echo "<td>" . $fila["cedula_remitente"] . "</td>";
                       echo "<td>" . $fila["nombre_remitente"] . "</td>";
                       echo "<td>" . $fila["telefono"] . "</td>";
