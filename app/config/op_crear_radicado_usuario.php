@@ -22,8 +22,8 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
     
     // Asignar valores directamente
     $fecha = date('Y-m-d'); // Fecha del sistema
-    $medio = "Electrónico"; // Medio de recepción
-    $dependencia = "Admin"; // Dependencia
+    $id_dependencia = "Admin"; // Dependencia
+    $id_funcionario = 7;
 
     //Lógica obtener el último número
     $nuevo_numero=0;
@@ -63,11 +63,12 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
     fecha_radicado,
     medio_recepcion,
     asunto,
-    dependencia,
     pais,
     departamento,
     municipio,
-    documento
+    documento,
+    id_dependencia,
+    id_funcionario
     )
     VALUES(
         '$radicado',
@@ -78,13 +79,13 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
         '$direccion',
         '$correo',
         '$fecha',
-        '$medio',
         '$asunto',
-        '$dependencia',
         '$pais',
         '$departamento',
         '$municipio',
         '$ruta_final'
+        '$id_dependencia',
+        '$id_funcionario',
     )";
 //Inicializamos la query
 if($conexion->query($query)){

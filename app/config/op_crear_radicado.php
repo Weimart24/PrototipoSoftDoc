@@ -8,13 +8,20 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
     $telefono = $conexion->real_escape_string($_POST['telefono']);
     $direccion = $conexion->real_escape_string($_POST['direccion']);
     $correo = $conexion->real_escape_string($_POST['correo']);
-    $fecha = $conexion->real_escape_string($_POST['fecha']);
-    $medio = $conexion->real_escape_string($_POST['medio']);
+    //$fecha = $conexion->real_escape_string($_POST['fecha']);
+    //$medio = $conexion->real_escape_string($_POST['medio']);
     $asunto = $conexion->real_escape_string($_POST['asunto']);
+    //ojo, compicado
     $dependencia = $conexion->real_escape_string($_POST['dependencia']);
+    $funcionario = $conexion->real_escape_string($_POST['funcionario']);
+
     $pais = $conexion->real_escape_string($_POST['pais']);
     $departamento = $conexion->real_escape_string($_POST['departamento']);
     $municipio = $conexion->real_escape_string($_POST['municipio']);
+
+
+    // Asignar valores directamente
+    $fecha = date('Y-m-d'); // Fecha del sistema
 
     //Lógica obtener el último número
     $nuevo_numero=0;
@@ -51,13 +58,13 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
     direccion,
     correo,
     fecha_radicado,
-    medio_recepcion,
     asunto,
-    dependencia,
     pais,
     departamento,
     municipio,
-    documento
+    documento,
+    id_dependencia,
+    id_dependencia,
     )
     VALUES(
         '$radicado',
@@ -68,13 +75,13 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
         '$direccion',
         '$correo',
         '$fecha',
-        '$medio',
         '$asunto',
-        '$dependencia',
         '$pais',
         '$departamento',
         '$municipio',
         '$ruta_final'
+        '$dependencia',
+        '$funcionario',
 
     )";
 //Inicializamos la query

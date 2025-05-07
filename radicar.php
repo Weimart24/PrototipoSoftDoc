@@ -59,11 +59,7 @@
                                                 <input type="email" name="correo" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp" required>
                                                 <div id="emailHelp" class="form-text">Correo Electrónico.</div>
                                             </div>
-                                            <div class="mb-3">
-                                                <label for="exampleInputEmail1" class="form-label">Asunto</label>
-                                                <input type="text" name="asunto" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp" required>
-                                                <div id="emailHelp" class="form-text">Ingrese el asunto.</div>
-                                            </div>
+                                            
                                             <div class="mb-3">
                                                 <label for="exampleInputEmail1" class="form-label">País</label>
                                                 <input type="text" name="pais" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp" required value="Colombia">
@@ -78,6 +74,16 @@
                                                 <label for="exampleInputEmail1" class="form-label">Municipio</label>
                                                 <input type="text" name="municipio" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp" required value="Manizales">
                                                 <div id="emailHelp" class="form-text">Ingrese el municipio.</div>
+                                            </div>
+                                            <div class="mb-3">
+                                                <label for="exampleInputEmail1" class="form-label">Asunto</label>
+                                                <input type="text" name="asunto" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp" required>
+                                                <div id="emailHelp" class="form-text">Ingrese el asunto.</div>
+                                            </div>
+                                            <div class="mb-3">
+                                                <label for="asuntoTextarea" class="form-label">Detalle del Radicado</label>
+                                                <textarea name="detalleRadicado" class="form-control" id="asuntoTextarea" rows="4" required></textarea>
+                                                <div id="emailHelp" class="form-text">Ingrese el detalle del radicado.</div>
                                             </div>
                                             <label for="documento" class="form-label">Adjuntar documento</label>
                                             <div class="input-group" id="adjuntarDocumento">
