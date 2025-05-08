@@ -12,7 +12,7 @@ function obtenerDependenciaPorCodigo($ID)
 
     if ($resultado->num_rows > 0) {
         $fila = $resultado->fetch_assoc();
-        return $fila['id_dependencia'].' - '.$fila["nombre_dependencia"];
+        return $fila["nombre_dependencia"];
     } else {
         return "No se encontró ninguna dependencia con el código especificado.";
     }

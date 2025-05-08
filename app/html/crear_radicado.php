@@ -74,16 +74,14 @@ if(!isset($_SESSION['name'])&& !isset($_SESSION['id'])){
                                             </div>
                                             <div class="mb-3">
                                                 <label class="form-label" for="inputGroupSelect02">Ingrese la dependendencia compentente.</label>
-                                                <select class="form-select" id="inputGroupSelect02" name="dependencia">
-                                                    <option selected>Seleccionar...</option>
-                                                    <?php include '../config/select_dependencia.php'; ?>
+                                                <select class="form-select" id="inputDependencia" name="dependencia">
+                                                    <option value="">-- Seleccione --</option>
                                                 </select>
                                             </div>
                                             <div class="mb-3">
                                                 <label class="form-label" for="inputGroupSelect02">Ingrese el funcionario relacionado.</label>
-                                                <select class="form-select" id="inputGroupSelect02" name="dependencia">
-                                                    <option selected>Seleccionar...</option>
-                                                    <?php include '../config/select_dependencia.php'; ?>
+                                                <select class="form-select" id="inputFuncionario" name="funcionario">
+                                                    <option value="">-- Seleccione una dependencia primero --</option>
                                                 </select>
                                             </div>
                                             <div class="mb-3">
@@ -134,5 +132,47 @@ if(!isset($_SESSION['name'])&& !isset($_SESSION['id'])){
     <?php include('modulos/script.php') ?>
 
 </body>
+<script>
+        // Cargar dependencias al inicio
+        fetch('../config/select_dependencia.php')
+            .then(res => res.json())
+            .then(data => {
+                const dependenciaSelect = document.getElementById('inputDependencia');
+                data.forEach(depen => {
+                    const option = document.createElement('option');
+                    option.value = depen.id_dependencia;
+                    option.textContent = depen.nombre_dependencia;
+                    dependenciaSelect.appendChild(option);
+                });
+            });
+
+        // Escuchar cambios en el select de usuarios
+        document.getElementById('inputDependencia').addEventListener('change', function() {
+            const depenId = this.value;
+            const funcSelect = document.getElementById('inputFuncionario');
+
+            funcSelect.innerHTML = '<option value="">-- Cargando funcionarios --</option>';
+            if (depenId) {
+                fetch('../config/select_funcionario.php?id_dependencia=' + depenId)
+                    .then(res => res.json())
+                    .then(data => {
+                        console.log(depenId);
+                        funcSelect.innerHTML = '';
+                        if (data.length > 0) {
+                            data.forEach(func => {
+                                const option = document.createElement('option');
+                                option.value = func.id_funcionario;
+                                option.textContent = `${func.nombre_funcionario}`;
+                                funcSelect.appendChild(option);
+                            });
+                        } else {
+                            funcSelect.innerHTML = '<option value="">Sin órdenes</option>';
+                        }
+                    });
+            } else {
+                funcSelect.innerHTML = '<option value="">-- Seleccione un usuario primero --</option>';
+            }
+        });
+    </script>
 
 </html>

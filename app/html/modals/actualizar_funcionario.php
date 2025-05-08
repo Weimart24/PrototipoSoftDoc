@@ -43,9 +43,8 @@
                 </div>
                 <label for="dependencia" class="form-label">Dependencia</label>
                 <div class="mb-3">
-                    <select class="form-select" name="dependencia">
-                        <option selected> <?php echo obtenerDependenciaPorCodigo($fila["id_dependencia"]) ?></option>
-                        <?php include '../config/select_dependencia.php'; ?>
+                    <select class="form-select" id="inputDependencia<?php echo $fila['id_funcionario'] ?>" name="dependencia">
+                        <option selected><?php echo obtenerDependenciaPorCodigo($fila["id_dependencia"]) ?></option>
                     </select>
                 </div>
                 <div class="mb-4">
@@ -63,3 +62,26 @@
         </form>
     </div>
 </div>
+<script>
+    // Ejecutar solo cuando el modal se muestre
+    document.addEventListener('DOMContentLoaded', () => {
+        const selects = document.querySelectorAll('select[id^="inputDependencia"]');
+
+        selects.forEach(select => {
+            fetch('../config/select_dependencia.php')
+                .then(res => res.json())
+                .then(data => {
+                    data.forEach(depen => {
+                        const option = document.createElement('option');
+                        option.value = depen.id_dependencia;
+                        option.textContent = depen.nombre_dependencia;
+
+                        // Evita duplicar si ya existe como "selected"
+                        if (![...select.options].some(o => o.value === option.value)) {
+                            select.appendChild(option);
+                        }
+                    });
+                });
+        });
+    });
+</script>

@@ -72,7 +72,6 @@ if (!isset($_SESSION['name']) && !isset($_SESSION['id'])) {
                                             <div class="mb-3">
                                                 <select class="form-select" id="dependencia" name="dependencia">
                                                     <option selected>Seleccionar...</option>
-                                                    <?php include('../config/select_dependencia.php'); ?>
                                                 </select>
                                             </div>
                                             <div class="mb-4">
@@ -99,5 +98,18 @@ if (!isset($_SESSION['name']) && !isset($_SESSION['id'])) {
     </div>
     <?php include('modulos/script.php') ?>
 </body>
-
+<script>
+        // Cargar dependencias al inicio
+        fetch('../config/select_dependencia.php')
+            .then(res => res.json())
+            .then(data => {
+                const dependenciaSelect = document.getElementById('dependencia');
+                data.forEach(depen => {
+                    const option = document.createElement('option');
+                    option.value = depen.id_dependencia;
+                    option.textContent = depen.nombre_dependencia;
+                    dependenciaSelect.appendChild(option);
+                });
+            });
+</script>
 </html>
