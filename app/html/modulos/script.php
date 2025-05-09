@@ -14,10 +14,35 @@
 
 <!-- Page level custom scripts -->
 <script>
+    // $(document).ready(function() {
+    //     $('#dataTable').DataTable(); // ID From dataTable 
+    //     $('#dataTablekHover').DataTable(); // ID From dataTable with Hover
+    // });
+
     $(document).ready(function() {
-        $('#dataTable').DataTable(); // ID From dataTable 
-        $('#dataTablekHover').DataTable(); // ID From dataTable with Hover
+    $('#dataTable, #dataTablekHover').DataTable({
+        "paging": true,        // Habilita la paginación
+        "lengthMenu": [5, 10, 15, 20], // Opciones de cantidad de elementos por página
+        "pageLength": 10,      // Cantidad inicial de elementos por página
+        "searching": true,     // Activa el campo de búsqueda
+        "ordering": false,     // Desactiva el ordenado automático
+        "language": {          // Traducción a español
+            "lengthMenu": "Mostrar _MENU_ registros por página",
+            "zeroRecords": "No se encontraron resultados",
+            "info": "Mostrando _START_ a _END_ de _TOTAL_ registros",
+            "infoEmpty": "No hay registros disponibles",
+            "infoFiltered": "(filtrado de _MAX_ registros en total)",
+            "search": "Buscar:",
+            "paginate": {
+                "first": "Primero",
+                "last": "Último",
+                "next": "Siguiente",
+                "previous": "Anterior"
+            }
+        }
     });
+});
+
 </script>
 
 <script>

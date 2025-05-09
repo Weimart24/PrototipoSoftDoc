@@ -3,7 +3,7 @@
 $host = "127.0.0.1"; //Ip de localhost
 $usuario = "root";
 $contrasenia = "";
-$bd = "prototipo";
+$bd = "prototipo2";
 
 $conexion = new mysqli($host, $usuario, $contrasenia, $bd);
 

@@ -48,7 +48,6 @@ if(!isset($_SESSION['name'])&& !isset($_SESSION['id'])){
                                                     <option selected>Seleccionar...</option>
                                                     <option>CC</option>
                                                     <option>TI</option>
-                                                    <option>NIT</option>
                                                 </select>
                                             </div>
                                             <div class="mb-3">
@@ -73,29 +72,15 @@ if(!isset($_SESSION['name'])&& !isset($_SESSION['id'])){
                                                 <div id="emailHelp" class="form-text">Correo Electrónico.</div>
                                             </div>
                                             <div class="mb-3">
-                                                <label for="exampleInputEmail1" class="form-label">Fecha radicado</label>
-                                                <input type="date" name="fecha" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp" required min="<?php echo date('Y-m-d'); ?>" value="<?php echo date('Y-m-d'); ?>">
-                                                <div id="emailHelp" class="form-text">Ingrese la fecha de radicación.</div>
-                                            </div>
-                                            <div class="mb-3">
-                                                <label for="inputGroupSelect02" class="form-label">Medio de recepción</label>
-                                                <select class="form-select" id="inputGroupSelect02" name="medio">
-                                                    <option selected>Seleccionar...</option>
-                                                    <option>Físico</option>
-                                                    <option>Electrónico</option>
-                                                    <option>Fax</option>
+                                                <label class="form-label" for="inputGroupSelect02">Ingrese la dependendencia compentente.</label>
+                                                <select class="form-select" id="inputDependencia" name="dependencia">
+                                                    <option value="">-- Seleccione --</option>
                                                 </select>
                                             </div>
                                             <div class="mb-3">
-                                                <label for="exampleInputEmail1" class="form-label">Asunto</label>
-                                                <input type="text" name="asunto" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp" required>
-                                                <div id="emailHelp" class="form-text">Ingrese el asunto.</div>
-                                            </div>
-                                            <div class="mb-3">
-                                                <label class="form-label" for="inputGroupSelect02">Ingrese la dependendencia compentente.</label>
-                                                <select class="form-select" id="inputGroupSelect02" name="dependencia">
-                                                    <option selected>Seleccionar...</option>
-                                                    <?php include '../config/select_dependencia.php'; ?>
+                                                <label class="form-label" for="inputGroupSelect02">Ingrese el funcionario relacionado.</label>
+                                                <select class="form-select" id="inputFuncionario" name="funcionario">
+                                                    <option value="">-- Seleccione una dependencia primero --</option>
                                                 </select>
                                             </div>
                                             <div class="mb-3">
@@ -112,6 +97,16 @@ if(!isset($_SESSION['name'])&& !isset($_SESSION['id'])){
                                                 <label for="exampleInputEmail1" class="form-label">Municipio</label>
                                                 <input type="text" name="municipio" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp" required value="Manizales">
                                                 <div id="emailHelp" class="form-text">Ingrese el municipio.</div>
+                                            </div>
+                                            <div class="mb-3">
+                                                <label for="exampleInputEmail1" class="form-label">Asunto</label>
+                                                <input type="text" name="asunto" class="form-control" id="exampleInputEmail1" maxlength="42" aria-describedby="emailHelp" required>
+                                                <div id="emailHelp" class="form-text">Ingrese el asunto (max 42 carácteres).</div>
+                                            </div>
+                                            <div class="mb-3">
+                                                <label for="asuntoTextarea" class="form-label">Detalle del Radicado</label>
+                                                <textarea name="detalleRadicado" class="form-control" id="asuntoTextarea" rows="4" required></textarea>
+                                                <div id="emailHelp" class="form-text">Ingrese el detalle del radicado.</div>
                                             </div>
                                             <label for="documento" class="form-label">Adjuntar documento</label>
                                             <div class="input-group" id="adjuntarDocumento">
@@ -136,5 +131,47 @@ if(!isset($_SESSION['name'])&& !isset($_SESSION['id'])){
     <?php include('modulos/script.php') ?>
 
 </body>
+<script>
+        // Cargar dependencias al inicio
+        fetch('../config/select_dependencia.php')
+            .then(res => res.json())
+            .then(data => {
+                const dependenciaSelect = document.getElementById('inputDependencia');
+                data.forEach(depen => {
+                    const option = document.createElement('option');
+                    option.value = depen.id_dependencia;
+                    option.textContent = depen.nombre_dependencia;
+                    dependenciaSelect.appendChild(option);
+                });
+            });
+
+        // Escuchar cambios en el select de usuarios
+        document.getElementById('inputDependencia').addEventListener('change', function() {
+            const depenId = this.value;
+            const funcSelect = document.getElementById('inputFuncionario');
+
+            funcSelect.innerHTML = '<option value="">-- Cargando funcionarios --</option>';
+            if (depenId) {
+                fetch('../config/select_funcionario.php?id_dependencia=' + depenId)
+                    .then(res => res.json())
+                    .then(data => {
+                        console.log(depenId);
+                        funcSelect.innerHTML = '';
+                        if (data.length > 0) {
+                            data.forEach(func => {
+                                const option = document.createElement('option');
+                                option.value = func.id_funcionario;
+                                option.textContent = `${func.nombre_funcionario}`;
+                                funcSelect.appendChild(option);
+                            });
+                        } else {
+                            funcSelect.innerHTML = '<option value="">Sin órdenes</option>';
+                        }
+                    });
+            } else {
+                funcSelect.innerHTML = '<option value="">-- Seleccione un usuario primero --</option>';
+            }
+        });
+    </script>
 
 </html>

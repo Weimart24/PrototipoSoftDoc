@@ -12,6 +12,7 @@
             <a href="about.php" class="nav-item nav-link">Nosotros</a>
             <a href="service.php" class="nav-item nav-link">Servicios</a>
             <a href="contact.php" class="nav-item nav-link">Contactenos</a>
+            <a href="radicar.php" class="nav-item nav-link">Radicar</a>
         </div>
         <a href="login.php" class="btn btn-light rounded-pill text-primary py-2 px-4 ms-lg-5">Login</a>
     </div>

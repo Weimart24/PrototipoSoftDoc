@@ -8,13 +8,20 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
     $telefono = $conexion->real_escape_string($_POST['telefono']);
     $direccion = $conexion->real_escape_string($_POST['direccion']);
     $correo = $conexion->real_escape_string($_POST['correo']);
-    $fecha = $conexion->real_escape_string($_POST['fecha']);
-    $medio = $conexion->real_escape_string($_POST['medio']);
+
     $asunto = $conexion->real_escape_string($_POST['asunto']);
-    $dependencia = $conexion->real_escape_string($_POST['dependencia']);
+    $detalleRadicado = $conexion->real_escape_string($_POST['detalleRadicado']);
+
     $pais = $conexion->real_escape_string($_POST['pais']);
     $departamento = $conexion->real_escape_string($_POST['departamento']);
     $municipio = $conexion->real_escape_string($_POST['municipio']);
+
+    $dependencia = $conexion->real_escape_string($_POST['dependencia']);
+    $funcionario = $conexion->real_escape_string($_POST['funcionario']);
+
+
+    // Asignar valores directamente
+    $fecha = date('Y-m-d'); // Fecha del sistema
 
     //Lógica obtener el último número
     $nuevo_numero=0;
@@ -39,10 +46,10 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
 
         echo "Archivo subido con éxito.";
     } else {
-        echo "Error al subir el archivo.";
+        $ruta_final = ""; // En caso de que no se suba el archivo, dejar el campo vacío
     }
     //Creamos la query
-    $query = "INSERT INTO radicacion(
+    $queryRadicado = "INSERT INTO radicacion(
     radicado,
     nombre_remitente,
     tipo_documento,
@@ -51,13 +58,13 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
     direccion,
     correo,
     fecha_radicado,
-    medio_recepcion,
     asunto,
-    dependencia,
     pais,
     departamento,
     municipio,
-    documento
+    documento,
+    id_dependencia,
+    id_funcionario
     )
     VALUES(
         '$radicado',
@@ -68,21 +75,84 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
         '$direccion',
         '$correo',
         '$fecha',
-        '$medio',
         '$asunto',
-        '$dependencia',
         '$pais',
         '$departamento',
         '$municipio',
-        '$ruta_final'
-
+        '$ruta_final',
+        '$dependencia',
+        '$funcionario'
     )";
+
 //Inicializamos la query
-if($conexion->query($query)){
-    echo "Radicado creado con exito";
+if($conexion->query($queryRadicado)){
+    $id_radicado = $conexion->insert_id; // ← ID del radicado recién creado
+
+    $querySeguimiento = "INSERT INTO seguimiento_radicado(
+        id_radicado,
+        fecha_seguimiento,
+        detalle
+    ) VALUES (
+        '$id_radicado',
+        '$fecha',
+        '$detalleRadicado'
+    )";
+
+    if(!$conexion->query($querySeguimiento)){
+        echo "Error al insertar seguimiento: " . $conexion->error;
+    }
+
+    // Enviar correo electrónico
+    $mail = new PHPMailer(true);
+
+    try {
+        // Configuración del servidor SMTP
+        $mail->isSMTP();
+        $mail->CharSet = 'UTF-8'; // Asegura la codificación
+        $mail->Host = 'smtp.gmail.com';
+        $mail->SMTPAuth = true;
+        $mail->Username = 'weimart24@gmail.com'; // Cambia esto
+        $mail->Password = 'wrkf uest hbhd ennk'; // Usa una contraseña de aplicación si usas Gmail
+        $mail->SMTPSecure = PHPMailer::ENCRYPTION_STARTTLS;
+        $mail->Port = 587;
+
+        // Remitente y destinatario
+        $mail->setFrom('softdoc@gmail.com', 'SOFTDOC');
+        $mail->addAddress($correo, $nombre);
+
+        // Contenido del correo
+        $mail->isHTML(true);
+        $mail->Subject = 'Verificación de recibido';
+        $mail->Body    = "
+            <h3>Verificación de recibido</h3>
+            <p>Estimado(a) $nombre,</p>
+            <p>Hemos recibido tu radicado con los siguientes datos:</p>
+            <ul>
+                <li><strong>Nombre Remitente:</strong> $nombre</li>
+                <li><strong>Tipo de Documento:</strong> $tipo</li>
+                <li><strong>Número de Documento:</strong> $cedula</li>
+                <li><strong>Teléfono:</strong> $telefono</li>
+                <li><strong>Dirección:</strong> $direccion</li>
+                <li><strong>Correo:</strong> $correo</li>
+                <li><strong>País:</strong> $pais</li>
+                <li><strong>Departamento:</strong> $departamento</li>
+                <li><strong>Municipio:</strong> $municipio</li>
+            </ul>
+            <p><strong>Asunto:</strong> $asunto</p>
+            <p><strong>Detalle del Radicado:</strong> $detalleRadicado</p>
+            <p>Nos pondremos en contacto contigo muy pronto.</p>
+            <p>Atentamente,<br>El equipo de SOFTDOC</p>
+        ";
+
+        $mail->send();
+        echo "Correo enviado correctamente.";
+    } catch (Exception $e) {
+        echo "Error al enviar el correo: {$mail->ErrorInfo}";
+    }
+
     echo "<script>
             alert('RADICADO CREADO CORRECTAMENTE');
-            window.location = '../html/radicado.php';
+            window.location = '/index.php';
         </script>";
     exit();
 }else{

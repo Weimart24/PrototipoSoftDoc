@@ -84,7 +84,7 @@
 
 
         <!-- Footer Start -->
-        < <?php include('config_paginaComercial/modulos/footer.php') ?> <!-- Footer End -->
+        <?php include('config_paginaComercial/modulos/footer.php') ?> <!-- Footer End -->
 
 
             <!-- Back to Top -->
