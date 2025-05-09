@@ -94,7 +94,7 @@ CREATE TABLE `radicacion` (
   `direccion` varchar(80) NOT NULL,
   `correo` varchar(100) NOT NULL,
   `fecha_radicado` date NOT NULL,
-  `asunto` varchar(45) NOT NULL,
+  `asunto` varchar(100) NOT NULL,
   `pais` varchar(45) NOT NULL,
   `departamento` varchar(45) NOT NULL,
   `municipio` varchar(45) NOT NULL,

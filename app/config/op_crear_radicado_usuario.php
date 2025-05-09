@@ -15,15 +15,18 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
     $telefono = $conexion->real_escape_string($_POST['telefono']);
     $direccion = $conexion->real_escape_string($_POST['direccion']);
     $correo = $conexion->real_escape_string($_POST['correo']);
+
     $asunto = $conexion->real_escape_string($_POST['asunto']);
+    $detalleRadicado = $conexion->real_escape_string($_POST['detalleRadicado']);
+
     $pais = $conexion->real_escape_string($_POST['pais']);
     $departamento = $conexion->real_escape_string($_POST['departamento']);
     $municipio = $conexion->real_escape_string($_POST['municipio']);
     
     // Asignar valores directamente
+    $id_dependencia = "CAA987"; // Dependencia
+    $id_funcionario = 6 ; // Funcionario
     $fecha = date('Y-m-d'); // Fecha del sistema
-    $id_dependencia = "Admin"; // Dependencia
-    $id_funcionario = 7;
 
     //Lógica obtener el último número
     $nuevo_numero=0;
@@ -48,11 +51,10 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
 
         echo "Archivo subido con éxito.";
     } else {
-        echo "Error al subir el archivo.";
         $ruta_final = ""; // En caso de que no se suba el archivo, dejar el campo vacío
     }
     //Creamos la query
-    $query = "INSERT INTO radicacion(
+    $queryRadicado = "INSERT INTO radicacion(
     radicado,
     nombre_remitente,
     tipo_documento,
@@ -61,7 +63,6 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
     direccion,
     correo,
     fecha_radicado,
-    medio_recepcion,
     asunto,
     pais,
     departamento,
@@ -83,13 +84,27 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
         '$pais',
         '$departamento',
         '$municipio',
-        '$ruta_final'
+        '$ruta_final',
         '$id_dependencia',
-        '$id_funcionario',
+        '$id_funcionario'
     )";
 //Inicializamos la query
-if($conexion->query($query)){
-    echo "Radicado creado con exito";
+if($conexion->query($queryRadicado)){
+    $id_radicado = $conexion->insert_id; // ← ID del radicado recién creado
+
+    $querySeguimiento = "INSERT INTO seguimiento_radicado(
+        id_radicado,
+        fecha_seguimiento,
+        detalle
+    ) VALUES (
+        '$id_radicado',
+        '$fecha',
+        '$detalleRadicado'
+    )";
+
+    if(!$conexion->query($querySeguimiento)){
+        echo "Error al insertar seguimiento: " . $conexion->error;
+    }
 
     // Enviar correo electrónico
     $mail = new PHPMailer(true);
@@ -128,6 +143,7 @@ if($conexion->query($query)){
                 <li><strong>Municipio:</strong> $municipio</li>
             </ul>
             <p><strong>Asunto:</strong> $asunto</p>
+            <p><strong>Detalle del Radicado:</strong> $detalleRadicado</p>
             <p>Nos pondremos en contacto contigo muy pronto.</p>
             <p>Atentamente,<br>El equipo de SOFTDOC</p>
         ";

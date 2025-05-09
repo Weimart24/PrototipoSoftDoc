@@ -36,7 +36,6 @@
                                                     <option value="" disabled selected>Seleccionar...</option>
                                                     <option>CC</option>
                                                     <option>TI</option>
-                                                    <option>NIT</option>
                                                 </select>
                                             </div>
                                             <div class="mb-3">

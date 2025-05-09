@@ -62,6 +62,7 @@
         </form>
     </div>
 </div>
+
 <script>
     // Ejecutar solo cuando el modal se muestre
     document.addEventListener('DOMContentLoaded', () => {

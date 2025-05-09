@@ -15,7 +15,6 @@
                     <option selected><?php echo $fila['tipo_documento'] ?></option>
                     <option>CC</option>
                     <option>TI</option>
-                    <option>NIT</option>
                 </select>
                 <br>
                 <label for="cedula" class="form-label">Cédula remitente</label>
@@ -33,21 +32,12 @@
                 <label for="fecha" class="form-label">Fecha radicado</label>
                 <input type="date" name="fecha" value="<?php echo $fila['fecha_radicado'] ?>" class="form-control" required>
                 <br>
-                <label for="medio" class="form-label">Medio recepción</label>
-                <select class="form-select" name="medio">
-                    <option selected><?php echo $fila['medio_recepcion'] ?></option>
-                    <option>Físico</option>
-                    <option>Electrónico</option>
-                    <option>Fax</option>
-                </select>
-                <br>
                 <label for="asunto" class="form-label">Asunto</label>
                 <input type="text" name="asunto" value="<?php echo $fila['asunto'] ?>" class="form-control" required>
                 <br>
                 <label for="dependencia" class="form-label">Dependencia</label>
-                <select class="form-select" name="dependencia">
-                    <option selected><?php echo obtenerDependenciaPorCodigo($fila["dependencia"]) ?></option>
-                    <?php include '../config/select_dependencia.php'; ?>
+                <select class="form-select" id="inputDependencia<?php echo $fila['id_funcionario'] ?>" name="dependencia">
+                    <option selected><?php echo obtenerDependenciaPorCodigo($fila["id_dependencia"]) ?></option>
                 </select>
                 <br>
                 <label for="pais" class="form-label">Pais</label>
@@ -67,3 +57,27 @@
         </form>
     </div>
 </div>
+
+<script>
+    // Ejecutar solo cuando el modal se muestre
+    document.addEventListener('DOMContentLoaded', () => {
+        const selects = document.querySelectorAll('select[id^="inputDependencia"]');
+
+        selects.forEach(select => {
+            fetch('../config/select_dependencia.php')
+                .then(res => res.json())
+                .then(data => {
+                    data.forEach(depen => {
+                        const option = document.createElement('option');
+                        option.value = depen.id_dependencia;
+                        option.textContent = depen.nombre_dependencia;
+
+                        // Evita duplicar si ya existe como "selected"
+                        if (![...select.options].some(o => o.value === option.value)) {
+                            select.appendChild(option);
+                        }
+                    });
+                });
+        });
+    });
+</script>

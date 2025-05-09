@@ -48,7 +48,6 @@ if(!isset($_SESSION['name'])&& !isset($_SESSION['id'])){
                                                     <option selected>Seleccionar...</option>
                                                     <option>CC</option>
                                                     <option>TI</option>
-                                                    <option>NIT</option>
                                                 </select>
                                             </div>
                                             <div class="mb-3">
@@ -101,8 +100,8 @@ if(!isset($_SESSION['name'])&& !isset($_SESSION['id'])){
                                             </div>
                                             <div class="mb-3">
                                                 <label for="exampleInputEmail1" class="form-label">Asunto</label>
-                                                <input type="text" name="asunto" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp" required>
-                                                <div id="emailHelp" class="form-text">Ingrese el asunto.</div>
+                                                <input type="text" name="asunto" class="form-control" id="exampleInputEmail1" maxlength="42" aria-describedby="emailHelp" required>
+                                                <div id="emailHelp" class="form-text">Ingrese el asunto (max 42 carácteres).</div>
                                             </div>
                                             <div class="mb-3">
                                                 <label for="asuntoTextarea" class="form-label">Detalle del Radicado</label>
