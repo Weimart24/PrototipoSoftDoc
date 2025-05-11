@@ -7,6 +7,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>Restablecer Contraseña</title>
     <link rel="stylesheet" href="app/assets/css/styles.min.css" />
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 </head>
 
 <body>
@@ -23,5 +24,20 @@
         </div>
     </div>
 </body>
+<script>
+document.addEventListener("DOMContentLoaded", function () {
+    const urlParams = new URLSearchParams(window.location.search);
+    const status = urlParams.get('status');
+    const message = urlParams.get('message');
 
+    if (status && message) {
+        Swal.fire({
+            icon: status === 'success' ? 'success' : 'error',
+            title: status === 'success' ? '¡Éxito!' : 'Error',
+            text: decodeURIComponent(message),
+            confirmButtonColor: '#3085d6'
+        });
+    }
+});
+</script>
 </html>

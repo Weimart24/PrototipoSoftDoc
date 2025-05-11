@@ -54,21 +54,19 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             $mail->Body = "Haz clic en el siguiente enlace para restablecer tu contraseña: <a href='$resetLink'>$resetLink</a>";
 
             $mail->send();
-            echo "<script>
-                alert('Se ha enviado un enlace de restablecimiento a tu correo.');
-                window.location = '../../login.php';
-            </script>";
+            
+            // Redirige con mensaje de éxito usando SweetAlert2
+            header("Location: ../../login.php?status=success&message=Se+ha+enviado+un+enlace+de+restablecimiento+a+tu+correo.");
+            exit();
         } catch (Exception $e) {
-            echo "<script>
-                alert('Error al enviar el correo: {$mail->ErrorInfo}');
-                window.location = '../../forgotPassword.php';
-            </script>";
+            // Redirige con mensaje de error usando SweetAlert2
+            header("Location: ../../forgotPassword.php?status=error&message=Error+al+enviar+el+correo:+{$mail->ErrorInfo}");
+            exit();
         }
     } else {
-        echo "<script>
-            alert('El correo no está registrado.');
-            window.location = '../../forgotPassword.php';
-        </script>";
+        // Redirige con mensaje si el correo no está registrado
+        header("Location: ../../forgotPassword.php?status=error&message=El+correo+no+está+registrado.");
+        exit();
     }
 }
 ?>

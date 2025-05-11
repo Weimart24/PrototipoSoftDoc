@@ -7,7 +7,7 @@
     <title>SoftDoc</title>
     <link rel="shortcut icon" type="image/png" href="../assets/images/logos/favicon.png" />
     <link rel="stylesheet" href="app/assets/css/styles.min.css" />
-    
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 </head>
 
 <body>
@@ -50,5 +50,20 @@
     <script src="app/assets/libs/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
     <script src="https://www.google.com/recaptcha/api.js" async defer></script>
 </body>
+<script>
+document.addEventListener("DOMContentLoaded", function () {
+    const urlParams = new URLSearchParams(window.location.search);
+    const status = urlParams.get('status');
+    const message = urlParams.get('message');
 
+    if (status && message) {
+        Swal.fire({
+            icon: status === 'success' ? 'success' : 'error',
+            title: status === 'success' ? '¡Éxito!' : 'Error',
+            text: decodeURIComponent(message),
+            confirmButtonColor: '#3085d6'
+        });
+    }
+});
+</script>
 </html>
