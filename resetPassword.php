@@ -1,5 +1,10 @@
 <?php
-include("app/config/conexion.php"); // Ajusta si tu ruta es diferente
+// Desactivar caché del navegador
+header("Cache-Control: no-store, no-cache, must-revalidate, max-age=0");
+header("Cache-Control: post-check=0, pre-check=0", false);
+header("Pragma: no-cache");
+
+include("app/config/conexion.php");
 
 $token = $_GET['token'] ?? '';
 $tokenValido = false;
@@ -17,7 +22,6 @@ if (!empty($token)) {
     $stmt->close();
 }
 ?>
-
 <!doctype html>
 <html lang="es">
 
@@ -64,6 +68,16 @@ if (!empty($token)) {
             </div>
         <?php endif; ?>
     </div>
+
+    <script>
+        // Limpiar formulario si se vuelve con la flecha "atrás"
+        window.addEventListener("pageshow", function (event) {
+            if (event.persisted || performance.navigation.type === 2) {
+                const form = document.querySelector("form");
+                if (form) form.reset();
+            }
+        });
+    </script>
 </body>
 
 </html>

@@ -6,9 +6,9 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     $recaptchaResponse = $_POST['g-recaptcha-response'] ?? '';
 
     if (empty($recaptchaResponse)) {
+        // Usamos SweetAlert2 para mostrar el mensaje de error
         echo "<script>
-            alert('Debes completar el reCAPTCHA.');
-            window.location = '../../login.php';
+            window.location = '../../login.php?status=error&message=" . urlencode('Debes completar el reCAPTCHA.') . "';
         </script>";
         exit();
     }
@@ -20,9 +20,9 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     $responseData = json_decode($response, true);
 
     if (!$responseData['success']) {
+        // Si el reCAPTCHA no es válido, mostramos el mensaje de error con SweetAlert2
         echo "<script>
-            alert('Error: reCAPTCHA no válido. Por favor, inténtalo de nuevo.');
-            window.location = '../../login.php';
+            window.location = '../../login.php?status=error&message=" . urlencode('Error: reCAPTCHA no válido. Por favor, inténtalo de nuevo.') . "';
         </script>";
         exit();
     }
