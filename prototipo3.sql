@@ -43,15 +43,6 @@ CREATE TABLE `dependencia` (
   PRIMARY KEY (`id_dependencia`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
--- Volcado de datos para la tabla `dependencia`
-INSERT INTO `dependencia` (`id_dependencia`, `nombre_dependencia`, `telefono`, `activo`) VALUES
-('Admin', 'Administrador', '8876387', TRUE),
-('CAA987', 'Coordinación Académica', '+4445556666', TRUE),
-('CBQC654', 'Coordinación de Bienestar y Calidad', '+7778889999', TRUE),
-('CNT789', 'Contabilidad y Administración', '+1112223333', TRUE),
-('DIR456', 'Dirección', '+9876543210', TRUE),
-('MDK123', 'Mercadeo', '+1234567890', TRUE);
-
 
 -- Estructura de tabla para la tabla `funcionario`
 CREATE TABLE `funcionario` (
@@ -70,14 +61,6 @@ CREATE TABLE `funcionario` (
   CONSTRAINT `funcionario_ibfk_1` FOREIGN KEY (`id_dependencia`) REFERENCES `dependencia` (`id_dependencia`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
--- Volcado de datos para la tabla `funcionario`
-INSERT INTO `funcionario` (`id_funcionario`, `tipo_documento`, `cedula`, `nombre_funcionario`, `correo`, `contrasena`, `telefono`, `direccion`, `id_dependencia`) VALUES
-(1, 'cc', '1121323', 'Juan Pérez', 'juan.perez@example.com', 'contraseña123', '555-1234', 'Calle 123, Ciudad', 'CBQC654'),
-(2, 'cc', '2234234', 'Flor Ruiz', 'flor@gmail.com', '987', '555-5678', 'Avenida Principal, Pueblo', 'MDK123'),
-(3, 'cc', '3234234', 'María González', 'maria.gonzalez@example.com', 'clave456', '555-5678', 'Avenida Principal, Pueblo', 'DIR456'),
-(5, 'cc', '5545345', 'Martha González', 'martha.gonzalez@example.com', 'clave123', '555-5678', 'Avenida 34, Pablo', 'CNT789'),
-(6, 'CC', '1060650654', 'Weimar Tamayo ', 'weimart24@gmail.com', 'Admin', '3147587078', 'Vereda la Guayana', 'CAA987'),
-(7, 'CC', '123456789', 'Admin', 'admin@admin.com', 'Admin12345', '123456', 'Cra 23 # 21 - 81', 'Admin');
 
 -- Estructura de tabla para la tabla `radicacion`
 CREATE TABLE `radicacion` (
@@ -122,11 +105,6 @@ CREATE TABLE `roles` (
   PRIMARY KEY (`id_rol`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
--- Volcado de datos para la tabla `roles`
-INSERT INTO `roles` (`id_rol`, `nombre_rol`, `descripcion`) VALUES
-(1, 'Administrador', 'Usuario con permisos completos'),
-(2, 'Coordinador', 'Usuario con permisos limitados'),
-(3, 'Funcionario', 'Usuario básico sin permisos especiales');
 
 -- Estructura de tabla para `permisos`
 CREATE TABLE `permisos` (
@@ -136,14 +114,6 @@ CREATE TABLE `permisos` (
   PRIMARY KEY (`id_permiso`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
--- Volcado de datos para la tabla `permisos`
-INSERT INTO `permisos` (`id_permiso`, `nombre_permiso`, `descripcion`) VALUES
-(1, 'Ver Radicados', 'Permite visualizar radicados'),
-(2, 'Crear Radicado', 'Permite crear nuevos radicados'),
-(3, 'Modificar Radicado', 'Permite modificar radicados existentes'),
-(4, 'Eliminar Radicado', 'Permite eliminar radicados'),
-(5, 'Gestionar Dependencias', 'Permite gestionar dependencias'),
-(6, 'Gestionar Funcionario', 'Permite gestionar empleados');
 
 -- Tabla intermedia para asignar roles a los funcionarios
 CREATE TABLE `funcionario_roles` (
@@ -154,6 +124,7 @@ CREATE TABLE `funcionario_roles` (
   CONSTRAINT `fk_rol` FOREIGN KEY (`id_rol`) REFERENCES `roles` (`id_rol`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
+
 -- Tabla intermedia para asignar permisos a los roles
 CREATE TABLE `rol_permisos` (
   `id_rol` INT(11) NOT NULL,
@@ -162,3 +133,59 @@ CREATE TABLE `rol_permisos` (
   CONSTRAINT `fk_rol_permiso` FOREIGN KEY (`id_rol`) REFERENCES `roles` (`id_rol`),
   CONSTRAINT `fk_permiso` FOREIGN KEY (`id_permiso`) REFERENCES `permisos` (`id_permiso`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+
+-- Volcado de datos para la tabla `dependencia` con las nuevas dependencias
+INSERT INTO `dependencia` (`id_dependencia`, `nombre_dependencia`, `telefono`, `activo`) VALUES
+('DG', 'Dirección General', '+9876543210', TRUE),
+('CA', 'Coordinación Académica', '+4445556666', TRUE),
+('GD', 'Gestión Documental', '+3334445555', TRUE),
+('RG', 'Recepción General', '+2223334444', TRUE),
+('TE', 'Tesorería', '+1112223333', TRUE);
+
+-- Volcado de datos para la tabla `funcionario` con los nuevos datos
+INSERT INTO `funcionario` (`id_funcionario`, `tipo_documento`, `cedula`, `nombre_funcionario`, `correo`, `contrasena`, `telefono`, `direccion`, `id_dependencia`) VALUES
+(1, 'cc', '1121323', 'Juan Pérez', 'juan.perez@example.com', 'contraseña123', '555-1234', 'Calle 123, Ciudad', 'DG'),
+(2, 'cc', '2234234', 'Flor Ruiz', 'flor@gmail.com', '987', '555-5678', 'Avenida Principal, Pueblo', 'CA'),
+(3, 'cc', '3234234', 'María González', 'maria.gonzalez@example.com', 'clave456', '555-5678', 'Avenida Principal, Pueblo', 'GD'),
+(4, 'cc', '4445345', 'Carlos Rodríguez', 'carlos.rodriguez@example.com', 'clave789', '555-6789', 'Avenida Central, Ciudad', 'RG'),
+(5, 'cc', '5545345', 'Martha González', 'martha.gonzalez@example.com', 'clave123', '555-5678', 'Avenida 34, Pablo', 'TE');
+
+-- Volcado de datos para la tabla `radicacion` con los radicados según el formato proporcionado
+INSERT INTO `radicacion` (`id_radicado`, `radicado`, `nombre_remitente`, `tipo_documento`, `cedula_remitente`, `telefono`, `direccion`, `correo`, `fecha_radicado`, `asunto`, `pais`, `departamento`, `municipio`, `documento`, `id_dependencia`, `id_funcionario`) VALUES
+(1, 'DG110520250001', 'Juan Pérez', 'cc', '1121323', '555-1234', 'Calle 123, Ciudad', 'juan.perez@example.com', '2025-05-11', 'Solicitud de documento', 'Colombia', 'Caldas', 'Manizales', NULL, 'DG', 1),
+(2, 'CA110520250001', 'Flor Ruiz', 'cc', '2234234', '555-5678', 'Avenida Principal, Pueblo', 'flor@gmail.com', '2025-05-11', 'Requerimiento de informe', 'Colombia', 'Caldas', 'Villamaría', NULL, 'CA', 2),
+(3, 'GD110520250001', 'María González', 'cc', '3234234', '555-5678', 'Avenida Principal, Pueblo', 'maria.gonzalez@example.com', '2025-05-11', 'Consulta documental', 'Colombia', 'Caldas', 'Manizales', NULL, 'GD', 3),
+(4, 'RG110520250001', 'Carlos Rodríguez', 'cc', '4445345', '555-6789', 'Avenida Central, Ciudad', 'carlos.rodriguez@example.com', '2025-05-11', 'Recepción de documentos', 'Colombia', 'Caldas', 'Manizales', NULL, 'RG', 4),
+(5, 'TE110520250001', 'Martha González', 'cc', '5545345', '555-5678', 'Avenida 34, Pablo', 'martha.gonzalez@example.com', '2025-05-11', 'Pago de servicios', 'Colombia', 'Caldas', 'Villamaría', NULL, 'TE', 5);
+
+-- Volcado de datos para la tabla `roles` con los roles según el formato proporcionado
+INSERT INTO `roles` (`id_rol`, `nombre_rol`, `descripcion`) VALUES
+(1, 'Administrador', 'Usuario con permisos completos'),
+(2, 'Funcionario', 'Usuario básico sin permisos especiales'),
+(3, 'Coordinador', 'Usuario con permisos limitados');
+
+-- Volcado de datos para la tabla `permisos` con algunos permisos básicos
+INSERT INTO `permisos` (`id_permiso`, `nombre_permiso`, `descripcion`) VALUES
+(1, 'Ver Radicados', 'Permite visualizar radicados'),
+(2, 'Crear Radicado', 'Permite crear nuevos radicados'),
+(3, 'Modificar Radicado', 'Permite modificar radicados existentes'),
+(4, 'Eliminar Radicado', 'Permite eliminar radicados');
+
+-- Asignación de roles a los funcionarios
+INSERT INTO `funcionario_roles` (`id_funcionario`, `id_rol`) VALUES
+(1, 1),  -- Juan Pérez: Administrador
+(2, 2),  -- Flor Ruiz: Funcionario
+(3, 2),  -- María González: Funcionario
+(4, 3),  -- Carlos Rodríguez: Coordinador
+(5, 2);  -- Martha González: Funcionario
+
+-- Asignación de permisos a los roles
+INSERT INTO `rol_permisos` (`id_rol`, `id_permiso`) VALUES
+(1, 1),  -- Administrador: Ver Radicados
+(1, 2),  -- Administrador: Crear Radicado
+(1, 3),  -- Administrador: Modificar Radicado
+(1, 4),  -- Administrador: Eliminar Radicado
+(2, 1),  -- Funcionario: Ver Radicados
+(3, 1),  -- Coordinador: Ver Radicados
+(3, 3);  -- Coordinador: Modificar Radicado
