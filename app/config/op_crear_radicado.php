@@ -1,4 +1,11 @@
 <?php 
+use PHPMailer\PHPMailer\PHPMailer;
+use PHPMailer\PHPMailer\Exception;
+
+require $_SERVER["DOCUMENT_ROOT"] . '/phpmailer/src/PHPMailer.php';
+require $_SERVER["DOCUMENT_ROOT"] . '/phpmailer/src/SMTP.php';
+require $_SERVER["DOCUMENT_ROOT"] . '/phpmailer/src/Exception.php';
+
 include_once ("conexion.php");
 
 if($_SERVER["REQUEST_METHOD"] == "POST"){

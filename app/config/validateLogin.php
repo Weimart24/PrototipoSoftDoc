@@ -1,29 +1,54 @@
 <?php
-include ("conexion.php");
+include("conexion.php");
 
-// Validamos y capturamos los datos enviados por el método POST
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
+    // Validamos el reCAPTCHA
+    $recaptchaResponse = $_POST['g-recaptcha-response'] ?? '';
+
+    if (empty($recaptchaResponse)) {
+        // Usamos SweetAlert2 para mostrar el mensaje de error
+        echo "<script>
+            window.location = '../../login.php?status=error&message=" . urlencode('Debes completar el reCAPTCHA.') . "';
+        </script>";
+        exit();
+    }
+
+    $secretKey = '6LdDNDMrAAAAABF-e6071m1r7cFEdmCHY4mx-6rH'; // Clave secreta
+    $response = file_get_contents(
+        "https://www.google.com/recaptcha/api/siteverify?secret={$secretKey}&response={$recaptchaResponse}"
+    );
+    $responseData = json_decode($response, true);
+
+    if (!$responseData['success']) {
+        // Si el reCAPTCHA no es válido, mostramos el mensaje de error con SweetAlert2
+        echo "<script>
+            window.location = '../../login.php?status=error&message=" . urlencode('Error: reCAPTCHA no válido. Por favor, inténtalo de nuevo.') . "';
+        </script>";
+        exit();
+    }
+
+    // Validación del usuario
     $correo = $conexion->real_escape_string($_POST['correo']);
-    $password = $conexion->real_escape_string($_POST['contrasena']);
+    $password = $_POST['contrasena'];
 
-    // Llamamos al procedimiento almacenado
-    $stmt = $conexion->prepare("CALL validar_usuario(?, ?, @mensaje)");
-    $stmt->bind_param("ss", $correo, $password);
+    // Verificamos si existe el usuario
+    $stmt = $conexion->prepare("SELECT * FROM funcionario WHERE correo = ?");
+    $stmt->bind_param("s", $correo);
     $stmt->execute();
-    $stmt->close();
+    $result = $stmt->get_result();
 
-    // Obtenemos el mensaje devuelto por el procedimiento
-    $result = $conexion->query("SELECT @mensaje AS mensaje");
-    $row = $result->fetch_assoc();
-    $mensaje = $row['mensaje'];
+    if ($result->num_rows > 0) {
+        $row = $result->fetch_assoc();
+        $hashedPassword = $row['contrasena'];
 
-    // Si el mensaje es 'Usuario válido', iniciamos la sesión y redirigimos
-    if ($mensaje == 'Usuario válido') {
-        $query = "SELECT * FROM funcionario WHERE correo = '$correo' AND contrasena = '$password'";
-        $validate = $conexion->query($query);
+        // Verificamos si la contraseña está encriptada
+        if (strpos($hashedPassword, '$2y$') === 0) {
+            $passwordCorrecta = password_verify($password, $hashedPassword);
+        } else {
+            $passwordCorrecta = ($password === $hashedPassword);
+        }
 
-        if ($validate->num_rows > 0) {
-            $row = $validate->fetch_assoc();
+        if ($passwordCorrecta) {
             session_start();
             $_SESSION['validate'] = TRUE;
             $_SESSION['name'] = $row['nombre_funcionario'];
@@ -33,16 +58,20 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             echo "<script>
                 window.location = '../html/radicado.php';
             </script>";
-            exit(); // Asegúrate de que el script se detenga aquí
+            exit();
+        } else {
+            echo "<script>
+                alert('Usuario o contraseña incorrectos.');
+                window.location = '../../login.php';
+            </script>";
+            exit();
         }
     } else {
-        // Mostramos el mensaje devuelto por el procedimiento
         echo "<script>
-            alert('$mensaje');
+            alert('Usuario no encontrado.');
             window.location = '../../login.php';
         </script>";
-        session_destroy();
-        exit(); // Asegúrate de que el script se detenga aquí
+        exit();
     }
 }
 ?>
