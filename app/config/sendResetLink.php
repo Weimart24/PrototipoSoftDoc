@@ -4,7 +4,7 @@ ini_set('display_startup_errors', 1);
 error_reporting(E_ALL);
 
 // URL base del sistema
-$baseUrl = "http://localhost:8081"; // Cambia a "https://tudominio.com" en producción
+$baseUrl = "http://localhost:8080"; // Cambia a "https://tudominio.com" en producción
 
 require '../../PHPMailer/src/Exception.php';
 require '../../PHPMailer/src/PHPMailer.php';
@@ -27,8 +27,10 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         $token = bin2hex(random_bytes(50));
 
         // Guarda el token en la base de datos
-        $query = "UPDATE funcionario SET reset_token = '$token', reset_expiration = DATE_ADD(NOW(), INTERVAL 1 HOUR) WHERE correo = '$email'";
-        $conexion->query($query);
+        $stmt = $conexion->prepare("UPDATE funcionario SET reset_token = ?, reset_expiration = DATE_ADD(NOW(), INTERVAL 10 MINUTE) WHERE correo = ?");
+        $stmt->bind_param("ss", $token, $email);
+        $stmt->execute();
+
 
         // Enlace de restablecimiento usando la URL base
         $resetLink = "$baseUrl/resetPassword.php?token=$token";

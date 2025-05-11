@@ -94,6 +94,10 @@ $resulSeguimiento = $stmt->get_result();
                   echo "<p>No hay seguimientos para este radicado.</p>";
               }
               ?>
+              <!-- Botón Salir -->
+              <div class="text-center mt-4">
+                <a href="/index.php" class="btn btn-secondary">Salir</a>
+              </div>
             </div>
           </div>
         </div>

@@ -39,7 +39,7 @@ if(!isset($_SESSION['name'])&& !isset($_SESSION['id'])){
                                             <input type="hidden" name="admin">
                                             <div class="mb-3">
                                                 <label for="exampleInputEmail1" class="form-label">Nombre Remitente</label>
-                                                <input type="text" name="nombre" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp" required">
+                                                <input type="text" name="nombre" class="form-control" id="exampleInputEmail1" aria-describedby="" required">
                                                 <div id="emailHelp" class="form-text">Ingrese el nombre completo del Remitente.</div>
                                             </div>
                                             <div class="mb-3">

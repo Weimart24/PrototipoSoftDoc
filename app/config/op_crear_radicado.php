@@ -159,7 +159,7 @@ if($conexion->query($queryRadicado)){
 
     echo "<script>
             alert('RADICADO CREADO CORRECTAMENTE');
-            window.location = '/index.php';
+            window.location = '/app/html/radicado.php';
         </script>";
     exit();
 }else{

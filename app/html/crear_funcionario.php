@@ -111,5 +111,14 @@ if (!isset($_SESSION['name']) && !isset($_SESSION['id'])) {
                     dependenciaSelect.appendChild(option);
                 });
             });
+        // Mostrar/ocultar contraseña
+        const passwordInput = document.getElementById('exampleInputPassword1');
+        const toggleButton = document.getElementById('showPassword');
+
+        toggleButton.addEventListener('click', function () {
+          const isPassword = passwordInput.type === 'password';
+          passwordInput.type = isPassword ? 'text' : 'password';
+          toggleButton.textContent = isPassword ? 'Ocultar' : 'Mostrar';
+        });
 </script>
 </html>

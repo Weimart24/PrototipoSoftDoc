@@ -66,10 +66,12 @@ CREATE TABLE `funcionario` (
   `cedula` varchar(45) NOT NULL,
   `nombre_funcionario` varchar(45) NOT NULL,
   `correo` varchar(100) NOT NULL,
-  `contrasena` varchar(50) NOT NULL,
+  `contrasena` varchar(255) NOT NULL,
   `telefono` varchar(35) NOT NULL,
   `direccion` varchar(80) NOT NULL,
   `id_dependencia` varchar(10) NOT NULL,
+  `reset_token` varchar(255) NOT NULL,
+  `reset_expiration` datetime NOT NULL,
   PRIMARY KEY (`id_funcionario`),
   CONSTRAINT `funcionario_ibfk_1` FOREIGN KEY (`id_dependencia`) REFERENCES `dependencia` (`id_dependencia`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
