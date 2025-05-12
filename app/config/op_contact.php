@@ -28,18 +28,20 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
         $mail->CharSet = 'UTF-8';
         $mail->Host = 'smtp.gmail.com';
         $mail->SMTPAuth = true;
-        $mail->Username = 'ventanilaunicaabs@gmail.com';
-        $mail->Password = 'cjgd dcki imrz asgl';
+        $mail->Username = 'informacion.softdoc@gmail.com'; //   correo de donde se enviará el mensaje
+        $mail->Password = 'qknx kzpi isvi kdzz'; //  contraseña segura o de aplicación
         $mail->SMTPSecure = PHPMailer::ENCRYPTION_STARTTLS;
         $mail->Port = 587;
 
-        $mail->setFrom('ventanilaunicaabs@gmail.com', 'SoftDoc');
-        $mail->addAddress($email);
+        $mail->setFrom('informacion.softdoc@gmail.com', 'Formulario de Contacto');
+        $mail->addAddress('ventanilaunicaabs@gmail.com', 'SoftDoc');
+        $mail->addReplyTo($email, $name);
 
         $mail->isHTML(true);
-        $mail->Subject = $subject;
+        $mail->Subject = "Nuevo mensaje de contacto: {$subject}";
         $mail->Body = "
-            <h3>Nuevo mensaje de contacto</h3>
+            <h3>Has recibido un nuevo mensaje a través del formulario de contacto de tu sitio web.</h3>
+            <h4>Datos del usuario:</h4>       
             <p><strong>Nombre:</strong> {$name}</p>
             <p><strong>Correo:</strong> {$email}</p>
             <p><strong>Asunto:</strong> {$subject}</p>
@@ -49,10 +51,10 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
         $mail->AltBody = "Nuevo mensaje de contacto\n\nNombre: {$name}\nCorreo: {$email}\nAsunto: {$subject}\nMensaje:\n{$message}";
 
         $mail->send();
-        header("Location: ../../contact.php?status=success&message=Mensaje+enviado+correctamente.");
+        header("Location: ../../contact.php?status=success&message=Mensaje+enviado+correctamente.+Nuestro+personal+se+comunicará+contigo+pronto.");
         exit();
     } catch (Exception $e) {
-        header("Location: ../../contact.php?status=error&message=Error+al+enviar:+{$mail->ErrorInfo}");
+        header("Location: ../../contact.php?status=error&message=No+se+pudo+enviar+el+mensaje.+Intenta+de+nuevo+más+tarde.");
         exit();
     }
 } else {
