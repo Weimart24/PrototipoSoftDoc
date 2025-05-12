@@ -107,6 +107,12 @@ header("Pragma: no-cache");
                 title: "<?php echo $_GET['status'] === 'success' ? 'Éxito' : 'Error'; ?>",
                 text: "<?php echo urldecode($_GET['message']); ?>",
                 confirmButtonColor: "<?php echo $_GET['status'] === 'success' ? '#28a745' : '#d33'; ?>"
+            }).then(() => {
+                // Elimina los parámetros de la URL sin recargar la página
+                if (window.history.replaceState) {
+                    const cleanURL = window.location.origin + window.location.pathname;
+                    window.history.replaceState(null, null, cleanURL);
+                }
             });
         });
     </script>
