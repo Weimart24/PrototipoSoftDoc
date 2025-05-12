@@ -80,6 +80,7 @@ CREATE TABLE `radicacion` (
   `documento` varchar(100) DEFAULT NULL,
   `id_dependencia` varchar(10) DEFAULT NULL,
   `id_funcionario` int(11) NOT NULL,
+  `activo` BOOLEAN DEFAULT TRUE,
   PRIMARY KEY (`id_radicado`),
   CONSTRAINT `radicacion_ibfk_1` FOREIGN KEY (`id_dependencia`) REFERENCES `dependencia` (`id_dependencia`),
   CONSTRAINT `radicacion_ibfk_2` FOREIGN KEY (`id_funcionario`) REFERENCES `funcionario` (`id_funcionario`)
@@ -145,19 +146,15 @@ INSERT INTO `dependencia` (`id_dependencia`, `nombre_dependencia`, `telefono`, `
 
 -- Volcado de datos para la tabla `funcionario` con los nuevos datos
 INSERT INTO `funcionario` (`id_funcionario`, `tipo_documento`, `cedula`, `nombre_funcionario`, `correo`, `contrasena`, `telefono`, `direccion`, `id_dependencia`) VALUES
-(1, 'cc', '1121323', 'Juan Pérez', 'juan.perez@example.com', 'contraseña123', '555-1234', 'Calle 123, Ciudad', 'DG'),
-(2, 'cc', '2234234', 'Flor Ruiz', 'flor@gmail.com', '987', '555-5678', 'Avenida Principal, Pueblo', 'CA'),
-(3, 'cc', '3234234', 'María González', 'maria.gonzalez@example.com', 'clave456', '555-5678', 'Avenida Principal, Pueblo', 'GD'),
-(4, 'cc', '4445345', 'Carlos Rodríguez', 'carlos.rodriguez@example.com', 'clave789', '555-6789', 'Avenida Central, Ciudad', 'RG'),
-(5, 'cc', '5545345', 'Martha González', 'martha.gonzalez@example.com', 'clave123', '555-5678', 'Avenida 34, Pablo', 'TE');
+(1, 'cc', '1121323', 'Administrador Gallego', 'admin@admin.com', 'Admin', '555-1234', 'Calle 123, Ciudad', 'DG'),
+(2, 'cc', '2234234', 'Funcionario Perez', 'fun@fun.com', 'Fun', '555-5678', 'Avenida Principal, Pueblo', 'CA'),
+(3, 'cc', '3234234', 'Coordinador Valencia', 'coor@coor.com', 'Coor', '555-5678', 'Avenida Principal, Pueblo', 'GD');
 
 -- Volcado de datos para la tabla `radicacion` con los radicados según el formato proporcionado
 INSERT INTO `radicacion` (`id_radicado`, `radicado`, `nombre_remitente`, `tipo_documento`, `cedula_remitente`, `telefono`, `direccion`, `correo`, `fecha_radicado`, `asunto`, `pais`, `departamento`, `municipio`, `documento`, `id_dependencia`, `id_funcionario`) VALUES
 (1, 'DG110520250001', 'Juan Pérez', 'cc', '1121323', '555-1234', 'Calle 123, Ciudad', 'juan.perez@example.com', '2025-05-11', 'Solicitud de documento', 'Colombia', 'Caldas', 'Manizales', NULL, 'DG', 1),
 (2, 'CA110520250001', 'Flor Ruiz', 'cc', '2234234', '555-5678', 'Avenida Principal, Pueblo', 'flor@gmail.com', '2025-05-11', 'Requerimiento de informe', 'Colombia', 'Caldas', 'Villamaría', NULL, 'CA', 2),
-(3, 'GD110520250001', 'María González', 'cc', '3234234', '555-5678', 'Avenida Principal, Pueblo', 'maria.gonzalez@example.com', '2025-05-11', 'Consulta documental', 'Colombia', 'Caldas', 'Manizales', NULL, 'GD', 3),
-(4, 'RG110520250001', 'Carlos Rodríguez', 'cc', '4445345', '555-6789', 'Avenida Central, Ciudad', 'carlos.rodriguez@example.com', '2025-05-11', 'Recepción de documentos', 'Colombia', 'Caldas', 'Manizales', NULL, 'RG', 4),
-(5, 'TE110520250001', 'Martha González', 'cc', '5545345', '555-5678', 'Avenida 34, Pablo', 'martha.gonzalez@example.com', '2025-05-11', 'Pago de servicios', 'Colombia', 'Caldas', 'Villamaría', NULL, 'TE', 5);
+(3, 'GD110520250001', 'María González', 'cc', '3234234', '555-5678', 'Avenida Principal, Pueblo', 'maria.gonzalez@example.com', '2025-05-11', 'Consulta documental', 'Colombia', 'Caldas', 'Manizales', NULL, 'GD', 3);
 
 -- Volcado de datos para la tabla `roles` con los roles según el formato proporcionado
 INSERT INTO `roles` (`id_rol`, `nombre_rol`, `descripcion`) VALUES
@@ -167,18 +164,16 @@ INSERT INTO `roles` (`id_rol`, `nombre_rol`, `descripcion`) VALUES
 
 -- Volcado de datos para la tabla `permisos` con algunos permisos básicos
 INSERT INTO `permisos` (`id_permiso`, `nombre_permiso`, `descripcion`) VALUES
-(1, 'Ver Radicados', 'Permite visualizar radicados'),
+(1, 'Ver', 'Permite visualizar radicados'),
 (2, 'Crear Radicado', 'Permite crear nuevos radicados'),
 (3, 'Modificar Radicado', 'Permite modificar radicados existentes'),
-(4, 'Eliminar Radicado', 'Permite eliminar radicados');
+(4, 'Administrador', 'Permite realizar acciones administrativas del aplicativo');
 
 -- Asignación de roles a los funcionarios
 INSERT INTO `funcionario_roles` (`id_funcionario`, `id_rol`) VALUES
 (1, 1),  -- Juan Pérez: Administrador
 (2, 2),  -- Flor Ruiz: Funcionario
-(3, 2),  -- María González: Funcionario
-(4, 3),  -- Carlos Rodríguez: Coordinador
-(5, 2);  -- Martha González: Funcionario
+(3, 3),  -- María González: Coordinador
 
 -- Asignación de permisos a los roles
 INSERT INTO `rol_permisos` (`id_rol`, `id_permiso`) VALUES
@@ -188,4 +183,12 @@ INSERT INTO `rol_permisos` (`id_rol`, `id_permiso`) VALUES
 (1, 4),  -- Administrador: Eliminar Radicado
 (2, 1),  -- Funcionario: Ver Radicados
 (3, 1),  -- Coordinador: Ver Radicados
+(3, 2),  -- Coordinador: Crear Radicado
+(3, 4),  -- Coordinador: Eliminar Radicado
 (3, 3);  -- Coordinador: Modificar Radicado
+
+-- Volcado de datos para la tabla `seguimiento_radicado` con algunos seguimientos
+INSERT INTO `seguimiento_radicado` (`id_seguimiento`, `fecha_seguimiento`, `detalle`, `id_radicado`) VALUES
+(1, '2025-05-11', 'Solicitud de documento urgente para trámites internos', 1),
+(2, '2025-05-11', 'Requerimiento de informe sobre resultados de evaluación', 2),
+(3, '2025-05-11', 'Consulta sobre el estado de documentos archivados', 3);

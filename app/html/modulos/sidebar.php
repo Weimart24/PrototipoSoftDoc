@@ -22,6 +22,7 @@
                     <span class="hide-menu">Visualizar Radicados</span>
                 </a>
             </li>
+            <?php if (in_array('2', $_SESSION['permisos'])) { ?>
             <li class="sidebar-item">
                 <a class="sidebar-link" href="crear_radicado.php" aria-expanded="false">
                     <span>
@@ -30,16 +31,11 @@
                     <span class="hide-menu">Radicar</span>
                 </a>
             </li>
-            <!-- <li class="sidebar-item">
-                <a class="sidebar-link" href="actualizar_radicado.php" aria-expanded="false">
-                    <span>
-                        <i class="ti ti-cards"></i>
-                    </span>
-                    <span class="hide-menu">Actualizar</span>
-                </a>
-            </li> -->
-            <?php if($_SESSION['rol'] === "Admin"){ ?>
-
+            <?php } ?>
+            <?php 
+            $permisos_necesarios = ['1', '2', '3', '4'];
+            $tiene_todos = !array_diff($permisos_necesarios, $_SESSION['permisos']);
+            if ($tiene_todos) { ?>
             <li class="nav-small-cap">
                 <i class="ti ti-dots nav-small-cap-icon fs-4"></i>
                 <span class="hide-menu">FUNCIONARIOS</span>

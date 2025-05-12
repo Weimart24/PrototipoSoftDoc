@@ -24,8 +24,8 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
     $municipio = $conexion->real_escape_string($_POST['municipio']);
     
     // Asignar valores directamente
-    $id_dependencia = "CAA987"; // Dependencia
-    $id_funcionario = 6 ; // Funcionario
+    $id_dependencia = "GD"; // Dependencia
+    $id_funcionario = 3 ; // Funcionario
     $fecha = date('Y-m-d'); // Fecha del sistema
 
     //Lógica obtener el último número
@@ -37,7 +37,7 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
         $nuevo_numero = $ultimo_numero + 1;
     }
 
-    $radicado = generarRadicado($nuevo_numero);
+    $radicado = generarRadicado($id_dependencia, $nuevo_numero);
     
     //Verificación del archivo
     if (isset($_FILES["file"]) && $_FILES["file"]["error"] == UPLOAD_ERR_OK) {
@@ -130,7 +130,7 @@ if($conexion->query($queryRadicado)){
         $mail->Body    = "
             <h3>Verificación de recibido</h3>
             <p>Estimado(a) $nombre,</p>
-            <p>Hemos recibido tu radicado con los siguientes datos:</p>
+            <p>Hemos generado tu radicado # <strong>$radicado</strong> con los siguientes datos:</p>
             <ul>
                 <li><strong>Nombre Remitente:</strong> $nombre</li>
                 <li><strong>Tipo de Documento:</strong> $tipo</li>
@@ -166,9 +166,9 @@ if($conexion->query($queryRadicado)){
 $conexion->close();
 }
 
-function generarRadicado($nuevo){
-    $fecha = date('Y-m-d');
-    return $fecha . ' - ' .$nuevo;
+function generarRadicado($dependencia, $nuevo){
+    $fecha = date('dmY');
+    return $dependencia . $fecha .$nuevo;
 }
 
 

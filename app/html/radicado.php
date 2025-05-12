@@ -1,10 +1,10 @@
 <?php
 session_start();
-if (!isset($_SESSION['name']) && !isset($_SESSION['id'])) {
+if (!isset($_SESSION['validate'])) {
   header('Location: ../../index.php');
 }
 include '../config/conexion.php';
-$query = "SELECT * FROM radicacion WHERE NOT id_radicado=1 ORDER BY id_radicado DESC";
+$query = "SELECT * FROM radicacion WHERE id_radicado ORDER BY id_radicado DESC";
 $resultado = $conexion->query($query);
 include_once '../config/listar_dependencia.php';
 ?>
@@ -41,7 +41,7 @@ include_once '../config/listar_dependencia.php';
               <table class="table align-items-center table-flush" id="dataTable">
                 <thead>
                   <tr>
-                    <td>Documento</td>
+                    <td>Examinar</td>
                     <td>Radicado</td>
                     <td>Nombre remitente</td>
                     <td>Fecha Radicado</td>
@@ -54,11 +54,7 @@ include_once '../config/listar_dependencia.php';
                   if ($resultado->num_rows > 0) {
                     while ($fila = $resultado->fetch_assoc()) {
                       echo "<tr>";
-                      if (!empty($fila["documento"])) {
-                        echo '<td><a href="../../' . $fila["documento"] . '" target="_blank">Ver Documento</a></td>';
-                      } else {
-                        echo '<td>No hay documento</td>';
-                      }
+                      echo "<td><a href='ver_radicado.php?id=" . $fila["id_radicado"] . "' class='btn btn-primary'>Ver</a></td>";
                       echo "<td>" . $fila["radicado"] . "</td>";
                       echo "<td>" . $fila["nombre_remitente"] . "</td>";
                       echo "<td>" . $fila["fecha_radicado"] . "</td>";

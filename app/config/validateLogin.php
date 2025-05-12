@@ -49,12 +49,28 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         }
 
         if ($passwordCorrecta) {
+            $id_funcionario = $row['id_funcionario'];
+            $sql = "SELECT p.id_permiso
+                    FROM permisos p
+                    JOIN rol_permisos rp ON p.id_permiso = rp.id_permiso
+                    JOIN funcionario_roles fr ON rp.id_rol = fr.id_rol
+                    WHERE fr.id_funcionario = ?";
+
+            $stmt = $conexion->prepare($sql);
+            $stmt->bind_param("i", $id_funcionario);
+            $stmt->execute();
+            $result = $stmt->get_result();
+
+            $permisos = [];
+            while ($reslt = $result->fetch_assoc()) {
+                $permisos[] = $reslt['id_permiso'];
+            }
+
             session_start();
             $_SESSION['validate'] = TRUE;
             $_SESSION['name'] = $row['nombre_funcionario'];
-            $_SESSION['id'] = $row['cedula'];
-            $_SESSION['rol'] = $row['id_dependencia'];
-            $_SESSION['id_funcionario'] = $row['id_funcionario'];
+            $_SESSION['id'] = $row['id_funcionario'];
+            $_SESSION['permisos'] = $permisos;
             echo "<script>
                 window.location = '../html/radicado.php';
             </script>";
