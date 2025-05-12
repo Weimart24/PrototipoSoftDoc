@@ -33,7 +33,7 @@ BEGIN
 END$$
 
 DELIMITER ;
-
+-- --------------------------------------------------------
 -- Estructura de la tabla `dependencia` con campo `activo` para deshabilitarla
 CREATE TABLE `dependencia` (
   `id_dependencia` varchar(10) NOT NULL,
@@ -173,7 +173,7 @@ INSERT INTO `permisos` (`id_permiso`, `nombre_permiso`, `descripcion`) VALUES
 INSERT INTO `funcionario_roles` (`id_funcionario`, `id_rol`) VALUES
 (1, 1),  -- Juan Pérez: Administrador
 (2, 2),  -- Flor Ruiz: Funcionario
-(3, 3),  -- María González: Coordinador
+(3, 3);  -- María González: Coordinador
 
 -- Asignación de permisos a los roles
 INSERT INTO `rol_permisos` (`id_rol`, `id_permiso`) VALUES
