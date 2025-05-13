@@ -6,7 +6,7 @@ if (!isset($_SESSION['validate'])) {
 include '../config/conexion.php';
 $query = "SELECT * FROM radicacion WHERE id_radicado ORDER BY id_radicado DESC";
 $resultado = $conexion->query($query);
-include_once '../config/listar_dependencia.php';
+include_once '../config/funciones.php';
 ?>
 
 
@@ -54,12 +54,12 @@ include_once '../config/listar_dependencia.php';
                   if ($resultado->num_rows > 0) {
                     while ($fila = $resultado->fetch_assoc()) {
                       echo "<tr>";
-                      echo "<td><a href='ver_radicado.php?id=" . $fila["id_radicado"] . "' class='btn btn-primary'>Ver</a></td>";
+                      echo "<td><a href='ver_radicado.php?id=" . $fila["id_radicado"] . "' class='btn btn-outline-info btn-sm'>Ver</a></td>";
                       echo "<td>" . $fila["radicado"] . "</td>";
                       echo "<td>" . $fila["nombre_remitente"] . "</td>";
                       echo "<td>" . $fila["fecha_radicado"] . "</td>";
                       echo "<td>" . $fila["asunto"] . "</td>";
-                      echo "<td>" . $fila["id_dependencia"] . "</td>";
+                      echo "<td>" . obtenerDependenciaPorCodigo($fila['id_dependencia']) . "</td>";
                     }
                   }
                   ?>
@@ -84,3 +84,23 @@ include_once '../config/listar_dependencia.php';
 // Cerrar la conexión
 $conexion->close();
 ?>
+
+<script>
+    document.addEventListener("DOMContentLoaded", function () {
+      const urlParams = new URLSearchParams(window.location.search);
+      const status = urlParams.get('status');
+      const message = urlParams.get('message');
+
+      if (status && message) {
+        Swal.fire({
+          icon: status === 'success' ? 'success' : 'error',
+          title: status === 'success' ? '¡Éxito!' : 'Error',
+          text: decodeURIComponent(message),
+          confirmButtonColor: '#3085d6'
+        }).then(() => {
+          //  Limpiar la URL para evitar alerta en recarga o regreso
+          window.history.replaceState({}, document.title, window.location.pathname);
+        });
+      }
+    });
+  </script>

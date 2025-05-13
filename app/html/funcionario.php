@@ -6,7 +6,7 @@ if (!isset($_SESSION['name']) && !isset($_SESSION['id'])) {
 include '../config/conexion.php';
 $query = "SELECT * FROM funcionario";
 $resultado = $conexion->query($query);
-include_once '../config/listar_dependencia.php';
+include_once '../config/funciones.php';
 ?>
 
 
@@ -40,32 +40,22 @@ include_once '../config/listar_dependencia.php';
                             <h3 class="text-left">REGISTRO DE FUNCIONARIOS</h3>
                             <table class="table align-items-center table-flush" id="dataTable">
                                 <thead>
-                                    <td>Cédula</td>
+                                    <td>Ver</td>
                                     <td>Nombre</td>
-                                    <td>Teléfono</td>
-                                    <td>Dirección</td>
                                     <td>Correo</td>
                                     <td>Dependencia</td>
-                                    <td>Actualizar</td>
-                                    <td>Eliminar</td>
+                                    <td>Rol</td>
                                 </thead>
                                 <tbody>
                                     <?php
                                     if ($resultado->num_rows > 0) {
                                         while ($fila = $resultado->fetch_assoc()) {
                                             echo "<tr>";
-                                            echo "<td>" . $fila["tipo_documento"] . ' ' . $fila["cedula"] . "</td>";
+                                            echo "<td><a href='ver_funcionario.php?id=" . $fila["id_funcionario"] . "' class='btn btn-outline-info btn-sm'>Ver</a></td>";
                                             echo "<td>" . $fila["nombre_funcionario"] . "</td>";
-                                            echo "<td>" . $fila["telefono"] . "</td>";
-                                            echo "<td>" . $fila["direccion"] . "</td>";
                                             echo "<td>" . $fila["correo"] . "</td>";
                                             echo "<td>" . obtenerDependenciaPorCodigo($fila['id_dependencia']) . "</td>";
-                                            echo '<td><button type="button" class="btn btn-outline-warning btn-sm" data-bs-toggle="modal" data-bs-target="#modalAct' . $fila['id_funcionario'] . '">Actualizar</button></td>'; ?>
-                                            <div class="modal fade text-black" id="modalAct<?php echo $fila['id_funcionario'] ?>">
-                                                <?php include "modals/actualizar_funcionario.php" ?>
-                                            </div>
-                                    <?php
-                                            echo "<td><a href='../config/op_eliminar_funcionario.php?id=" . $fila["id_funcionario"] . "' onclick='return confirm(\"¿Estás seguro de que deseas eliminar este funcionario?\")'><i class='ti ti-backspace'></i></a></td>";
+                                            echo "<td>" . obtenerRol($fila['id_funcionario']) . "</td>";
                                             echo "</tr>";
                                         }
                                     }

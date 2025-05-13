@@ -26,8 +26,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $fecha = date('Y-m-d');
 
     $ultimo_numero = obtenerUltimoNumero($conexion);
-    $nuevo_numero = ($ultimo_numero > 999) ? 100 : $ultimo_numero + 1;
-    $radicado = generarRadicado($id_dependencia, $nuevo_numero);
+    $radicado = generarRadicado($id_dependencia, $ultimo_numero);
 
     // Manejo del archivo
     if (isset($_FILES["file"]) && $_FILES["file"]["error"] == UPLOAD_ERR_OK) {
@@ -113,12 +112,12 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             $message = "Radicado creado, pero el correo no pudo enviarse. Número de radicado: $radicado";
         }
 
-        header("Location: /app/html/radicadoUsuarios/crear_radicado.php?status=$status&message=" . urlencode($message));
+        header("Location: /app/html/radicadoUsuarios/radicados.php?status=$status&message=" . urlencode($message));
         exit();
     } else {
         $status = 'error';
         $message = 'Error al crear el radicado: ' . $conexion->error;
-        header("Location: /app/html/radicadoUsuarios/crear_radicado.php?status=$status&message=" . urlencode($message));
+        header("Location: /app/html/radicadoUsuarios/radicados.php?status=$status&message=" . urlencode($message));
         exit();
     }
 
@@ -130,17 +129,25 @@ function generarRadicado($dependencia, $nuevo) {
     return $dependencia . $fecha . $nuevo;
 }
 
-function obtenerUltimoNumero($conexion) {
-    $query = "SELECT radicado FROM radicacion ORDER BY id_radicado DESC LIMIT 1";
-    $resultado = $conexion->query($query);
+function obtenerUltimoNumero($conexion){
+    $query = "SELECT id_radicado FROM radicacion ORDER BY id_radicado DESC LIMIT 1";
+    $result = mysqli_query($conexion, $query);
 
-    if ($resultado->num_rows > 0) {
-        $row = $resultado->fetch_assoc();
-        $ultimo_radicado = $row['radicado'];
-        preg_match('/\d+$/', $ultimo_radicado, $matches);
-        return isset($matches[0]) ? intval($matches[0]) : 0;
+    if ($row = mysqli_fetch_assoc($result)) {
+        $ultimo_id = $row['id_radicado'];
+        $nuevo_id = $ultimo_id + 1;
+
+        if ($nuevo_id > 999) {
+            $nuevo_id = 1; // Reinicia a 001 si se pasa de 999
+        }
+    } else {
+        $nuevo_id = 1; // Si no hay registros aún
     }
 
-    return 0;
-}
+    // Formatear a tres dígitos con ceros a la izquierda
+    $numero_formateado = str_pad($nuevo_id, 3, "0", STR_PAD_LEFT);
+
+    return $numero_formateado;
+
+};
 ?>

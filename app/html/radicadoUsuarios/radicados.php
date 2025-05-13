@@ -6,6 +6,7 @@
   <title>Inicio - SOFTDOC</title>
   <link rel="shortcut icon" type="image/png" href="../../assets/images/logos/favicon.png" />
   <link rel="stylesheet" href="../../assets/css/styles.min.css" />
+  <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
   <style>
     .brand-logo {
       max-height: 200px;
@@ -68,6 +69,11 @@
           </div>
         </div>
       </div>
+      <div class="row justify-content-center mt-4">
+        <div class="col-md-4">
+          <a href="/index.php" class="btn btn-outline-secondary w-100">Volver al inicio</a>
+        </div>
+      </div>
 
       <footer class="mt-5">
         <p class="mb-0 text-muted">Diseñado y desarrollado por 
@@ -81,4 +87,23 @@
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 </html>
+<!--  Script con limpieza de la URL -->
+  <script>
+    document.addEventListener("DOMContentLoaded", function () {
+      const urlParams = new URLSearchParams(window.location.search);
+      const status = urlParams.get('status');
+      const message = urlParams.get('message');
 
+      if (status && message) {
+        Swal.fire({
+          icon: status === 'success' ? 'success' : 'error',
+          title: status === 'success' ? '¡Éxito!' : 'Error',
+          text: decodeURIComponent(message),
+          confirmButtonColor: '#3085d6'
+        }).then(() => {
+          //  Limpiar la URL para evitar alerta en recarga o regreso
+          window.history.replaceState({}, document.title, window.location.pathname);
+        });
+      }
+    });
+  </script>

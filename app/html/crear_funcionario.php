@@ -74,6 +74,12 @@ if (!isset($_SESSION['name']) && !isset($_SESSION['id'])) {
                                                     <option selected>Seleccionar...</option>
                                                 </select>
                                             </div>
+                                            <label class="form-label" for="dependencia">Ingrese el rol del funcionario.</label>
+                                            <div class="mb-3">
+                                                <select class="form-select" id="roles" name="roles">
+                                                    <option selected>Seleccionar...</option>
+                                                </select>
+                                            </div>
                                             <div class="mb-4">
                                                 <label for="exampleInputPassword1" class="form-label">Contraseña</label>
                                                 <div class="input-group">
@@ -99,26 +105,41 @@ if (!isset($_SESSION['name']) && !isset($_SESSION['id'])) {
     <?php include('modulos/script.php') ?>
 </body>
 <script>
-        // Cargar dependencias al inicio
-        fetch('../config/select_dependencia.php')
-            .then(res => res.json())
-            .then(data => {
-                const dependenciaSelect = document.getElementById('dependencia');
-                data.forEach(depen => {
-                    const option = document.createElement('option');
-                    option.value = depen.id_dependencia;
-                    option.textContent = depen.nombre_dependencia;
-                    dependenciaSelect.appendChild(option);
-                });
+    // Cargar dependencias
+    fetch('../config/select_dependencia.php')
+        .then(res => res.json())
+        .then(data => {
+            const dependenciaSelect = document.getElementById('dependencia');
+            data.forEach(depen => {
+                const option = document.createElement('option');
+                option.value = depen.id_dependencia;
+                option.textContent = depen.nombre_dependencia;
+                dependenciaSelect.appendChild(option);
             });
-        // Mostrar/ocultar contraseña
-        const passwordInput = document.getElementById('exampleInputPassword1');
-        const toggleButton = document.getElementById('showPassword');
-
-        toggleButton.addEventListener('click', function () {
-          const isPassword = passwordInput.type === 'password';
-          passwordInput.type = isPassword ? 'text' : 'password';
-          toggleButton.textContent = isPassword ? 'Ocultar' : 'Mostrar';
         });
+    
+
+    // Cargar roles
+    fetch('../config/select_roles.php')
+        .then(res => res.json())
+        .then(data => {
+            const rolesSelect = document.getElementById('roles');
+            data.forEach(rol => {
+                const option = document.createElement('option');
+                option.value = rol.id_rol;
+                option.textContent = rol.nombre_rol;
+                rolesSelect.appendChild(option);
+            });
+        });
+
+
+    // Mostrar/ocultar contraseña
+    const passwordInput = document.getElementById('exampleInputPassword1');
+    const toggleButton = document.getElementById('showPassword');
+    toggleButton.addEventListener('click', function () {
+      const isPassword = passwordInput.type === 'password';
+      passwordInput.type = isPassword ? 'text' : 'password';
+      toggleButton.textContent = isPassword ? 'Ocultar' : 'Mostrar';
+    });
 </script>
 </html>

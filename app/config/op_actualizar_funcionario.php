@@ -11,10 +11,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $correo = $conexion->real_escape_string($_POST['correo']);
     $contrasena = $conexion->real_escape_string($_POST['contrasena']);
     $dependencia = $conexion->real_escape_string($_POST['dependencia']);
-
-    //Elimina las palabras extras que no necesitamos de la base de datos
-    $dependencia = explode(' ', $dependencia)[0];
-
+    $rol = $conexion->real_escape_string($_POST['rol']);
     //Creamos la query
     $query = "UPDATE funcionario SET
     tipo_documento = '$tipo',
@@ -30,14 +27,18 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
     //Inicializamos la query
     if($conexion->query($query)) {
-        echo "<script>
-            alert('FUNCIONARIO ACTUALIZADO CORRECTAMENTE');
-            window.location = '../html/funcionario.php';
-        </script>";
-        exit();
-    } else {
-        echo "Error al actualizar el funcionario: " . $conexion->error;
+        $queryRol = "UPDATE funcionario_roles SET id_rol = '$rol' WHERE id_funcionario = '$id'";
+        //Ejecutamos la query
+        if ($conexion->query($queryRol)) {
+            //Si se inserta correctamente el rol, redirigimos a la pagina de funcionarios
+            echo "<script>
+                alert('FUNCIONARIO ACTUALIZADO CORRECTAMENTE');
+                window.location = '../html/funcionario.php';
+            </script>";
+            exit();
+        } else {
+            echo "Error al crear el rol: " . $conexion->error;
+        }
     }
-    //Cierre de la conexion
-    $conexion->close();
-}
+};
+$conexion->close();

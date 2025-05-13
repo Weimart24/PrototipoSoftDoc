@@ -142,42 +142,11 @@ if(!isset($_SESSION['name']) && !isset($_SESSION['id'])){
     </div>
 
     <?php include('modulos/script.php') ?>
-    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+</body>
+</html>
 
-    <!-- SweetAlert y manejo de formulario -->
-    <script>
-        document.addEventListener("DOMContentLoaded", function () {
-            const urlParams = new URLSearchParams(window.location.search);
-            const status = urlParams.get('status');
-            const message = urlParams.get('message');
-
-            if (status && message) {
-                Swal.fire({
-                    icon: status === 'success' ? 'success' : 'error',
-                    title: status === 'success' ? '¡Éxito!' : 'Error',
-                    text: decodeURIComponent(message),
-                    confirmButtonColor: '#3085d6'
-                }).then(() => {
-                    window.history.replaceState({}, document.title, window.location.pathname);
-                });
-            }
-        });
-
-        // Limpiar formulario al volver con botón "atrás"
-        window.addEventListener("pageshow", function (event) {
-            if (event.persisted || performance.navigation.type === 2) {
-                const form = document.querySelector("form");
-                if (form) form.reset();
-            }
-        });
-
-        function eliminarAdjunto() {
-            document.querySelector('input[type="file"]').value = '';
-        }
-    </script>
-
-    <!-- Cargar dependencias y funcionarios -->
-    <script>
+<script>
+        // Cargar dependencias al inicio
         fetch('../config/select_dependencia.php')
             .then(res => res.json())
             .then(data => {
@@ -190,31 +159,31 @@ if(!isset($_SESSION['name']) && !isset($_SESSION['id'])){
                 });
             });
 
-        document.getElementById('inputDependencia').addEventListener('change', function () {
+        // Escuchar cambios en el select de usuarios
+        document.getElementById('inputDependencia').addEventListener('change', function() {
             const depenId = this.value;
             const funcSelect = document.getElementById('inputFuncionario');
-            funcSelect.innerHTML = '<option value="">-- Cargando funcionarios --</option>';
 
+            funcSelect.innerHTML = '<option value="">-- Cargando funcionarios --</option>';
             if (depenId) {
                 fetch('../config/select_funcionario.php?id_dependencia=' + depenId)
                     .then(res => res.json())
                     .then(data => {
+                        console.log(depenId);
                         funcSelect.innerHTML = '';
                         if (data.length > 0) {
                             data.forEach(func => {
                                 const option = document.createElement('option');
                                 option.value = func.id_funcionario;
-                                option.textContent = func.nombre_funcionario;
+                                option.textContent = `${func.nombre_funcionario}`;
                                 funcSelect.appendChild(option);
                             });
                         } else {
-                            funcSelect.innerHTML = '<option value="">Sin funcionarios disponibles</option>';
+                            funcSelect.innerHTML = '<option value="">Sin órdenes</option>';
                         }
                     });
             } else {
-                funcSelect.innerHTML = '<option value="">-- Seleccione una dependencia primero --</option>';
+                funcSelect.innerHTML = '<option value="">-- Seleccione un usuario primero --</option>';
             }
         });
     </script>
-</body>
-</html>
