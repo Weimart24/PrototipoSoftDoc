@@ -1,11 +1,12 @@
 <!doctype html>
 <html lang="en">
 <head>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>SoftDoc</title>
-    <link rel="shortcut icon" type="image/png" href="../assets/images/logos/favicon.png" />
-    <link rel="stylesheet" href="../../assets/css/styles.min.css" />
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>SoftDoc</title>
+  <link rel="shortcut icon" type="image/png" href="../assets/images/logos/favicon.png" />
+  <link rel="stylesheet" href="../../assets/css/styles.min.css" />
+  <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 </head>
 <body class="bg-light">
   <div class="d-flex justify-content-center align-items-center min-vh-100">
@@ -87,11 +88,36 @@
     </div>
   </div>
 
+  <!--  Script con limpieza de la URL -->
   <script>
+    document.addEventListener("DOMContentLoaded", function () {
+      const urlParams = new URLSearchParams(window.location.search);
+      const status = urlParams.get('status');
+      const message = urlParams.get('message');
+
+      if (status && message) {
+        Swal.fire({
+          icon: status === 'success' ? 'success' : 'error',
+          title: status === 'success' ? '¡Éxito!' : 'Error',
+          text: decodeURIComponent(message),
+          confirmButtonColor: '#3085d6'
+        }).then(() => {
+          //  Limpiar la URL para evitar alerta en recarga o regreso
+          window.history.replaceState({}, document.title, window.location.pathname);
+        });
+      }
+    });
+
+    // Limpiar formulario si se vuelve con la flecha "atrás"
+    window.addEventListener("pageshow", function (event) {
+      if (event.persisted || performance.navigation.type === 2) {
+        document.querySelector("form").reset();
+      }
+    });
+
     function eliminarAdjunto() {
       document.querySelector('input[type="file"]').value = '';
     }
   </script>
 </body>
-
 </html>

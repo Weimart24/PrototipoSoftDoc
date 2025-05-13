@@ -33,7 +33,7 @@ BEGIN
 END$$
 
 DELIMITER ;
-
+-- --------------------------------------------------------
 -- Estructura de la tabla `dependencia` con campo `activo` para deshabilitarla
 CREATE TABLE `dependencia` (
   `id_dependencia` varchar(10) NOT NULL,
