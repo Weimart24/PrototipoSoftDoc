@@ -21,7 +21,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $departamento = $conexion->real_escape_string($_POST['departamento']);
     $municipio = $conexion->real_escape_string($_POST['municipio']);
 
-    $id_dependencia = "GD";
+    $id_dependencia = "RG";
     $id_funcionario = 3;
     $fecha = date('Y-m-d');
 

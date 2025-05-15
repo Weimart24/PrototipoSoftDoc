@@ -4,8 +4,12 @@ if (!isset($_SESSION['validate'])) {
   header('Location: ../../index.php');
 }
 include '../config/conexion.php';
-$query = "SELECT * FROM radicacion WHERE id_radicado ORDER BY id_radicado DESC";
-$resultado = $conexion->query($query);
+if (in_array('4', $_SESSION['permisos'])) {
+  $query = "SELECT * FROM radicacion ORDER BY id_radicado DESC";
+}else{
+  $query = "SELECT * FROM radicacion WHERE id_funcionario = " . $_SESSION['id'] . " AND activo = 1 ORDER BY id_radicado DESC";
+}
+  $resultado = $conexion->query($query);
 include_once '../config/funciones.php';
 ?>
 
@@ -37,10 +41,13 @@ include_once '../config/funciones.php';
         <div class="col-lg-12">
           <div class="card mb-4">
             <div class="table-responsive p-3">
-              <h3 class="text-left">REGISTRO DE CORRESPONDENCIA RECIBIDA</h3>
+              <h3 class="text-left">REGISTRO DE RADICADOS RECIBIDOS</h3>
               <table class="table align-items-center table-flush" id="dataTable">
                 <thead>
                   <tr>
+                    <?php if (in_array('4', $_SESSION['permisos'])) { ?>
+                    <td>Estado</td>
+                    <?php } ?>
                     <td>Examinar</td>
                     <td>Radicado</td>
                     <td>Nombre remitente</td>
@@ -54,6 +61,14 @@ include_once '../config/funciones.php';
                   if ($resultado->num_rows > 0) {
                     while ($fila = $resultado->fetch_assoc()) {
                       echo "<tr>";
+                      if (in_array('4', $_SESSION['permisos'])) {
+                        // Mostrar estado con estilos
+                        if ($fila["activo"] == 1) {
+                          echo "<td><strong class='text-success'>Seguimiento</strong></td>";
+                        } else {
+                          echo "<td><strong class='text-danger'>Terminado</strong></td>";
+                        }
+                      }
                       echo "<td><a href='ver_radicado.php?id=" . $fila["id_radicado"] . "' class='btn btn-outline-info btn-sm'>Ver</a></td>";
                       echo "<td>" . $fila["radicado"] . "</td>";
                       echo "<td>" . $fila["nombre_remitente"] . "</td>";

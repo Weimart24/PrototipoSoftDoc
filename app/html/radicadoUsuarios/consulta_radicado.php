@@ -23,11 +23,11 @@ if ($resulRadicado->num_rows === 0) {
 }
 
 // Obtener la información del radicado
-$id_radicado = $resulRadicado->fetch_assoc();
+$radicado = $resulRadicado->fetch_assoc();
 
 // Consulta para obtener los seguimientos del radicado
 $stmt = $conexion->prepare("SELECT * FROM seguimiento_radicado WHERE id_radicado = ?");
-$stmt->bind_param("i", $id_radicado['id_radicado']); // Usar el id_radicado obtenido
+$stmt->bind_param("i", $radicado['id_radicado']); // Usar el id_radicado obtenido
 $stmt->execute();
 $resulSeguimiento = $stmt->get_result();
 ?>
@@ -52,25 +52,34 @@ $resulSeguimiento = $stmt->get_result();
               
               <!-- Mostrar la información del radicado -->
               <div class="mb-3">
-                <label for="radicado" class="form-label">Radicado</label>
-                <input type="text" name="radicado" class="form-control" value="<?php echo $id_radicado['radicado']; ?>" readonly>
+                <label class="form-label">Radicado</label>
+                <p class="form-control"><?php echo $radicado['radicado']; ?></p>
               </div>
               <div class="mb-3">
-                <label for="nombre_remitente" class="form-label">Nombre Remitente</label>
-                <input type="text" name="nombre_remitente" class="form-control" value="<?php echo $id_radicado['nombre_remitente']; ?>" readonly>
+                <label class="form-label">Nombre Remitente</label>
+                <p class="form-control-plaintext"><?php echo $radicado['nombre_remitente']; ?></p>
               </div>
               <div class="mb-3">
-                <label for="correo" class="form-label">Correo</label>
-                <input type="email" name="correo" class="form-control" value="<?php echo $id_radicado['correo']; ?>" readonly>
+                <label class="form-label">Correo</label>
+                <p class="form-control"><?php echo $radicado['correo']; ?></p>
               </div>
               <div class="mb-3">
-                <label for="fecha_radicado" class="form-label">Fecha de Radicado</label>
-                <input type="text" name="fecha_radicado" class="form-control" value="<?php echo $id_radicado['fecha_radicado']; ?>" readonly>
+                <label class="form-label">Fecha de Radicado</label>
+                <p class="form-control"><?php echo $radicado['fecha_radicado']; ?></p>
               </div>
               <div class="mb-3">
-                <label for="asunto" class="form-label">Asunto</label>
-                <input type="text" name="asunto" class="form-control" value="<?php echo $id_radicado['asunto']; ?>" readonly>
+                <label class="form-label">Asunto</label>
+                <p class="form-control"><?php echo $radicado['asunto']; ?></p>
               </div>
+              <div class="mb-3">
+                <label class="form-label">Documento</label>
+                <?php if (!empty($radicado['documento'])): ?>
+                  <p class="form-control"><a href="/<?php echo $radicado['documento']; ?>" target="_blank">Ver radicado</a></p>
+                <?php else: ?>
+                  <p class="form-control"><span class="text-muted">Sin documento</span></p>
+                <?php endif; ?>
+              </div>
+                
 
               <!-- Mostrar los seguimientos -->
               <h5 class="mt-3">Seguimientos</h5>
@@ -88,11 +97,14 @@ $resulSeguimiento = $stmt->get_result();
                     </div>
                     <br>
                     <br>
-                      <?php
+              <?php
                   }
               } else {
                   echo "<p>No hay seguimientos para este radicado.</p>";
               }
+              // Mostrar estado del radicado
+              $estadoTexto = ($radicado['activo'] == 0) ? "RADICADO FINALIZADO" : "RADICADO EN SEGUIMIENTO";
+              echo "<div class='text-center mt-4'><strong class='text-primary'>$estadoTexto</strong></div>";
               ?>
               <!-- Botón Salir -->
               <div class="text-center mt-4">

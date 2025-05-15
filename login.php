@@ -67,6 +67,10 @@ header("Pragma: no-cache");
                     title: status === 'success' ? '¡Éxito!' : 'Error',
                     text: decodeURIComponent(message),
                     confirmButtonColor: '#3085d6'
+                }).then(() => {
+                    // Limpiar los parámetros de la URL sin recargar la página
+                    const newUrl = window.location.origin + window.location.pathname;
+                    window.history.replaceState({}, document.title, newUrl);
                 });
             }
         });

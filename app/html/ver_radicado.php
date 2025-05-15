@@ -91,6 +91,14 @@ $resulS = $conexion->query($queryS);
                     <label class="form-label">Municipio</label>
                     <p><?php echo $fila['municipio'] ?></p>
                   </div>
+                  <div class="col-md-4 mb-3">
+                    <label class="form-label">Documento</label>
+                    <?php if (!empty($fila['documento'])): ?>
+                      <p><a href="/<?php echo $fila['documento']; ?>" target="_blank">Ver</a></p>
+                    <?php else: ?>
+                      <p><span class="text-muted">Sin documento</span></p>
+                    <?php endif; ?>
+                  </div>
                 </div>
                 
                   <div class="col-md-4 mb-3">
@@ -117,11 +125,17 @@ $resulS = $conexion->query($queryS);
                     }
                     ?>
               </div>
-
+            <?php if (in_array('3', $_SESSION['permisos'])) { ?>
+              <button type="button" class="btn btn-warning mb-3" data-bs-toggle="modal" data-bs-target="#modalRedireccionar">
+                Redireccionar
+              </button>
+              <?php } ?>
             <button type="button" class="btn btn-primary mb-3" data-bs-toggle="modal" data-bs-target="#modalNuevaRespuesta">
               Añadir respuesta
             </button>
-
+            <button type="button" class="btn btn-warning mb-3" data-bs-toggle="modal" data-bs-target="#modalFinalizar">
+              Finalizar Radicado
+            </button>
           </div>
         </div>
         <!-- FIN radicados.php visualizar los radicados -->
@@ -140,12 +154,13 @@ $resulS = $conexion->query($queryS);
     <form action="/app/config/op_actualizar_seguimiento.php" method="POST">
       <div class="modal-content">
         <div class="modal-header">
-          <h5 class="modal-title" id="modalNuevaRespuestaLabel">Nueva respuesta</h5>
+          <h5 class="modal-title" id="modalNuevaRespuestaLabel"><strong>Nueva respuesta al radicado <?php echo $fila['radicado']; ?></strong></h5>
           <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Cerrar"></button>
         </div>
         <div class="modal-body">
           <div class="mb-3">
             <input type="number" name="id_radicado" value="<?php echo $fila['id_radicado'] ?>" hidden>
+            <input type="number" name="finalizar" value="0" hidden>
             <label for="detalle" class="form-label">Detalle</label>
             <textarea name="respuesta" id="detalle" class="form-control" rows="4" required></textarea>
           </div>
@@ -159,9 +174,115 @@ $resulS = $conexion->query($queryS);
     </form>
   </div>
 </div>
+
+<!-- Modal redireccionar -->
+<div class="modal fade" id="modalRedireccionar" tabindex="-1" aria-labelledby="modalRedireccionarLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <form action="/app/config/op_redireccion_radicado.php" method="POST">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="modalRedirigirLabel"><strong>Redirigir a la dependencia pertinente</strong></h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Cerrar"></button>
+        </div>
+        <div class="modal-body">
+            <input type="number" name="id_radicado" value="<?php echo $fila['id_radicado'] ?>" hidden>
+          <div class="mb-3">
+            <label class="form-label">Ingrese la dependencia competente</label>
+            <select class="form-select" id="inputDependencia" name="dependencia" required>
+                <option value="">-- Seleccione --</option>
+            </select>
+          </div>
+          <div class="mb-3">
+            <label class="form-label">Ingrese el funcionario relacionado</label>
+            <select class="form-select" id="inputFuncionario" name="funcionario" required>
+                <option value="">-- Seleccione una dependencia primero --</option>
+            </select>
+          </div>
+          <!-- Aquí puede incluir un input hidden si necesita enviar el ID del radicado -->
+          <input type="hidden" name="id_radicado" value="<?php echo $fila['id_radicado']; ?>">
+        </div>
+        <div class="modal-footer">
+          <button type="submit" class="btn btn-primary">Enviar</button>
+        </div>
+      </div>
+    </form>
+  </div>
+</div>
+
+<!-- modal finalizar radicado -->
+<div class="modal fade" id="modalFinalizar" tabindex="-1" aria-labelledby="modalFinalizarLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <form action="/app/config/op_actualizar_seguimiento.php" method="POST">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title fw-bold" id="modalFinalizarLabel">
+            ¿Desea finalizar el radicado <span class="text-primary">#<?php echo $fila['radicado']; ?></span>?
+          </h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Cerrar"></button>
+        </div>
+        <input type="number" name="id_radicado" value="<?php echo $fila['id_radicado'] ?>" hidden>
+        <input type="number" name="finalizar" value="1" hidden>
+        <div class="modal-body">
+          <p class="mb-3">Si finaliza el radicado, deberá ingresar una respuesta con el detalle correspondiente.</p>
+          <div class="mb-3">
+            <label for="detalle" class="form-label">Detalle de la respuesta</label>
+            <textarea name="respuesta" id="detalle" class="form-control" rows="4" required></textarea>
+          </div>
+          <input type="hidden" name="id_radicado" value="<?php echo $fila['id_radicado']; ?>">
+        </div>
+        <div class="modal-footer">
+          <button type="submit" class="btn btn-primary">Sí, finalizar</button>
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+        </div>
+      </div>
+    </form>
+  </div>
+</div>
+
 </html>
 
 <?php
 // Cerrar la conexión
 $conexion->close();
 ?>
+
+<script>
+  // Cargar dependencias al inicio
+  fetch('../config/select_dependencia.php')
+      .then(res => res.json())
+      .then(data => {
+          const dependenciaSelect = document.getElementById('inputDependencia');
+          data.forEach(depen => {
+              const option = document.createElement('option');
+              option.value = depen.id_dependencia;
+              option.textContent = depen.nombre_dependencia;
+              dependenciaSelect.appendChild(option);
+          });
+      });
+  // Escuchar cambios en el select de usuarios
+  document.getElementById('inputDependencia').addEventListener('change', function() {
+      const depenId = this.value;
+      const funcSelect = document.getElementById('inputFuncionario');
+      funcSelect.innerHTML = '<option value="">-- Cargando funcionarios --</option>';
+      if (depenId) {
+          fetch('../config/select_funcionario.php?id_dependencia=' + depenId)
+              .then(res => res.json())
+              .then(data => {
+                  console.log(depenId);
+                  funcSelect.innerHTML = '';
+                  if (data.length > 0) {
+                      data.forEach(func => {
+                          const option = document.createElement('option');
+                          option.value = func.id_funcionario;
+                          option.textContent = `${func.nombre_funcionario}`;
+                          funcSelect.appendChild(option);
+                      });
+                  } else {
+                      funcSelect.innerHTML = '<option value="">Sin órdenes</option>';
+                  }
+              });
+      } else {
+          funcSelect.innerHTML = '<option value="">-- Seleccione un usuario primero --</option>';
+      }
+  });
+</script>
