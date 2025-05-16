@@ -41,34 +41,46 @@
                   <div class="form-text">Ingrese el teléfono.</div>
                 </div>
                 <div class="mb-3">
-                  <label class="form-label">Dirección</label>
-                  <input type="text" name="direccion" class="form-control" required>
-                  <div class="form-text">Ingrese la dirección.</div>
-                </div>
-                <div class="mb-3">
                   <label class="form-label">Correo</label>
                   <input type="email" name="correo" class="form-control" required>
                   <div class="form-text">Correo Electrónico.</div>
                 </div>
                 <div class="mb-3">
-                  <label class="form-label">País</label>
-                  <input type="text" name="pais" class="form-control" required value="Colombia">
+                  <label class="form-label">Ingrese país</label>
+                  <select class="form-select" id="inputPais" name="pais" required>
+                      <option value="">-- Seleccione país --</option>
+                      <option value="Colombia">Colombia</option>
+                  </select>
+                  <div class="form-text">Ingrese país.</div>
                 </div>
                 <div class="mb-3">
-                  <label class="form-label">Departamento</label>
-                  <input type="text" name="departamento" class="form-control" required value="Caldas">
+                    <label class="form-label">Ingrese departamento</label>
+                    <select class="form-select" id="departamento" name="departamento" required>
+                        <option value="">-- Seleccione departamento --</option>
+                    </select>
+                    <div class="form-text">Ingrese departamento.</div>
                 </div>
                 <div class="mb-3">
-                  <label class="form-label">Municipio</label>
-                  <input type="text" name="municipio" class="form-control" required value="Manizales">
+                    <label class="form-label">Ingrese municipio</label>
+                    <select class="form-select" id="municipio" name="municipio" required>
+                        <option value="">-- Seleccione un departamento primero --</option>
+                    </select>
+                    <div class="form-text">Ingrese municipio.</div>
+                </div>
+                <div class="mb-3">
+                    <label class="form-label">Dirección</label>
+                    <input type="text" name="direccion" class="form-control" required>
+                    <div class="form-text">Ingrese dirección de residencia..</div>
                 </div>
                 <div class="mb-3">
                   <label class="form-label">Asunto</label>
                   <input type="text" name="asunto" class="form-control" required>
+                  <div class="form-text">Ingrese el asunto del radicado.</div>
                 </div>
                 <div class="mb-3">
                   <label class="form-label">Detalle del Radicado</label>
                   <textarea name="detalleRadicado" class="form-control" rows="4" required></textarea>
+                  <div class="form-text">Ingrese el detalle del radicado.</div>
                 </div>
                 <div class="mb-3">
                   <label class="form-label">Adjuntar documento</label>
@@ -86,3 +98,5 @@
       </div>
     </div>
   </div>
+  
+<script src="/app/assets/js/dataColombia.js"></script>

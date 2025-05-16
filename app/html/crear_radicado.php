@@ -60,22 +60,49 @@ if(!isset($_SESSION['name']) && !isset($_SESSION['id'])){
                                         </div>
 
                                         <div class="mb-3">
-                                            <label class="form-label">Dirección</label>
-                                            <input type="text" name="direccion" class="form-control" required>
-                                            <div class="form-text">Ingrese la dirección.</div>
-                                        </div>
-
-                                        <div class="mb-3">
                                             <label class="form-label">Correo</label>
                                             <input type="email" name="correo" class="form-control" required>
                                             <div class="form-text">Correo Electrónico.</div>
                                         </div>
 
                                         <div class="mb-3">
+                                            <label class="form-label">Ingrese país</label>
+                                            <select class="form-select" id="inputPais" name="pais" required>
+                                                <option value="">-- Seleccione país --</option>
+                                                <option value="Colombia">Colombia</option>
+                                            </select>
+                                            <div class="form-text">Ingrese un país.</div>
+                                        </div>
+
+                                        <div class="mb-3">
+                                            <label class="form-label">Ingrese departamento</label>
+                                            <select class="form-select" id="departamento" name="departamento" required>
+                                                <option value="">-- Seleccione departamento --</option>
+                                            </select>
+                                            <div class="form-text">Ingrese un departamento.</div>
+                                        </div>
+
+                                        <div class="mb-3">
+                                            <label class="form-label">Ingrese municipio</label>
+                                            <select class="form-select" id="municipio" name="municipio" required>
+                                                <option value="">-- Seleccione un departamento primero --</option>
+                                            </select>
+                                            <div class="form-text">Ingrese un municipio.</div>
+                                        </div>
+
+                                        <div class="mb-3">
+                                            <label class="form-label">Dirección</label>
+                                            <input type="text" name="direccion" class="form-control" required>
+                                            <div class="form-text">Ingrese la dirección.</div>
+                                        </div>
+                                        <div class="form-text">Ingrese una dirección.</div>
+
+                                        <div class="mb-3">
                                             <label class="form-label">Ingrese la dependencia competente</label>
                                             <select class="form-select" id="inputDependencia" name="dependencia" required>
                                                 <option value="">-- Seleccione --</option>
                                             </select>
+                                            <div class="form-text">Ingrese una dependencia.</div>
                                         </div>
 
                                         <div class="mb-3">
@@ -83,24 +110,7 @@ if(!isset($_SESSION['name']) && !isset($_SESSION['id'])){
                                             <select class="form-select" id="inputFuncionario" name="funcionario" required>
                                                 <option value="">-- Seleccione una dependencia primero --</option>
                                             </select>
-                                        </div>
-
-                                        <div class="mb-3">
-                                            <label class="form-label">País</label>
-                                            <input type="text" name="pais" class="form-control" required value="Colombia">
-                                            <div class="form-text">Ingrese el país.</div>
-                                        </div>
-
-                                        <div class="mb-3">
-                                            <label class="form-label">Departamento</label>
-                                            <input type="text" name="departamento" class="form-control" required value="Caldas">
-                                            <div class="form-text">Ingrese el departamento.</div>
-                                        </div>
-
-                                        <div class="mb-3">
-                                            <label class="form-label">Municipio</label>
-                                            <input type="text" name="municipio" class="form-control" required value="Manizales">
-                                            <div class="form-text">Ingrese el municipio.</div>
+                                            <div class="form-text">Ingrese un funcionario.</div>
                                         </div>
 
                                         <div class="mb-3">
@@ -187,3 +197,5 @@ if(!isset($_SESSION['name']) && !isset($_SESSION['id'])){
             }
         });
     </script>
+
+<script src="/app/assets/js/dataColombia.js"></script>

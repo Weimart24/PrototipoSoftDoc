@@ -1,5 +1,6 @@
 <?php
 include_once("conexion.php");
+include_once("alerta.php");
 
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $id = $conexion->real_escape_string($_POST['id_funcionario']);
@@ -26,19 +27,16 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     
 
     //Inicializamos la query
-    if($conexion->query($query)) {
+    if ($conexion->query($query)) {
         $queryRol = "UPDATE funcionario_roles SET id_rol = '$rol' WHERE id_funcionario = '$id'";
-        //Ejecutamos la query
+        
         if ($conexion->query($queryRol)) {
-            //Si se inserta correctamente el rol, redirigimos a la pagina de funcionarios
-            echo "<script>
-                alert('FUNCIONARIO ACTUALIZADO CORRECTAMENTE');
-                window.location = '../html/funcionario.php';
-            </script>";
+            mostrarAlerta('success', '¡Éxito!', 'FUNCIONARIO ACTUALIZADO CORRECTAMENTE', '../html/funcionario.php', 2500);
             exit();
         } else {
-            echo "Error al crear el rol: " . $conexion->error;
+            mostrarAlerta('error', 'Error', 'Error al crear el rol: ' . $conexion->error);
         }
     }
+
 };
 $conexion->close();

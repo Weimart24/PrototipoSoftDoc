@@ -1,5 +1,6 @@
 <?php
 include("conexion.php");
+include("alerta.php");
 
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     // Validamos el reCAPTCHA
@@ -71,22 +72,15 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             $_SESSION['name'] = $row['nombre_funcionario'];
             $_SESSION['id'] = $row['id_funcionario'];
             $_SESSION['permisos'] = $permisos;
-            echo "<script>
-                window.location = '../html/radicado.php';
-            </script>";
+            mostrarAlerta('success', '¡BIENVENIDO ' . $_SESSION['name'] . '!', 'Aplicativo SOFTDOC', '../html/radicado.php', 3000);
             exit();
         } else {
-            echo "<script>
-                alert('Usuario o contraseña incorrectos.');
-                window.location = '../../login.php';
-            </script>";
+            mostrarAlerta('error', '¡Error!', 'Usuario o contraseña incorrectos.', '../../login.php', 2500);
             exit();
+
         }
     } else {
-        echo "<script>
-            alert('Usuario no encontrado.');
-            window.location = '../../login.php';
-        </script>";
+        mostrarAlerta('error', '¡Error!', 'Usuario no encontrado en la base de datos.', '../../login.php', 3000);
         exit();
     }
 }

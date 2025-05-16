@@ -1,5 +1,6 @@
 <?php
 include_once("conexion.php");
+include_once("alerta.php");
 
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $tipo = $conexion->real_escape_string($_POST['tipo']);
@@ -19,22 +20,16 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
     //Inicializamos la query
     if ($conexion->query($query)) {
-        //Obtenemos el id del funcionario creado
         $id_funcionario = $conexion->insert_id;
-        //Creamos la query para insertar el rol
         $queryRol = "INSERT INTO funcionario_roles (id_funcionario, id_rol) VALUES ('$id_funcionario', '$roles')";
-        //Ejecutamos la query
         if ($conexion->query($queryRol)) {
-            //Si se inserta correctamente el rol, redirigimos a la pagina de funcionarios
-            echo "<script>
-                alert('FUNCIONARIO CREADO CORRECTAMENTE');
-                window.location = '../html/funcionario.php';
-            </script>";
+            mostrarAlerta('success', '¡Éxito!', 'FUNCIONARIO CREADO CORRECTAMENTE', '../html/funcionario.php', 2500);
             exit();
         } else {
-            echo "Error al crear el rol: " . $conexion->error;
+            mostrarAlerta('error', 'Error', 'Error al crear el rol: ' . $conexion->error);
         }
     }
+
     //Cierre de la conexion
     $conexion->close();
 }
