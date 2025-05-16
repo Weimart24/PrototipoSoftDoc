@@ -10,33 +10,37 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $telefono = $conexion->real_escape_string($_POST['telefono']);
     $direccion = $conexion->real_escape_string($_POST['direccion']);
     $correo = $conexion->real_escape_string($_POST['correo']);
-    $contrasena = $conexion->real_escape_string($_POST['contrasena']);
     $dependencia = $conexion->real_escape_string($_POST['dependencia']);
     $rol = $conexion->real_escape_string($_POST['rol']);
-    //Creamos la query
-    $query = "UPDATE funcionario SET
-    tipo_documento = '$tipo',
-    cedula = '$cedula',
-    nombre_funcionario = '$nombre',
-    correo = '$correo',
-    contrasena = '$contrasena',
-    telefono = '$telefono',
-    direccion = '$direccion',
-    id_dependencia = '$dependencia'
-    WHERE id_funcionario = '$id'";
-    
 
-    //Inicializamos la query
+    $query = "UPDATE funcionario SET
+        tipo_documento = '$tipo',
+        cedula = '$cedula',
+        nombre_funcionario = '$nombre',
+        correo = '$correo',
+        telefono = '$telefono',
+        direccion = '$direccion',
+        id_dependencia = '$dependencia'";
+
+    // Solo actualiza la contraseña si el usuario ingresó una nueva
+    if (!empty($_POST['contrasena'])) {
+        $nuevaContrasena = password_hash($_POST['contrasena'], PASSWORD_BCRYPT);
+        $query .= ", contrasena = '$nuevaContrasena'";
+    }
+
+    $query .= " WHERE id_funcionario = '$id'";
+
     if ($conexion->query($query)) {
         $queryRol = "UPDATE funcionario_roles SET id_rol = '$rol' WHERE id_funcionario = '$id'";
-        
         if ($conexion->query($queryRol)) {
             mostrarAlerta('success', '¡Éxito!', 'FUNCIONARIO ACTUALIZADO CORRECTAMENTE', '../html/funcionario.php', 2500);
             exit();
         } else {
-            mostrarAlerta('error', 'Error', 'Error al crear el rol: ' . $conexion->error);
+            mostrarAlerta('error', 'Error', 'Error al actualizar el rol: ' . $conexion->error);
         }
+    } else {
+        mostrarAlerta('error', 'Error', 'Error al actualizar el funcionario: ' . $conexion->error);
     }
 
-};
-$conexion->close();
+    $conexion->close();
+}

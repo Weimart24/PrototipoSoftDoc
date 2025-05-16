@@ -9,16 +9,17 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $telefono = $conexion->real_escape_string($_POST['telefono']);
     $direccion = $conexion->real_escape_string($_POST['direccion']);
     $correo = $conexion->real_escape_string($_POST['correo']);
-    $contrasena = $conexion->real_escape_string($_POST['contrasena']);
+    $contrasenaPlano = $_POST['contrasena']; // NO escapamos porque solo usamos para el hash
     $dependencia = $conexion->real_escape_string($_POST['dependencia']);
     $roles = $conexion->real_escape_string($_POST['roles']);
 
+    // Encriptar la contraseña con BCRYPT
+    $contrasenaHash = password_hash($contrasenaPlano, PASSWORD_BCRYPT);
 
     //Creamos la query
     $query = "INSERT INTO funcionario (tipo_documento, cedula, nombre_funcionario, correo, contrasena, telefono, direccion, id_dependencia)
-    VALUES ('$tipo', '$cedula', '$nombre', '$correo', '$contrasena', '$telefono', '$direccion', '$dependencia')";
+              VALUES ('$tipo', '$cedula', '$nombre', '$correo', '$contrasenaHash', '$telefono', '$direccion', '$dependencia')";
 
-    //Inicializamos la query
     if ($conexion->query($query)) {
         $id_funcionario = $conexion->insert_id;
         $queryRol = "INSERT INTO funcionario_roles (id_funcionario, id_rol) VALUES ('$id_funcionario', '$roles')";
@@ -28,8 +29,9 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         } else {
             mostrarAlerta('error', 'Error', 'Error al crear el rol: ' . $conexion->error);
         }
+    } else {
+        mostrarAlerta('error', 'Error', 'Error al crear el funcionario: ' . $conexion->error);
     }
 
-    //Cierre de la conexion
     $conexion->close();
 }

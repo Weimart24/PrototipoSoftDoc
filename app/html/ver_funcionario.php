@@ -154,7 +154,7 @@ $fila = $resultado->fetch_assoc();
                 </div>
                     <label for="exampleInputPassword1" class="form-label">Contraseña</label>
                     <div class="input-group">
-                      <input type="password" name="contrasena" class="form-control" id="exampleInputPassword1" aria-describedby="emailHelp" value="<?php echo $fila['contrasena'] ?>"  required>
+                      <input type="password" name="contrasena" class="form-control" id="exampleInputPassword1" aria-describedby="emailHelp" value="" placeholder="Ingrese nueva contraseña si desea cambiarla">
                       <button type="button" id="showPassword" class="btn btn-outline-secondary">Mostrar</button>
                     </div>
                 </div>
