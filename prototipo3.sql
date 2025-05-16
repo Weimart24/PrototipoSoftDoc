@@ -192,3 +192,6 @@ INSERT INTO `seguimiento_radicado` (`id_seguimiento`, `fecha_seguimiento`, `deta
 (1, '2025-05-11', 'Solicitud de documento urgente para trámites internos', 1),
 (2, '2025-05-11', 'Requerimiento de informe sobre resultados de evaluación', 2),
 (3, '2025-05-11', 'Consulta sobre el estado de documentos archivados', 3);
+
+--Creación de la tabla `historial` para almacenar el historial de cambios
+ALTER TABLE radicacion ADD estado_visto TINYINT(1) DEFAULT 0;
