@@ -35,6 +35,7 @@
                                 <i class="ti ti-mail fs-6"></i>
                                 <p class="mb-0 fs-3">Mi cuenta</p>
                             </a>
+                            <!-- Redireccionar al archivo logout.php para cerrar variables de sesi -->
                             <a href="../config/close.php" class="btn btn-outline-primary mx-3 mt-2 d-block">Logout</a>
                         </div>
                     </div>

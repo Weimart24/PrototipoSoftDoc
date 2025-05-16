@@ -1,5 +1,6 @@
 <?php
 include_once("conexion.php");
+include_once("alerta.php");
 session_start();
 
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
@@ -11,7 +12,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     // Si finalizar es 1, se modifica el mensaje y se actualiza la tabla radicacion
     if ($finalizar == '1') {
         $nombreUsuario = $_SESSION['name'] ?? 'Usuario desconocido';
-        $respuesta .= "\n\nRadicado finalizado por <strong>$nombreUsuario</strong>";
+        $respuesta .= "\n\nRadicado finalizado por $nombreUsuario";
         $respuesta .= "\n\nFecha de finalización: " . date('Y-m-d H:i:s');
         $respuesta .= "\n\nGracias por utilizar nuestro sistema de gestión de radicados.";
 
@@ -27,15 +28,12 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     if ($conexion->query($insertQuery)) {
         $mensaje = ($finalizar == '1') ? 'SEGUIMIENTO FINALIZADO CORRECTAMENTE' : 'SEGUIMIENTO AGREGADO CORRECTAMENTE';
         $redirect = ($finalizar == '1') ? "/app/html/radicado.php?id=$id" : "/app/html/ver_radicado.php?id=$id";
-        echo "<script>
-            alert('$mensaje');
-            window.location = '$redirect';
-        </script>";
+
+        mostrarAlerta('success', '¡Hecho!', $mensaje, $redirect, 3500);
         exit();
     } else {
-        echo "Error al agregar el seguimiento: " . $conexion->error;
+        mostrarAlerta('error', 'Error', 'Error al agregar el seguimiento: ' . $conexion->error);
     }
-    
 
     $conexion->close();
 }

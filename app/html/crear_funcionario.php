@@ -31,7 +31,7 @@ if (!isset($_SESSION['name']) && !isset($_SESSION['id'])) {
                     <div class="container-fluid">
                         <div class="card">
                             <div class="card-body">
-                                <h5 class="card-title fw-semibold mb-4">REGISTRO DE FUNCIONARIOS - SOPORTE HISTORIAS LABORALES</h5>
+                                <h5 class="card-title fw-semibold mb-4">REGISTRO DE FUNCIONARIOS</h5>
                                 <div class="card">
                                     <div class="card-body">
                                         <form action="../config/op_crear_funcionario.php" method="POST">

@@ -43,47 +43,49 @@ $fila = $resultado->fetch_assoc();
       <div class="container-fluid">
         <!-- radicados.php visualizar los radicados -->
         <div class="col-lg-12">
-          <div class="card mb-4">
-              <h3 class="text-left"><?php echo $fila['nombre_funcionario'] ?></h3>
-            <div class="table-responsive p-3">
-              <div class="modal-body">
-                <div class="row">
-                  <div class="col-md-4 mb-3">
-                    <label class="form-label">Cédula remitente</label>
-                    <p><?php echo $fila['tipo_documento'] . " " . $fila['cedula']?></p>
+            <div class="card mb-4 shadow-sm rounded-4">
+              <div class="card-body p-4">
+                  <h3 class="fw-bold text-primary mb-4"><?php echo $fila['nombre_funcionario']; ?></h3>
+      
+                  <div class="row">
+                      <div class="col-md-4 mb-3">
+                          <label class="form-label fw-semibold">Cédula remitente</label>
+                          <p class="mb-0"><?php echo $fila['tipo_documento'] . " " . $fila['cedula']; ?></p>
+                      </div>
+                      <div class="col-md-4 mb-3">
+                          <label class="form-label fw-semibold">Teléfono</label>
+                          <p class="mb-0"><?php echo $fila['telefono']; ?></p>
+                      </div>
+                      <div class="col-md-4 mb-3">
+                          <label class="form-label fw-semibold">Dirección</label>
+                          <p class="mb-0"><?php echo $fila['direccion']; ?></p>
+                      </div>
+                      <div class="col-md-4 mb-3">
+                          <label class="form-label fw-semibold">Correo electrónico</label>
+                          <p class="mb-0"><?php echo $fila['correo']; ?></p>
+                      </div>
+                      <div class="col-md-4 mb-3">
+                          <label class="form-label fw-semibold">Dependencia</label>
+                          <p class="mb-0"><?php echo obtenerDependenciaPorCodigo($fila['id_dependencia']); ?></p>
+                      </div>
+                      <div class="col-md-4 mb-3">
+                          <label class="form-label fw-semibold">Rol</label>
+                          <p class="mb-0"><?php echo obtenerRol($fila['id_funcionario']); ?></p>
+                      </div>
                   </div>
-                  <div class="col-md-4 mb-3">
-                    <label class="form-label">Teléfono</label>
-                    <p><?php echo $fila['telefono'] ?></p>
+      
+                  <div class="d-flex gap-2 mt-4">
+                      <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#modalEditar">
+                          Editar Funcionario
+                      </button>
+                      <button type="button" class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#modalEliminar">
+                          Eliminar Funcionario
+                      </button>
                   </div>
-                  <div class="col-md-4 mb-3">
-                    <label class="form-label">Dirección</label>
-                    <p><?php echo $fila['direccion'] ?></p>
-                  </div>
-                  <div class="col-md-4 mb-3">
-                    <label class="form-label">Correo electrónico</label>
-                    <p><?php echo $fila['correo'] ?></p>
-                  </div>
-                  <div class="col-md-4 mb-3">
-                    <label class="form-label">dependencia</label>
-                    <p><?php echo obtenerDependenciaPorCodigo($fila['id_dependencia']) ?></p>
-                  </div>
-                  <div class="col-md-4 mb-3">
-                    <label class="form-label">Rol</label>
-                    <p><?php echo obtenerRol($fila['id_funcionario']) ?></p>
-                  </div>
-                </div>
               </div>
-
-            <button type="button" class="btn btn-primary mb-3" data-bs-toggle="modal" data-bs-target="#modalEditar">
-              Editar Funcionario
-            </button>
-            <button type="button" class="btn btn-danger mb-3" data-bs-toggle="modal" data-bs-target="#modalEliminar">
-              Eliminar Funcionario
-            </button>
-
           </div>
         </div>
+
         <!-- FIN radicados.php visualizar los radicados -->
         <div class="py-6 px-6 text-center">
           <p class="mb-0 fs-4">Diseñado y desarrollado por <a href="https://softDocument.com/" target="_blank" class="pe-1 text-primary text-decoration-underline">SoftDocument.com</a></p>

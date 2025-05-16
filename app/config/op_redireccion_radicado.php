@@ -1,5 +1,6 @@
 <?php
 include_once("conexion.php");
+include_once("alerta.php");
 
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $id = $conexion->real_escape_string($_POST['id_radicado']);
@@ -13,11 +14,11 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
     // Ejecutar y verificar
     if ($stmt->execute()) {
-        echo "Actualización exitosa.";
+        mostrarAlerta('success', '¡Éxito!', 'Radicado dirigido correctamente.', '/app/html/radicado.php', 2500);
+        exit();
     } else {
-        echo "Error al actualizar: " . $stmt->error;
+        mostrarAlerta('error', 'Error', 'Error al actualizar: ' . $stmt->error);
     }
-
     $stmt->close();
     $conexion->close();
 }

@@ -4,10 +4,11 @@ if (!isset($_SESSION['name']) && !isset($_SESSION['id'])) {
   header('Location: ../../index.php');
 }
 include '../config/conexion.php';
+include_once '../config/funciones.php';
 
 // Obtener la información del usuario
 $id = $_SESSION['id'];
-$query = "SELECT * FROM funcionario WHERE cedula = '$id'";
+$query = "SELECT * FROM funcionario WHERE id_funcionario = '$id'";
 $resultado = $conexion->query($query);
 $fila = $resultado->fetch_assoc();
 ?>
@@ -37,26 +38,40 @@ $fila = $resultado->fetch_assoc();
       <!--  Header End -->
       <div class="container-fluid">
         <!-- Perfil de Usuario -->
-        <div class="col-lg-12">
-          <div class="card mb-4">
-            <div class="card-body">
-              <h3 class="text-left">Perfil de Usuario</h3>
-              <p><strong>Cédula:</strong> <?php echo $fila['cedula']; ?></p>
-              <p><strong>Nombre:</strong> <?php echo $fila['nombre_funcionario']; ?></p>
-              <p><strong>Correo:</strong> <?php echo $fila['correo']; ?></p>
-              <p><strong>Teléfono:</strong> <?php echo $fila['telefono']; ?></p>
-              <p><strong>Dirección:</strong> <?php echo $fila['direccion']; ?></p>
-              <p><strong>Dependencia:</strong> <?php echo $fila['id_dependencia']; ?></p>
-              <p><strong>Id:</strong> <?php echo $fila['id_funcionario']; ?></p>
-              <!-- Añade más campos según sea necesario -->
-              
-              <td><button type="button" class="btn btn-outline-warning btn-sm" data-bs-toggle="modal" data-bs-target="#modalAct">Actualizar</button></td>
-              <div class="modal fade text-black" id="modalAct">
-              <?php include "modals/actualizar_funcionario.php" ?>
+        <div class="container py-4">
+          <div class="row justify-content-center">
+              <div class="col-lg-8">
+                  <div class="card shadow rounded-4">
+                      <div class="card-body p-4">
+                          <div class="d-flex justify-content-between align-items-center mb-3">
+                              <h3 class="fw-bold mb-0 text-primary">
+                                  <?php echo $fila['nombre_funcionario']; ?>
+                              </h3>
+                          </div>
+
+                          <ul class="list-group list-group-flush">
+                              <li class="list-group-item">
+                                  <strong>Cédula:</strong> <?php echo $fila['cedula']; ?>
+                              </li>
+                              <li class="list-group-item">
+                                  <strong>Correo:</strong> <?php echo $fila['correo']; ?>
+                              </li>
+                              <li class="list-group-item">
+                                  <strong>Teléfono:</strong> <?php echo $fila['telefono']; ?>
+                              </li>
+                              <li class="list-group-item">
+                                  <strong>Dirección:</strong> <?php echo $fila['direccion']; ?>
+                              </li>
+                              <li class="list-group-item">
+                                  <strong>Dependencia:</strong> <?php echo obtenerDependenciaPorCodigo($fila['id_dependencia']); ?>
+                              </li>
+                          </ul>
+                      </div>
+                  </div>
               </div>
-            </div>
           </div>
-        </div>
+
+      </div>
         <!-- FIN Perfil de Usuario -->
         <div class="py-6 px-6 text-center">
           <p class="mb-0 fs-4">Diseñado y desarrollado por <a href="https://softDocument.com/" target="_blank"

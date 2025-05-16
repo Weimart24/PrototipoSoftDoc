@@ -11,7 +11,6 @@
     <nav class="sidebar-nav scroll-sidebar" data-simplebar="">
         <ul id="sidebarnav">
             <li class="nav-small-cap">
-                <i class="ti ti-dots nav-small-cap-icon fs-4"></i>
                 <span class="hide-menu">RADICADOS</span>
             </li>
             <li class="sidebar-item">
@@ -37,15 +36,14 @@
             $tiene_todos = !array_diff($permisos_necesarios, $_SESSION['permisos']);
             if ($tiene_todos) { ?>
             <li class="nav-small-cap">
-                <i class="ti ti-dots nav-small-cap-icon fs-4"></i>
                 <span class="hide-menu">FUNCIONARIOS</span>
             </li>
             <li class="sidebar-item">
                 <a class="sidebar-link" href="funcionario.php" aria-expanded="false">
                     <span>
-                        <i class="ti ti-login"></i>
+                        <i class="ti ti-users"></i>
                     </span>
-                    <span class="hide-menu">Administrar</span>
+                    <span class="hide-menu">Administrar Funcionarios</span>
                 </a>
             </li>
             <li class="sidebar-item">
@@ -56,6 +54,25 @@
                     <span class="hide-menu">Registrar Funcionario</span>
                     <span class="hide-menu"><?php
                     ?></span>
+                </a>
+            </li>
+            <li class="nav-small-cap">
+                <span class="hide-menu">DEPENDENCIAS</span>
+            </li>
+            <li class="sidebar-item">
+                <a class="sidebar-link" href="dependencia.php" aria-expanded="false">
+                    <span>
+                        <i class="ti ti-building"></i>
+                    </span>
+                    <span class="hide-menu">Administar Dependencias</span>
+                </a>
+            </li>
+            <li class="sidebar-item">
+                <a class="sidebar-link" href="crear_dependencia.php" aria-expanded="false">
+                    <span>
+                        <i class="ti ti-layout-grid "></i>
+                    </span>
+                    <span class="hide-menu">Agregar Dependencia</span>
                 </a>
             </li>
             <?php } ?>

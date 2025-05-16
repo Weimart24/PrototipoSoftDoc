@@ -1,6 +1,7 @@
 <?php
 // Incluir la base de datos
 include_once("conexion.php");
+include_once("alerta.php");
 
 // Obtener el ID del funcionario desde el parámetro GET
 $idFuncionario = $_GET['id'] ?? null;
@@ -14,16 +15,14 @@ if ($idFuncionario) {
     $queryFuncionario = "DELETE FROM funcionario WHERE id_funcionario = $idFuncionario";
 
     if ($conexion->query($queryFuncionario)) {
-        echo "<script>
-                alert('FUNCIONARIO ELIMINADO CORRECTAMENTE');
-                window.location = '../html/funcionario.php';
-              </script>";
+        mostrarAlerta('success', '¡Éxito!', 'FUNCIONARIO ELIMINADO CORRECTAMENTE', '../html/funcionario.php', 2500);
         exit();
     } else {
-        echo "Error al eliminar al funcionario: " . $conexion->error;
+        mostrarAlerta('error', 'Error', 'Error al eliminar al funcionario: ' . $conexion->error);
     }
+
 } else {
-    echo "ID de funcionario no proporcionado.";
+     mostrarAlerta('error', 'Error', 'ID del funcionario no proporcionada.');
 }
 
 // Cierre de la conexión
