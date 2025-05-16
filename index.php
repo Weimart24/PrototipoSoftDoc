@@ -3,6 +3,42 @@
 
 <head>
     <?php include('config_paginaComercial/modulos/head.php') ?>
+    <style>
+    body {
+        font-size: 16px;
+        line-height: 1.6;
+    }
+
+    .zoom-buttons {
+    position: fixed;
+    bottom: 15px;
+    left: 15px;
+    background: rgba(0, 137, 123, 0.9);
+    border-radius: 6px;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.2);
+    padding: 4px;
+    z-index: 1000;
+    display: flex;
+    gap: 4px;
+}
+
+.zoom-buttons button {
+    background: transparent;
+    border: none;
+    color: white;
+    font-size: 12px;
+    padding: 4px 6px;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: background 0.2s;
+}
+
+.zoom-buttons button:hover {
+    background: rgba(255, 255, 255, 0.15);
+}
+
+</style>
+
 </head>
 
 <body>
@@ -55,7 +91,12 @@
         <!-- Features Start -->
         <?php include('config_paginaComercial/modulos/features.php') ?>
         <!-- Features End -->
-
+        <!-- la lupa-->
+        <div class="zoom-buttons">
+            <button onclick="zoomIn()" title="Aumentar texto">A+</button>
+            <button onclick="zoomOut()" title="Disminuir texto">A-</button>
+            <button onclick="resetZoom()" title="Restablecer">↺</button>
+        </div>
 
         <!-- Client Start -->
         <div class="container-xxl bg-primary my-6 py-5 wow fadeInUp" data-wow-delay="0.1s">
@@ -97,5 +138,28 @@
     <!-- JavaScript Libraries -->
     <?php include('config_paginaComercial/modulos/script.php') ?>
 </body>
+
+<script>
+        let currentFontSize = 16;
+
+        function zoomIn() {
+            if (currentFontSize < 40) {
+                currentFontSize += 2;
+                document.body.style.fontSize = currentFontSize + 'px';
+            }
+        }
+
+        function zoomOut() {
+            if (currentFontSize > 10) {
+                currentFontSize -= 2;
+                document.body.style.fontSize = currentFontSize + 'px';
+            }
+        }
+
+        function resetZoom() {
+            currentFontSize = 16;
+            document.body.style.fontSize = currentFontSize + 'px';
+        }
+    </script>
 
 </html>
