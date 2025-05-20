@@ -187,6 +187,7 @@ INSERT INTO `rol_permisos` (`id_rol`, `id_permiso`) VALUES
 (3, 4),  -- Coordinador: Eliminar Radicado
 (3, 3);  -- Coordinador: Modificar Radicado
 
+
 -- Volcado de datos para la tabla `seguimiento_radicado` con algunos seguimientos
 INSERT INTO `seguimiento_radicado` (`id_seguimiento`, `fecha_seguimiento`, `detalle`, `id_radicado`) VALUES
 (1, '2025-05-11', 'Solicitud de documento urgente para trámites internos', 1),

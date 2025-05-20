@@ -37,7 +37,6 @@ include_once '../config/funciones.php';
       <?php include 'modulos/header.php' ?>
       <!--  Header End -->
       <div class="container-fluid">
-        <!-- radicados.php visualizar los radicados -->
         <div class="col-lg-12">
           <div class="card mb-4">
             <div class="table-responsive p-3">
@@ -45,15 +44,15 @@ include_once '../config/funciones.php';
               <table class="table align-items-center table-flush" id="dataTable">
                 <thead>
                   <tr>
-                    <?php if (in_array('4', $_SESSION['permisos'])) { ?>
-                    <td>Estado</td>
-                    <?php } ?>
-                    <td>Examinar</td>
-                    <td>Radicado</td>
-                    <td>Nombre remitente</td>
-                    <td>Fecha Radicado</td>
-                    <td>Asunto</td>
-                    <td>Dependencia</td>
+                  <?php if (in_array('4', $_SESSION['permisos'])) { ?>
+                    <th scope="col">Estado</th>
+                  <?php } ?>
+                    <th scope="col">Examinar</th>
+                    <th scope="col">Radicado</th>
+                    <th scope="col">Nombre Remitente</th>
+                    <th scope="col">Fecha Radicado</th>
+                    <th scope="col">Asunto</th>
+                    <th scope="col">Dependencia</th>
                   </tr>
                 </thead>
                 <tbody>

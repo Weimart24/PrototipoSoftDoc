@@ -26,72 +26,72 @@ if (!isset($_SESSION['name']) && !isset($_SESSION['id'])) {
             <?php include('modulos/header.php') ?>
             <!--  Header End -->
             <div class="container-fluid">
-                <!-- radicados.php visualizar los funcionarios -->
-                <div class="container-fluid">
-                    <div class="container-fluid">
-                        <div class="card">
-                            <div class="card-body">
-                                <h5 class="card-title fw-semibold mb-4">REGISTRO DE FUNCIONARIOS</h5>
-                                <div class="card">
-                                    <div class="card-body">
-                                        <form action="../config/op_crear_funcionario.php" method="POST">
-                                            <div class="mb-3">
-                                                <label for="tipo-documento" class="form-label">Tipo documento</label>
-                                                <select class="form-select" id="tipo-documento" name="tipo">
-                                                    <option selected>Seleccionar...</option>
-                                                    <option>CC</option>
-                                                    <option>TI</option>
-                                                </select>
-                                            </div>
-                                            <div class="mb-3">
-                                                <label for="cedula" class="form-label">Cédula</label>
-                                                <input type="text" name="cedula" class="form-control" id="cedula" aria-describedby="emailHelp" required>
-                                                <div id="emailHelp" class="form-text">Ingrese la cédula.</div>
-                                            </div>
-                                            <div class="mb-3">
-                                                <label for="funcionario" class="form-label">Nombre funcionario</label>
-                                                <input type="text" name="nombre" class="form-control" id="funcionario" aria-describedby="emailHelp" required>
-                                                <div id="emailHelp" class="form-text">Nombre del funcionario.</div>
-                                            </div>
-                                            <div class="mb-3">
-                                                <label for="telefono" class="form-label">Teléfono</label>
-                                                <input type="text" name="telefono" class="form-control" id="telefono" aria-describedby="emailHelp" required>
-                                                <div id="emailHelp" class="form-text">Ingrese el teléfono.</div>
-                                            </div>
-                                            <div class="mb-3">
-                                                <label for="direccion" class="form-label">Dirección</label>
-                                                <input type="text" name="direccion" class="form-control" id="direccion" aria-describedby="emailHelp" required>
-                                                <div id="emailHelp" class="form-text">Ingrese el dirección.</div>
-                                            </div>
-                                            <div class="mb-3">
-                                                <label for="correo" class="form-label">Correo</label>
-                                                <input type="email" name="correo" class="form-control" id="correo" aria-describedby="emailHelp" required>
-                                                <div id="emailHelp" class="form-text">Correo Electrónico.</div>
-                                            </div>
-                                            <label class="form-label" for="dependencia">Ingrese la dependendencia donde labora.</label>
-                                            <div class="mb-3">
-                                                <select class="form-select" id="dependencia" name="dependencia">
-                                                    <option selected>Seleccionar...</option>
-                                                </select>
-                                            </div>
-                                            <label class="form-label" for="dependencia">Ingrese el rol del funcionario.</label>
-                                            <div class="mb-3">
-                                                <select class="form-select" id="roles" name="roles">
-                                                    <option selected>Seleccionar...</option>
-                                                </select>
-                                            </div>
-                                            <div class="mb-4">
-                                                <label for="exampleInputPassword1" class="form-label">Contraseña</label>
-                                                <div class="input-group">
-                                                    <input type="password" name="contrasena" class="form-control" id="exampleInputPassword1" required>
-                                                    <button type="button" id="showPassword" class="btn btn-outline-secondary">Mostrar</button>
-                                                </div>
-                                            </div>
-                                            <button type="submit" class="btn btn-primary">Registrar</button>
-                                        </form>
-                                    </div>
+                <div class="card">
+                    <div class="card-body">
+                        <h5 class="card-tittle fs-6 mb-4 text-primary">REGISTRO DE FUNCIONARIOS</h5>
+                        <form action="../config/op_crear_funcionario.php" method="POST">
+                            <fieldset class="border rounded-3 p-3 mb-4">
+                              <legend class="float-none w-auto px-3 text-secondary fw-semibold fs-5">Información del Remitente</legend>
+                              <div class="row">
+                                <div class="col-md-6 mb-3">
+                                  <label class="form-label fw-bold text-dark-emphasis">Nombre Remitente</label>
+                                  <input type="text" name="nombre" class="form-control rounded-3" required>
                                 </div>
+                                <div class="col-md-3 mb-3">
+                                  <label class="form-label fw-bold text-dark-emphasis">Tipo documento</label>
+                                  <select class="form-select rounded-3" name="tipo" required>
+                                    <option value="" selected disabled>Seleccionar...</option>
+                                    <option>CC</option>
+                                    <option>TI</option>
+                                  </select>
+                                </div>
+                                <div class="col-md-3 mb-3">
+                                  <label class="form-label fw-bold text-dark-emphasis">Número de Documento</label>
+                                  <input type="number" name="cedula" class="form-control rounded-3" required>
+                                </div>
+                                <div class="col-md-4 mb-3">
+                                  <label class="form-label fw-bold text-dark-emphasis">Dirección</label>
+                                  <input type="text" name="direccion" class="form-control rounded-3" required>
+                                </div>
+                                <div class="col-md-4 mb-3">
+                                  <label class="form-label fw-bold text-dark-emphasis">Teléfono</label>
+                                  <input type="text" name="telefono" class="form-control rounded-3" required>
+                                </div>
+                                <div class="col-md-4 mb-3">
+                                  <label class="form-label fw-bold text-dark-emphasis">Correo</label>
+                                  <input type="email" name="correo" class="form-control rounded-3" required>
+                                </div>
+                                <div class="col-md-4 mb-3">
+                                  <label class="form-label fw-bold text-dark-emphasis">Contraseña</label>
+                                  <div class="input-group">
+                                    <input type="password" name="contrasena" class="form-control rounded-start-3" id="exampleInputPassword1" required>
+                                    <button type="button" id="showPassword" class="btn btn-outline-secondary rounded-end-3">Mostrar</button>
+                                  </div>
+                                </div>
+                              </div>
+                            </fieldset>
+
+                            <fieldset class="border rounded-3 p-3 mb-4">
+                              <legend class="float-none w-auto px-3 text-secondary fw-semibold fs-5">Asignar Dependencia y Rol</legend>
+                              <div class="row">
+                                <div class="col-md-6 mb-3">
+                                  <label class="form-label fw-bold text-dark-emphasis">Ingrese la dependendencia donde labora.</label>
+                                    <select class="form-select" id="dependencia" name="dependencia">
+                                        <option selected>Seleccionar...</option>
+                                    </select>
+                                </div>
+                                <div class="col-md-6 mb-3">
+                                  <label class="form-label fw-bold text-dark-emphasis">Ingrese el rol del funcionario.</label>
+                                    <select class="form-select" id="roles" name="roles">
+                                        <option selected>Seleccionar...</option>
+                                    </select>
+                                </div>
+                              </div>
+                            </fieldset>
+                            <div class="text-end">
+                                <button type="submit" class="btn btn-primary btn-lg px-4 rounded-3">Registrar Funcionario</button>
                             </div>
+                        </form>
                         </div>
                     </div>
                 </div>

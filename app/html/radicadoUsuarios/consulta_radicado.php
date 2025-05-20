@@ -45,71 +45,84 @@ $resulSeguimiento = $stmt->get_result();
   <div class="d-flex justify-content-center align-items-center min-vh-100">
     <div class="container">
       <div class="row justify-content-center">
-        <div class="col-lg-8">
-          <div class="card shadow">
-            <div class="card-body">
-              <h5 class="card-title fw-semibold mb-4 text-center">FORMULARIO REGISTRO DE CORRESPONDENCIA</h5>
-              
-              <!-- Mostrar la información del radicado -->
-              <div class="mb-3">
-                <label class="form-label">Radicado</label>
-                <p class="form-control"><?php echo $radicado['radicado']; ?></p>
-              </div>
-              <div class="mb-3">
-                <label class="form-label">Nombre Remitente</label>
-                <p class="form-control-plaintext"><?php echo $radicado['nombre_remitente']; ?></p>
-              </div>
-              <div class="mb-3">
-                <label class="form-label">Correo</label>
-                <p class="form-control"><?php echo $radicado['correo']; ?></p>
-              </div>
-              <div class="mb-3">
-                <label class="form-label">Fecha de Radicado</label>
-                <p class="form-control"><?php echo $radicado['fecha_radicado']; ?></p>
-              </div>
-              <div class="mb-3">
-                <label class="form-label">Asunto</label>
-                <p class="form-control"><?php echo $radicado['asunto']; ?></p>
-              </div>
-              <div class="mb-3">
-                <label class="form-label">Documento</label>
-                <?php if (!empty($radicado['documento'])): ?>
-                  <p class="form-control"><a href="/<?php echo $radicado['documento']; ?>" target="_blank">Ver radicado</a></p>
-                <?php else: ?>
-                  <p class="form-control"><span class="text-muted">Sin documento</span></p>
-                <?php endif; ?>
-              </div>
-                
+        <div class="col-lg-10">
+          <div class="card shadow-lg border-0 rounded-4">
+            <div class="card-body px-5 py-4">
+              <h3 class="text-center mb-4 text-primary fw-bold">
+                DETALLES DEL RADICADO
+              </h3>
 
-              <!-- Mostrar los seguimientos -->
-              <h5 class="mt-3">Seguimientos</h5>
-              <hr>
-              <?php
-              if ($resulSeguimiento->num_rows > 0) {
-                  while ($seguimiento = $resulSeguimiento->fetch_assoc()) {
-                    ?>
-                    <div class="mb-3">
-                        <div class="d-flex justify-content-between">
-                            <label class="form-label">Detalle</label>
-                            <small class="text-muted"><?php echo $seguimiento['fecha_seguimiento']; ?></small>
-                        </div>
-                        <textarea name="detalle" class="form-control" rows="3" readonly><?php echo $seguimiento['detalle']; ?></textarea>
-                    </div>
-                    <br>
-                    <br>
-              <?php
-                  }
-              } else {
-                  echo "<p>No hay seguimientos para este radicado.</p>";
-              }
-              // Mostrar estado del radicado
-              $estadoTexto = ($radicado['activo'] == 0) ? "RADICADO FINALIZADO" : "RADICADO EN SEGUIMIENTO";
-              echo "<div class='text-center mt-4'><strong class='text-primary'>$estadoTexto</strong></div>";
-              ?>
-              <!-- Botón Salir -->
-              <div class="text-center mt-4">
-                <a href="/index.php" class="btn btn-secondary">Salir</a>
+              <div class="row mb-4">
+                <div class="col-md-6 mb-3">
+                  <label class="fw-bold text-dark">Radicado</label>
+                  <div class="bg-white border rounded p-2 shadow-sm">
+                    <?php echo $radicado['radicado']; ?>
+                  </div>
+                </div>
+                <div class="col-md-6 mb-3">
+                  <label class="fw-bold text-dark">Nombre del Remitente</label>
+                  <div class="bg-white border rounded p-2 shadow-sm">
+                    <?php echo $radicado['nombre_remitente']; ?>
+                  </div>
+                </div>
+                <div class="col-md-6 mb-3">
+                  <label class="fw-bold text-dark">Correo Electrónico</label>
+                  <div class="bg-white border rounded p-2 shadow-sm">
+                    <?php echo $radicado['correo']; ?>
+                  </div>
+                </div>
+                <div class="col-md-6 mb-3">
+                  <label class="fw-bold text-dark">Fecha de Radicación</label>
+                  <div class="bg-white border rounded p-2 shadow-sm">
+                    <?php echo $radicado['fecha_radicado']; ?>
+                  </div>
+                </div>
+                <div class="col-md-6 mb-3">
+                  <label class="fw-bold text-dark">Asunto</label>
+                  <div class="bg-white border rounded p-2 shadow-sm">
+                    <?php echo $radicado['asunto']; ?>
+                  </div>
+                </div>
+                <div class="col-md-6 mb-3">
+                  <label class="fw-bold text-dark">Documento</label>
+                  <div class="bg-white border rounded p-2 shadow-sm">
+                    <?php if (!empty($radicado['documento'])): ?>
+                      <a href="/<?php echo $radicado['documento']; ?>" target="_blank">📄 Ver radicado</a>
+                    <?php else: ?>
+                      <span class="fw-bold text-dark">Sin documento adjunto</span>
+                    <?php endif; ?>
+                  </div>
+                </div>
               </div>
+
+              <h5 class="text-primary fw-semibold">Seguimientos</h5>
+              <hr>
+              <?php if ($resulSeguimiento->num_rows > 0): ?>
+                <?php while ($seguimiento = $resulSeguimiento->fetch_assoc()): ?>
+                  <div class="mb-4">
+                    <div class="d-flex justify-content-between mb-1">
+                      <strong class="text-dark">Detalle</strong>
+                      <small class="text-muted"><?php echo $seguimiento['fecha_seguimiento']; ?></small>
+                    </div>
+                    <div class="bg-light border rounded p-3 shadow-sm">
+                      <?php echo nl2br(htmlspecialchars($seguimiento['detalle'])); ?>
+                    </div>
+                  </div>
+                <?php endwhile; ?>
+              <?php else: ?>
+                <p class="text-muted">No hay seguimientos para este radicado.</p>
+              <?php endif; ?>
+
+              <div class="text-center mt-4">
+                <span class="badge <?php echo ($radicado['activo'] == 0) ? 'bg-danger' : 'bg-success'; ?> fs-6 px-4 py-2">
+                  <?php echo ($radicado['activo'] == 0) ? "RADICADO FINALIZADO" : "RADICADO EN SEGUIMIENTO"; ?>
+                </span>
+              </div>
+
+              <div class="text-center mt-4">
+                <a href="/index.php" class="btn btn-outline-primary px-4 rounded-pill">Salir</a>
+              </div>
+
             </div>
           </div>
         </div>
@@ -117,4 +130,5 @@ $resulSeguimiento = $stmt->get_result();
     </div>
   </div>
 </body>
+
 </html>
