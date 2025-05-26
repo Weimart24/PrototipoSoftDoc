@@ -72,7 +72,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             $_SESSION['name'] = $row['nombre_funcionario'];
             $_SESSION['id'] = $row['id_funcionario'];
             $_SESSION['permisos'] = $permisos;
-            mostrarAlerta('success', '¡BIENVENIDO ' . $_SESSION['name'] . '!', 'Aplicativo SOFTDOC', '../html/radicado.php', 3000);
+            mostrarAlerta('success', '¡BIENVENIDO¡', $_SESSION['name'], '../html/radicado.php', 3000);
             exit();
         } else {
             mostrarAlerta('error', '¡Error!', 'Usuario o contraseña incorrectos.', '../../login.php', 2500);

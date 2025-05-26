@@ -194,5 +194,10 @@ INSERT INTO `seguimiento_radicado` (`id_seguimiento`, `fecha_seguimiento`, `deta
 (2, '2025-05-11', 'Requerimiento de informe sobre resultados de evaluación', 2),
 (3, '2025-05-11', 'Consulta sobre el estado de documentos archivados', 3);
 
---Creación de la tabla `historial` para almacenar el historial de cambios
+-- Creación de la tabla `historial` para almacenar el historial de cambios
 ALTER TABLE radicacion ADD estado_visto TINYINT(1) DEFAULT 0;
+
+-- CREACIÓN DE USUARIO PARA LA APLICACIÓN
+CREATE USER 'softdoc'@'localhost' IDENTIFIED BY 'Softdoc2024@';
+GRANT ALL PRIVILEGES ON prototipo.* TO 'softdoc'@'localhost';
+FLUSH PRIVILEGES;

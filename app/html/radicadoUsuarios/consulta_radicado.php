@@ -4,6 +4,7 @@ if (!isset($_POST['radicado'])) {
 }
 // Incluir la conexión a la base de datos
 include '../../config/conexion.php';
+include '../../config/alerta.php';
 
 $radicado = $_POST['radicado'];
 
@@ -15,10 +16,7 @@ $resulRadicado = $stmt->get_result();
 
 // Verificar si se encontró el radicado
 if ($resulRadicado->num_rows === 0) {
-    echo "<script>
-        alert('No se encontró ningún radicado.');
-        window.location.href = 'radicados.php';
-    </script>";
+    mostrarAlerta('error', 'Radicado no Encontrado!', 'Este radicado no se encuentra en la base de datos', '/app/html/radicadoUsuarios/radicados.php', 2500);
     exit; // Detener ejecución del PHP
 }
 
