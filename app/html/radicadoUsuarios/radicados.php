@@ -29,9 +29,15 @@
             <h5 class="modal-title fw-bold">Consulta de Radicado</h5>
           </div>
           <div class="modal-body">
-            <div class="mb-3">
-              <label for="codigo" class="form-label">Código de radicado</label>
-              <input type="text" class="form-control" id="radicado" name="radicado" required>
+            <div class="row g-3">
+              <div class="col-md-6">
+                <label for="radicado" class="form-label">Código de radicado</label>
+                <input type="text" class="form-control" id="radicado" name="radicado" required>
+              </div>
+              <div class="col-md-6">
+                <label for="cedula" class="form-label">Cédula</label>
+                <input type="number" class="form-control" id="cedula" name="cedula" required>
+              </div>
             </div>
           </div>
           <div class="modal-footer">
@@ -64,7 +70,7 @@
             <div class="card-body">
               <h5 class="fw-bold mb-2">Consultar radicado</h5>
               <p>Verifique el estado o respuesta de un radicado.</p>
-              <button type="button" class="btn btn-success w-100" data-bs-toggle="modal" data-bs-target="#consultaModal">Consultar radicado</button>
+              <button type="button" class="btn btn-primary w-100" data-bs-toggle="modal" data-bs-target="#consultaModal">Consultar radicado</button>
             </div>
           </div>
         </div>

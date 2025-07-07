@@ -18,7 +18,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     $responseData = json_decode($response, true);
 
     if (!$responseData['success']) {
-        mostrarAlerta('error', 'Error', 'reCAPTCHA no válido. Por favor, inténtalo de nuevo.', '', 3000);
+        mostrarAlerta('error', 'Error', 'reCAPTCHA no válido. Por favor, inténtalo de nuevo.', '../../login.php?error=1', 3000);
         exit();
     }
 
@@ -37,7 +37,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 
         // Verificar si está activo
         if ($row['activo'] != 1) {
-            mostrarAlerta('warning', 'Acceso denegado', 'Su usuario está inactivo. Por favor, comuníquese con el administrador.', '', 4000);
+            mostrarAlerta('warning', 'Acceso denegado', 'Su usuario está inactivo. Por favor, comuníquese con el administrador.', '../../login.php?error=1', 4000);
             exit();
         }
 
@@ -88,11 +88,11 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 
             exit();
         } else {
-            mostrarAlerta('error', '¡Error!', 'Contraseña incorrecta.', '', 3000);
+            mostrarAlerta('error', '¡Error!', 'Contraseña incorrecta.', '../../login.php?error=1', 3000);
             exit();
         }
     } else {
-        mostrarAlerta('error', '¡Error!', 'Usuario no encontrado.', '', 3000);
+        mostrarAlerta('error', '¡Error!', 'Usuario no encontrado.', '../../login.php?error=1', 3000);
         exit();
     }
 }

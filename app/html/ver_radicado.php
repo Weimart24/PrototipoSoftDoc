@@ -125,17 +125,19 @@ $resulS = $conexion->query($queryS);
                     }
                     ?>
               </div>
-            <?php if (in_array('3', $_SESSION['permisos'])) { ?>
-              <button type="button" class="btn btn-warning mb-3" data-bs-toggle="modal" data-bs-target="#modalRedireccionar">
-                Redireccionar
-              </button>
-              <?php } ?>
-            <button type="button" class="btn btn-primary mb-3" data-bs-toggle="modal" data-bs-target="#modalNuevaRespuesta">
-              Añadir respuesta
-            </button>
-            <button type="button" class="btn btn-warning mb-3" data-bs-toggle="modal" data-bs-target="#modalFinalizar">
-              Finalizar Radicado
-            </button>
+              <?php if ($fila['activo'] == 1): ?>
+                <?php if (in_array('3', $_SESSION['permisos'])) { ?>
+                  <button type="button" class="btn btn-warning mb-3" data-bs-toggle="modal" data-bs-target="#modalRedireccionar">
+                    Redireccionar
+                  </button>
+                <?php } ?>
+                <button type="button" class="btn btn-primary mb-3" data-bs-toggle="modal" data-bs-target="#modalNuevaRespuesta">
+                  Añadir respuesta
+                </button>
+                <button type="button" class="btn btn-warning mb-3" data-bs-toggle="modal" data-bs-target="#modalFinalizar">
+                  Finalizar Radicado
+                </button>
+              <?php endif; ?>
           </div>
         </div>
         <!-- FIN radicados.php visualizar los radicados -->
@@ -148,7 +150,7 @@ $resulS = $conexion->query($queryS);
   <?php include 'modulos/script.php' ?>
 </body>
 
-<!-- Modal -->
+<!-- Modal responder-->
 <div class="modal fade" id="modalNuevaRespuesta" tabindex="-1" aria-labelledby="modalNuevaRespuestaLabel" aria-hidden="true">
   <div class="modal-dialog">
     <form action="/app/config/op_actualizar_seguimiento.php" method="POST">

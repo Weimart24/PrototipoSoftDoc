@@ -121,52 +121,49 @@ header("Pragma: no-cache");
 <div class="modal fade" id="modalRecuperar" tabindex="-1" aria-labelledby="modalRestablecerLabel" aria-hidden="true">
   <div class="modal-dialog modal-dialog-centered">
     <div class="modal-content text-black rounded-4 shadow">
-      
       <div class="modal-header" style="background-color: #81C784; color: white; border-top-left-radius: .75rem; border-top-right-radius: .75rem;">
         <h5 class="modal-title" id="modalRestablecerLabel">Restablecer Contraseña</h5>
         <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Cerrar"></button>
       </div>
-
       <form action="app/config/sendResetLink.php" method="POST">
         <div class="modal-body">
           <div class="mb-3">
             <label for="email" class="form-label">Correo Electrónico</label>
             <input type="email" name="email" class="form-control" id="email" placeholder="usuario@ejemplo.com" required>
           </div>
+          <div class="mb-3">
+            <label for="email" class="form-label">Cédula</label>
+            <input type="text" name="cedula" class="form-control" id="cedula" placeholder="123456789" required>
+          </div>
         </div>
-
         <div class="modal-footer">
           <button type="submit" class="btn w-100 text-white" style="background-color: #81C784;">Enviar Enlace</button>
         </div>
       </form>
-      
     </div>
   </div>
 </div>
 
+<script>
+  function resetRecaptcha() {
+    if (typeof grecaptcha !== "undefined") {
+      grecaptcha.reset();
+    }
+  }
+</script>
 
 
 
   <script src="https://www.google.com/recaptcha/api.js" async defer></script>
   <script>
-    document.addEventListener("DOMContentLoaded", function () {
-      const urlParams = new URLSearchParams(window.location.search);
-      const status = urlParams.get('status');
-      const message = urlParams.get('message');
+  document.addEventListener("DOMContentLoaded", function () {
+    const urlParams = new URLSearchParams(window.location.search);
+    if (urlParams.get('error')) {
+      resetRecaptcha();
+    }
+  });
+</script>
 
-      if (status && message) {
-        Swal.fire({
-          icon: status === 'success' ? 'success' : 'error',
-          title: status === 'success' ? '¡Éxito!' : 'Error',
-          text: decodeURIComponent(message),
-          confirmButtonColor: '#198754'
-        }).then(() => {
-          const newUrl = window.location.origin + window.location.pathname;
-          window.history.replaceState({}, document.title, newUrl);
-        });
-      }
-    });
-  </script>
 </body>
 
 </html>

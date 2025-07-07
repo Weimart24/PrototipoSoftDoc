@@ -6,7 +6,6 @@ if (!isset($_SESSION['id']) || !isset($_SESSION['name'])) {
 }
 include_once("conexion.php");
 include_once("alerta.php");
-session_start();
 
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $id = $_POST['id_radicado'];
@@ -17,7 +16,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     if ($finalizar == '1') {
         $nombreUsuario = $_SESSION['name'] ?? 'Usuario desconocido';
         $respuesta .= "\n\nRadicado finalizado por $nombreUsuario";
-        $respuesta .= "\n\nFecha de finalización: " . date('Y-m-d H:i:s');
+        $respuesta .= "\n\nFecha de finalización: " . date('Y-m-d');
         $respuesta .= "\n\nGracias por utilizar nuestro sistema de gestión de radicados.";
 
         // Actualizar estado en radicacion con prepared statement
@@ -42,7 +41,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             $mensaje = ($finalizar == '1') ? 'SEGUIMIENTO FINALIZADO CORRECTAMENTE' : 'SEGUIMIENTO AGREGADO CORRECTAMENTE';
             $redirect = ($finalizar == '1') ? "/app/html/radicado.php?id=$id" : "/app/html/ver_radicado.php?id=$id";
 
-            mostrarAlerta('success', '¡Hecho!', $mensaje, $redirect, 3500);
+            mostrarAlerta('success', '¡Hecho!', $mensaje, $redirect);
             $stmtInsert->close();
             $conexion->close();
             exit();
