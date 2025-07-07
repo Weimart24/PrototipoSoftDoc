@@ -13,9 +13,13 @@ function mostrarAlerta($tipo, $titulo, $mensaje, $redireccion = null, $tiempo = 
                     . ($tiempo ? "timer: $tiempo, timerProgressBar: true," : "") . "
                     confirmButtonText: 'Aceptar'
                 }).then(() => {";
-                if ($redireccion) {
+
+                if ($redireccion && trim($redireccion) !== '') {
                     echo "window.location.href = '$redireccion';";
+                } else {
+                    echo "window.history.back();";
                 }
+
                 echo "});
             };
             document.head.appendChild(script);

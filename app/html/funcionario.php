@@ -45,6 +45,7 @@ include_once '../config/funciones.php';
                                     <td>Correo</td>
                                     <td>Dependencia</td>
                                     <td>Rol</td>
+                                    <td>Estado</td>
                                 </thead>
                                 <tbody>
                                     <?php
@@ -56,6 +57,11 @@ include_once '../config/funciones.php';
                                             echo "<td>" . $fila["correo"] . "</td>";
                                             echo "<td>" . obtenerDependenciaPorCodigo($fila['id_dependencia']) . "</td>";
                                             echo "<td>" . obtenerRol($fila['id_funcionario']) . "</td>";
+                                            if ($fila["activo"] == 1) {
+                                                echo "<td><strong class='text-success'>Activo</strong></td>";
+                                            } else {
+                                                echo "<td><strong class='text-danger'>Inactivo</strong></td>";
+                                            }
                                             echo "</tr>";
                                         }
                                     }

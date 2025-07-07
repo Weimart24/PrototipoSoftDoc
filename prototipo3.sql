@@ -197,7 +197,12 @@ INSERT INTO `seguimiento_radicado` (`id_seguimiento`, `fecha_seguimiento`, `deta
 -- Creación de la tabla `historial` para almacenar el historial de cambios
 ALTER TABLE radicacion ADD estado_visto TINYINT(1) DEFAULT 0;
 
+-- Creación del campo activo en la tabla funcionarios
+ALTER TABLE `funcionario`
+ADD COLUMN `activo` BOOLEAN NOT NULL DEFAULT TRUE;
+
+
 -- CREACIÓN DE USUARIO PARA LA APLICACIÓN
-CREATE USER 'softdoc'@'localhost' IDENTIFIED BY 'Softdoc2024@';
-GRANT ALL PRIVILEGES ON prototipo.* TO 'softdoc'@'localhost';
-FLUSH PRIVILEGES;
+-- CREATE USER 'softdoc'@'localhost' IDENTIFIED BY 'Softdoc2024@';
+-- GRANT ALL PRIVILEGES ON prototipo.* TO 'softdoc'@'localhost';
+-- FLUSH PRIVILEGES;

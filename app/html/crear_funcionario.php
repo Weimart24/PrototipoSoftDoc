@@ -61,13 +61,13 @@ if (!isset($_SESSION['name']) && !isset($_SESSION['id'])) {
                                   <label class="form-label fw-bold text-dark-emphasis">Correo</label>
                                   <input type="email" name="correo" class="form-control rounded-3" required>
                                 </div>
-                                <div class="col-md-4 mb-3">
+                                <!-- <div class="col-md-4 mb-3">
                                   <label class="form-label fw-bold text-dark-emphasis">Contraseña</label>
                                   <div class="input-group">
                                     <input type="password" name="contrasena" class="form-control rounded-start-3" id="exampleInputPassword1" required>
                                     <button type="button" id="showPassword" class="btn btn-outline-secondary rounded-end-3">Mostrar</button>
                                   </div>
-                                </div>
+                                </div> -->
                               </div>
                             </fieldset>
 
@@ -76,14 +76,14 @@ if (!isset($_SESSION['name']) && !isset($_SESSION['id'])) {
                               <div class="row">
                                 <div class="col-md-6 mb-3">
                                   <label class="form-label fw-bold text-dark-emphasis">Ingrese la dependendencia donde labora.</label>
-                                    <select class="form-select" id="dependencia" name="dependencia">
-                                        <option selected>Seleccionar...</option>
+                                    <select class="form-select" id="dependencia" name="dependencia" required>
+                                        <option value="" selected>Seleccionar...</option>
                                     </select>
                                 </div>
                                 <div class="col-md-6 mb-3">
                                   <label class="form-label fw-bold text-dark-emphasis">Ingrese el rol del funcionario.</label>
-                                    <select class="form-select" id="roles" name="roles">
-                                        <option selected>Seleccionar...</option>
+                                    <select class="form-select" id="roles" name="roles" required>
+                                        <option value="" selected>Seleccionar...</option>
                                     </select>
                                 </div>
                               </div>

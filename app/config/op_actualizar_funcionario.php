@@ -1,45 +1,63 @@
 <?php
+session_start();
+if (!isset($_SESSION['id']) || !isset($_SESSION['name'])) {
+    header("Location: ../../../login.php");
+    exit();
+}
 include_once("conexion.php");
 include_once("alerta.php");
 
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
-    $id = $conexion->real_escape_string($_POST['id_funcionario']);
-    $tipo = $conexion->real_escape_string($_POST['tipo']);
-    $cedula = $conexion->real_escape_string($_POST['cedula']);
-    $nombre = $conexion->real_escape_string($_POST['nombre']);
-    $telefono = $conexion->real_escape_string($_POST['telefono']);
-    $direccion = $conexion->real_escape_string($_POST['direccion']);
-    $correo = $conexion->real_escape_string($_POST['correo']);
-    $dependencia = $conexion->real_escape_string($_POST['dependencia']);
-    $rol = $conexion->real_escape_string($_POST['rol']);
+    $id = $_POST['id_funcionario'];
+    $tipo = $_POST['tipo'];
+    $cedula = $_POST['cedula'];
+    $nombre = $_POST['nombre'];
+    $telefono = $_POST['telefono'];
+    $direccion = $_POST['direccion'];
+    $correo = $_POST['correo'];
+    $dependencia = $_POST['dependencia'];
+    $rol = $_POST['rol'];
 
-    $query = "UPDATE funcionario SET
-        tipo_documento = '$tipo',
-        cedula = '$cedula',
-        nombre_funcionario = '$nombre',
-        correo = '$correo',
-        telefono = '$telefono',
-        direccion = '$direccion',
-        id_dependencia = '$dependencia'";
+    $contrasenaNueva = null;
+    $actualizarContrasena = false;
 
-    // Solo actualiza la contraseña si el usuario ingresó una nueva
     if (!empty($_POST['contrasena'])) {
-        $nuevaContrasena = password_hash($_POST['contrasena'], PASSWORD_BCRYPT);
-        $query .= ", contrasena = '$nuevaContrasena'";
+        $contrasenaNueva = password_hash($_POST['contrasena'], PASSWORD_BCRYPT);
+        $actualizarContrasena = true;
     }
 
-    $query .= " WHERE id_funcionario = '$id'";
+    // Armar la consulta dinámica
+    if ($actualizarContrasena) {
+        $query = "UPDATE funcionario SET tipo_documento = ?, cedula = ?, nombre_funcionario = ?, correo = ?, telefono = ?, direccion = ?, id_dependencia = ?, contrasena = ? WHERE id_funcionario = ?";
+        $stmt = $conexion->prepare($query);
+        $stmt->bind_param("sssssssss", $tipo, $cedula, $nombre, $correo, $telefono, $direccion, $dependencia, $contrasenaNueva, $id);
+    } else {
+        $query = "UPDATE funcionario SET tipo_documento = ?, cedula = ?, nombre_funcionario = ?, correo = ?, telefono = ?, direccion = ?, id_dependencia = ? WHERE id_funcionario = ?";
+        $stmt = $conexion->prepare($query);
+        $stmt->bind_param("ssssssss", $tipo, $cedula, $nombre, $correo, $telefono, $direccion, $dependencia, $id);
+    }
 
-    if ($conexion->query($query)) {
-        $queryRol = "UPDATE funcionario_roles SET id_rol = '$rol' WHERE id_funcionario = '$id'";
-        if ($conexion->query($queryRol)) {
-            mostrarAlerta('success', '¡Éxito!', 'FUNCIONARIO ACTUALIZADO CORRECTAMENTE', '../html/funcionario.php', 2500);
-            exit();
+    if ($stmt && $stmt->execute()) {
+        $stmt->close();
+
+        // Actualizar rol
+        $queryRol = "UPDATE funcionario_roles SET id_rol = ? WHERE id_funcionario = ?";
+        $stmtRol = $conexion->prepare($queryRol);
+        if ($stmtRol) {
+            $stmtRol->bind_param("ss", $rol, $id);
+            if ($stmtRol->execute()) {
+                mostrarAlerta('success', '¡Éxito!', 'FUNCIONARIO ACTUALIZADO CORRECTAMENTE', '../html/funcionario.php', 2500);
+                $stmtRol->close();
+                $conexion->close();
+                exit();
+            } else {
+                mostrarAlerta('error', 'Error', 'Error al actualizar el rol: ' . $stmtRol->error);
+            }
         } else {
-            mostrarAlerta('error', 'Error', 'Error al actualizar el rol: ' . $conexion->error);
+            mostrarAlerta('error', 'Error', 'Error al preparar el update de rol: ' . $conexion->error);
         }
     } else {
-        mostrarAlerta('error', 'Error', 'Error al actualizar el funcionario: ' . $conexion->error);
+        mostrarAlerta('error', 'Error', 'Error al actualizar el funcionario: ' . $stmt->error);
     }
 
     $conexion->close();

@@ -75,7 +75,9 @@ if(!isset($_SESSION['name']) && !isset($_SESSION['id'])){
                             </div>
                             <div class="col-md-4 mb-3">
                               <label class="form-label fw-bold text-dark-emphasis">Departamento</label>
-                              <select class="form-select rounded-3" id="departamento" name="departamento" required></select>
+                              <select class="form-select rounded-3" id="departamento" name="departamento" required>
+                               <option value="">-- Seleccione departamento --</option>
+                              </select>
                             </div>
                             <div class="col-md-4 mb-3">
                               <label class="form-label fw-bold text-dark-emphasis">Municipio</label>

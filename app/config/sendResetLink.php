@@ -2,9 +2,10 @@
 ini_set('display_errors', 1);
 ini_set('display_startup_errors', 1);
 error_reporting(E_ALL);
+include_once("alerta.php");
 
 // URL base del sistema
-$baseUrl = "http://localhost:8080"; // Cambia a "https://tudominio.com" en producción
+$baseUrl = "http://localhost:8080"; // Cambia esto en producción
 
 require '../../PHPMailer/src/Exception.php';
 require '../../PHPMailer/src/PHPMailer.php';
@@ -18,21 +19,28 @@ include("conexion.php");
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     $email = $conexion->real_escape_string($_POST['email']);
 
-    // Verifica si el correo existe en la base de datos
-    $query = "SELECT * FROM funcionario WHERE correo = '$email'";
-    $result = $conexion->query($query);
+    // Verifica si el correo existe y si el usuario está activo
+    $stmt = $conexion->prepare("SELECT * FROM funcionario WHERE correo = ?");
+    $stmt->bind_param("s", $email);
+    $stmt->execute();
+    $result = $stmt->get_result();
 
-    if ($result->num_rows > 0) {
-        // Genera un token único
+    if ($row = $result->fetch_assoc()) {
+        // Validar si está activo
+        if ((int)$row['activo'] !== 1) {
+            mostrarAlerta('warning', 'Usuario Inactivo', 'No puedes restablecer la contraseña de una cuenta inactiva. Contacta al administrador.', '../../login.php', null);
+            exit();
+        }
+
+        // Generar token único
         $token = bin2hex(random_bytes(50));
 
-        // Guarda el token en la base de datos
-        $stmt = $conexion->prepare("UPDATE funcionario SET reset_token = ?, reset_expiration = DATE_ADD(NOW(), INTERVAL 10 MINUTE) WHERE correo = ?");
-        $stmt->bind_param("ss", $token, $email);
-        $stmt->execute();
+        // Guardar el token en la BD
+        $stmtUpdate = $conexion->prepare("UPDATE funcionario SET reset_token = ?, reset_expiration = DATE_ADD(NOW(), INTERVAL 10 MINUTE) WHERE correo = ?");
+        $stmtUpdate->bind_param("ss", $token, $email);
+        $stmtUpdate->execute();
 
-
-        // Enlace de restablecimiento usando la URL base
+        // Crear link
         $resetLink = "$baseUrl/resetPassword.php?token=$token";
 
         $mail = new PHPMailer(true);
@@ -43,31 +51,28 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             $mail->Host = 'smtp.gmail.com';
             $mail->SMTPAuth = true;
             $mail->Username = 'ventanilaunicaabs@gmail.com';
-            $mail->Password = 'cjgd dcki imrz asgl';
+            $mail->Password = 'cjgd dcki imrz asgl'; // Cambiar en producción por variable segura
             $mail->SMTPSecure = PHPMailer::ENCRYPTION_STARTTLS;
             $mail->Port = 587;
 
-            // Configuración del correo
+            // Envío del correo
             $mail->setFrom('tu_correo@gmail.com', 'SoftDoc');
             $mail->addAddress($email);
 
             $mail->isHTML(true);
             $mail->Subject = 'Restablecer Contraseña';
-            $mail->Body = "Haz clic en el siguiente enlace para restablecer tu contraseña: <a href='$resetLink'>$resetLink</a>";
+            $mail->Body = "Haz clic en el siguiente enlace para restablecer tu contraseña:<br><br><a href='$resetLink'>$resetLink</a><br><br>Este enlace expirará en 10 minutos.";
 
             $mail->send();
-            
-            // Redirige con mensaje de éxito usando SweetAlert2
-            header("Location: ../../login.php?status=success&message=Se+ha+enviado+un+enlace+de+restablecimiento+a+tu+correo.");
+
+            mostrarAlerta('success', 'Correo Enviado', 'Se ha enviado un enlace de restablecimiento a tu correo', '../../login.php', null);
             exit();
         } catch (Exception $e) {
-            // Redirige con mensaje de error usando SweetAlert2
-            header("Location: ../../forgotPassword.php?status=error&message=Error+al+enviar+el+correo:+{$mail->ErrorInfo}");
+            mostrarAlerta('error', 'Error', 'Error al enviar el correo: ' . $mail->ErrorInfo, '', 3000);
             exit();
         }
     } else {
-        // Redirige con mensaje si el correo no está registrado
-        header("Location: ../../forgotPassword.php?status=error&message=El+correo+no+está+registrado.");
+        mostrarAlerta('error', 'Error', 'Usuario no encontrado.', '', 3000);
         exit();
     }
 }

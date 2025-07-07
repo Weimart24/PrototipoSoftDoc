@@ -1,4 +1,10 @@
-<?php 
+<?php
+session_start();
+if (!isset($_SESSION['id']) || !isset($_SESSION['name'])) {
+    header("Location: ../../../login.php");
+    exit();
+}
+
 use PHPMailer\PHPMailer\PHPMailer;
 use PHPMailer\PHPMailer\Exception;
 
@@ -9,19 +15,19 @@ require $_SERVER["DOCUMENT_ROOT"] . '/phpmailer/src/Exception.php';
 include_once("conexion.php");
 
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
-    $nombre = $conexion->real_escape_string($_POST['nombre']);
-    $tipo = $conexion->real_escape_string($_POST['tipo']);
-    $cedula = $conexion->real_escape_string($_POST['cedula']);
-    $telefono = $conexion->real_escape_string($_POST['telefono']);
-    $direccion = $conexion->real_escape_string($_POST['direccion']);
-    $correo = $conexion->real_escape_string($_POST['correo']);
-    $asunto = $conexion->real_escape_string($_POST['asunto']);
-    $detalleRadicado = $conexion->real_escape_string($_POST['detalleRadicado']);
-    $pais = $conexion->real_escape_string($_POST['pais']);
-    $departamento = $conexion->real_escape_string($_POST['departamento']);
-    $municipio = $conexion->real_escape_string($_POST['municipio']);
-    $dependencia = $conexion->real_escape_string($_POST['dependencia']);
-    $funcionario = $conexion->real_escape_string($_POST['funcionario']);
+    $nombre = $_POST['nombre'];
+    $tipo = $_POST['tipo'];
+    $cedula = $_POST['cedula'];
+    $telefono = $_POST['telefono'];
+    $direccion = $_POST['direccion'];
+    $correo = $_POST['correo'];
+    $asunto = $_POST['asunto'];
+    $detalleRadicado = $_POST['detalleRadicado'];
+    $pais = $_POST['pais'];
+    $departamento = $_POST['departamento'];
+    $municipio = $_POST['municipio'];
+    $dependencia = $_POST['dependencia'];
+    $funcionario = $_POST['funcionario'];
 
     $fecha = date('Y-m-d');
     $ultimo_numero = obtenerUltimoNumero($conexion);
@@ -38,28 +44,29 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         $ruta_final = "";
     }
 
-    $queryRadicado = "INSERT INTO radicacion (
+    $stmtRadicado = $conexion->prepare("INSERT INTO radicacion (
         radicado, nombre_remitente, tipo_documento, cedula_remitente,
         telefono, direccion, correo, fecha_radicado, asunto, pais,
         departamento, municipio, documento, id_dependencia, id_funcionario
-    ) VALUES (
-        '$radicado', '$nombre', '$tipo', '$cedula',
-        '$telefono', '$direccion', '$correo', '$fecha', '$asunto',
-        '$pais', '$departamento', '$municipio', '$ruta_final', '$dependencia', '$funcionario'
-    )";
+    ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)");
 
-    if ($conexion->query($queryRadicado)) {
-        $id_radicado = $conexion->insert_id;
+    $stmtRadicado->bind_param("sssssssssssssss",
+        $radicado, $nombre, $tipo, $cedula, $telefono, $direccion, $correo,
+        $fecha, $asunto, $pais, $departamento, $municipio, $ruta_final, $dependencia, $funcionario
+    );
 
-        $querySeguimiento = "INSERT INTO seguimiento_radicado (
+    if ($stmtRadicado->execute()) {
+        $id_radicado = $stmtRadicado->insert_id;
+
+        $stmtSeguimiento = $conexion->prepare("INSERT INTO seguimiento_radicado (
             id_radicado, fecha_seguimiento, detalle
-        ) VALUES (
-            '$id_radicado', '$fecha', '$detalleRadicado'
-        )";
+        ) VALUES (?, ?, ?)");
 
-        if (!$conexion->query($querySeguimiento)) {
+        $stmtSeguimiento->bind_param("iss", $id_radicado, $fecha, $detalleRadicado);
+
+        if (!$stmtSeguimiento->execute()) {
             $status = "error";
-            $message = "Error al insertar seguimiento: " . $conexion->error;
+            $message = "Error al insertar seguimiento: " . $stmtSeguimiento->error;
             header("Location: /app/html/crear_radicado.php?status=$status&message=" . urlencode($message));
             exit();
         }
@@ -72,7 +79,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             $mail->Host = 'smtp.gmail.com';
             $mail->SMTPAuth = true;
             $mail->Username = 'weimart24@gmail.com';
-            $mail->Password = 'wrkf uest hbhd ennk'; // Usa contraseña de aplicación
+            $mail->Password = 'wrkf uest hbhd ennk'; // Contraseña de aplicación
             $mail->SMTPSecure = PHPMailer::ENCRYPTION_STARTTLS;
             $mail->Port = 587;
 
@@ -114,7 +121,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         exit();
     } else {
         $status = "error";
-        $message = "Error al crear radicado: " . $conexion->error;
+        $message = "Error al crear radicado: " . $stmtRadicado->error;
         header("Location: /app/html/radicado.php?status=$status&message=" . urlencode($message));
         exit();
     }
@@ -142,10 +149,5 @@ function obtenerUltimoNumero($conexion){
         $nuevo_id = 1; // Si no hay registros aún
     }
 
-    // Formatear a tres dígitos con ceros a la izquierda
-    $numero_formateado = str_pad($nuevo_id, 3, "0", STR_PAD_LEFT);
-
-    return $numero_formateado;
-
-};
-?>
+    return str_pad($nuevo_id, 3, "0", STR_PAD_LEFT);
+}
