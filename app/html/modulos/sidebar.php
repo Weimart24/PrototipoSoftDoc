@@ -75,6 +75,25 @@
                     <span class="hide-menu">Agregar Dependencia</span>
                 </a>
             </li>
+            <li class="nav-small-cap">
+                <span class="hide-menu">ROLES</span>
+            </li>
+            <li class="sidebar-item">
+                <a class="sidebar-link" href="rol.php" aria-expanded="false">
+                    <span>
+                        <i class="ti ti-briefcase"></i>
+                    </span>
+                    <span class="hide-menu">Administar Roles</span>
+                </a>
+            </li>
+            <li class="sidebar-item">
+                <a class="sidebar-link" href="crear_rol.php" aria-expanded="false">
+                    <span>
+                        <i class="ti ti-id-badge"></i>
+                    </span>
+                    <span class="hide-menu">Agregar Rol</span>
+                </a>
+            </li>
             <?php } ?>
         </ul>
     </nav>

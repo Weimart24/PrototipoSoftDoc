@@ -33,7 +33,8 @@ $fila = $resultado->fetch_assoc();
     <div class="body-wrapper">
       <?php include 'modulos/header.php' ?>
       <div class="container-fluid">
-        <div class="col-lg-12">
+        <div class="row justify-content-center">
+          <div class="col-lg-8 col-md-10">
           <div class="card mb-4 shadow-sm rounded-4">
             <div class="card-body p-4">
               <h3 class="fw-bold text-primary mb-4"><?php echo $fila['nombre_funcionario']; ?></h3>
@@ -64,22 +65,28 @@ $fila = $resultado->fetch_assoc();
                 </div>
               </div>
               <div class="d-flex gap-2 mt-4">
-                <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#modalEditar">
+                <button type="button" class="btn btn-outline-primary" data-bs-toggle="modal" data-bs-target="#modalEditar">
                   Editar Funcionario
                 </button>
                 <?php if ($fila['activo'] == 1): ?>
-                  <button type="button" class="btn btn-success" data-bs-toggle="modal" data-bs-target="#modalRestablecer">
+                  <button type="button" class="btn btn-outline-success" data-bs-toggle="modal" data-bs-target="#modalRestablecer">
                     Restablecer Contraseña
                   </button>
-                  <button type="button" class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#modalEliminar">
+                  <button type="button" class="btn btn-outline-danger" data-bs-toggle="modal" data-bs-target="#modalEliminar">
                     Desactivar Funcionario
                   </button>
                 <?php else: ?>
-                  <button type="button" class="btn btn-success" data-bs-toggle="modal" data-bs-target="#modalActivar">
+                  <button type="button" class="btn btn-outline-success" data-bs-toggle="modal" data-bs-target="#modalActivar">
                     Activar Funcionario
                   </button>
                 <?php endif; ?>
               </div>
+              </div>
+            </div>
+            <div class="text-center mt-4">
+              <a href="funcionario.php" class="btn btn-secondary">
+              <i class="bi bi-arrow-left-circle me-1"></i> Volver
+              </a>
             </div>
           </div>
         </div>

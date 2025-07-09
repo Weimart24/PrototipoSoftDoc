@@ -1,4 +1,40 @@
 <?php
+// Funciones para ocultar información sensible
+function ocultarNombre($nombreCompleto) {
+    $palabras = explode(' ', $nombreCompleto);
+    $resultado = [];
+
+    foreach ($palabras as $palabra) {
+        $visibles = mb_substr($palabra, 0, 2, 'UTF-8');
+        $ocultos = str_repeat('*', max(2, mb_strlen($palabra, 'UTF-8') - 2));
+        $resultado[] = $visibles . $ocultos;
+    }
+
+    return implode(' ', $resultado);
+}
+
+function ocultarCorreo($correo) {
+    $partes = explode('@', $correo);
+    $usuario = $partes[0];
+    $dominio = $partes[1];
+
+    $longitud = mb_strlen($usuario, 'UTF-8');
+
+    if ($longitud <= 2) {
+        $oculto = str_repeat('*', $longitud);
+    } else {
+        $visibles = min(2, $longitud - 1);
+        $inicio = mb_substr($usuario, 0, $visibles, 'UTF-8');
+        $ocultos = str_repeat('*', $longitud - $visibles);
+        $oculto = $inicio . $ocultos;
+    }
+
+    return $oculto . '@' . $dominio;
+}
+
+
+
+// Verificar si se ha enviado el formulario con el radicado
 if (!isset($_POST['radicado'])) {
     header("Location: ../../../index.php");
     exit();
@@ -64,8 +100,8 @@ $resulSeguimiento = $stmt->get_result();
                 <?php
                   $campos = [
                     'Radicado' => $radicado['radicado'],
-                    'Nombre del Remitente' => $radicado['nombre_remitente'],
-                    'Correo Electrónico' => $radicado['correo'],
+                    'Nombre del Remitente' => ocultarNombre($radicado['nombre_remitente']),
+                    'Correo Electrónico' => ocultarCorreo($radicado['correo']),
                     'Fecha de Radicación' => $radicado['fecha_radicado'],
                     'Asunto' => $radicado['asunto'],
                   ];
