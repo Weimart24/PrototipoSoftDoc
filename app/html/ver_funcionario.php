@@ -34,7 +34,7 @@ $fila = $resultado->fetch_assoc();
       <?php include 'modulos/header.php' ?>
       <div class="container-fluid">
         <div class="row justify-content-center">
-          <div class="col-lg-8 col-md-10">
+          <div class="col-lg-6 col-md-10">
           <div class="card mb-4 shadow-sm rounded-4">
             <div class="card-body p-4">
               <h3 class="fw-bold text-primary mb-4"><?php echo $fila['nombre_funcionario']; ?></h3>
