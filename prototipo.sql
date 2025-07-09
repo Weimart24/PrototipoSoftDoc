@@ -184,8 +184,6 @@ INSERT INTO `rol_permisos` (`id_rol`, `id_permiso`) VALUES
 (2, 1),  -- Funcionario: Ver Radicados
 (3, 1),  -- Coordinador: Ver Radicados
 (3, 2),  -- Coordinador: Crear Radicado
-(3, 4),  -- Coordinador: Eliminar Radicado
-(3, 3);  -- Coordinador: Modificar Radicado
 
 
 -- Volcado de datos para la tabla `seguimiento_radicado` con algunos seguimientos
