@@ -36,7 +36,7 @@ $resultado = $conexion->query($query);
                 <div class="col-lg-12">
                     <div class="card mb-4">
                         <div class="table-responsive p-3">
-                            <h3 class="text-left">REGISTRO DE DEPENDENCIAS</h3>
+                            <h3 class="text-left">REGISTRO DE ROLES</h3>
                             <table class="table align-items-center table-flush" id="dataTable">
                                 <thead>
                                     <td>Ver</td>
