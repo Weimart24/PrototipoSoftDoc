@@ -71,8 +71,8 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             $mail->CharSet = 'UTF-8';
             $mail->Host = 'smtp.gmail.com';
             $mail->SMTPAuth = true;
-            $mail->Username = 'weimart24@gmail.com';
-            $mail->Password = 'wrkf uest hbhd ennk';
+            $mail->Username = 'ventanilaunicaabs@gmail.com';
+            $mail->Password = 'cjgd dcki imrz asgl';
             $mail->SMTPSecure = PHPMailer::ENCRYPTION_STARTTLS;
             $mail->Port = 587;
 
